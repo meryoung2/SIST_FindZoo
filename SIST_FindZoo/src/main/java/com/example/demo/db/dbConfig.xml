@@ -6,6 +6,7 @@
   <properties resource="com/example/demo/db/db.properties"/>
   <typeAliases>
   	<typeAlias type="com.example.demo.vo.MemberVo" alias="memberVo"/>
+  	<typeAlias type="com.example.demo.vo.PetVo" alias="petVo"/>
   </typeAliases>
 
   <environments default="development">
@@ -21,5 +22,6 @@
   </environments>
   <mappers>
     <mapper resource="com/example/demo/db/MemberMapper.xml"/>
+    <mapper resource="com/example/demo/db/MyPageMapper.xml"/>
   </mappers>
 </configuration>
