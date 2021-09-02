@@ -26,11 +26,11 @@ public class DBManager {
 		}
 	}
 	
-	// 
+	// 자유게시판
 	
-	public static List<BoardVo> listBoard(){
+	public static List<BoardVo> listBoard(HashMap map){
 		SqlSession session = factory.openSession();
-		List<BoardVo> list = session.selectList("board.findAll");
+		List<BoardVo> list = session.selectList("board.findAll", map);
 		session.close();
 		return list;
 	}
@@ -42,41 +42,31 @@ public class DBManager {
 		return re;
 	}
 	
-	public static BoardVo getBoard(int no) {
+	public static BoardVo getBoard(int board_num) {
 		SqlSession session = factory.openSession();
-		BoardVo b = session.selectOne("board.getBoard", no);
+		BoardVo b = session.selectOne("board.getBoard", board_num);
 		session.close();
 		return b;
 	}
 	
-	public static int updateBoard(BoardVo b) {
+	public static int deleteBoard(int board_num) {
 		SqlSession session = factory.openSession(true);
-		int re = session.update("board.update", b);
+		int re = session.delete("board.delete", board_num);
 		session.close();
 		return re;
 	}
 	
-	public static int deleteBoard(int no, String pwd) {
+	public static void updateHit(int board_num) {
 		SqlSession session = factory.openSession(true);
-		HashMap map = new HashMap();
-		map.put("no", no);
-		map.put("pwd", pwd);
-		int re = session.delete("board.delete", map);
+		session.update("board.updateHit", board_num);
 		session.close();
-		return re;
 	}
-
-	public static int getNextNo() {
+	
+	public static int getTotalRecord() {
 		SqlSession session = factory.openSession();
-		int no = session.selectOne("board.getNextNo");
+		int n = session.selectOne("board.totalRecord");
 		session.close();
-		return no;
-	}
-	
-	public static void updateHit(int no) {
-		SqlSession session = factory.openSession(true);
-		session.update("board.updateHit", no);
-		session.close();
+		return n;
 	}
 	
 	// 거래게시판 목록 조회

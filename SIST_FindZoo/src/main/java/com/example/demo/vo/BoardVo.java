@@ -12,7 +12,7 @@ public class BoardVo {
 	private int views;
 	private int board_type_num;
 	private int member_num;
-	private String member_name;
+	private String member_nick;
 	private MultipartFile picture_file;
 	private String picture_fname;
 	
@@ -21,7 +21,7 @@ public class BoardVo {
 	}
 
 	public BoardVo(int board_num, String title, String content, Date bdate, int views, int board_type_num,
-			int member_num, String member_name, MultipartFile picture_file, String picture_fname) {
+			int member_num, String member_nick, MultipartFile picture_file, String picture_fname) {
 		super();
 		this.board_num = board_num;
 		this.title = title;
@@ -30,7 +30,7 @@ public class BoardVo {
 		this.views = views;
 		this.board_type_num = board_type_num;
 		this.member_num = member_num;
-		this.member_name = member_name;
+		this.member_nick = member_nick;
 		this.picture_file = picture_file;
 		this.picture_fname = picture_fname;
 	}
@@ -91,12 +91,12 @@ public class BoardVo {
 		this.member_num = member_num;
 	}
 
-	public String getMember_name() {
-		return member_name;
+	public String getMember_nick() {
+		return member_nick;
 	}
 
-	public void setMember_name(String member_name) {
-		this.member_name = member_name;
+	public void setMember_nick(String member_nick) {
+		this.member_nick = member_nick;
 	}
 
 	public String getPicture_fname() {
