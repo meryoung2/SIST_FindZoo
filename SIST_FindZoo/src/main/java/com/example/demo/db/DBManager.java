@@ -84,7 +84,7 @@ public class DBManager {
 		SqlSession session = factory.openSession();
 		MemberVo mb = session.selectOne("member.getMember", member_num);
 		session.close();
-		return mb;
+		return mb; 
 	}
 	
 	public static PetVo getPet(int member_num) {
