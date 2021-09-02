@@ -106,4 +106,13 @@ public class BoardVo {
 	public void setPicture_fname(String picture_fname) {
 		this.picture_fname = picture_fname;
 	}
+
+	public MultipartFile getPicture_file() {
+		return picture_file;
+	}
+
+	public void setPicture_file(MultipartFile picture_file) {
+		this.picture_file = picture_file;
+	}
+	
 }
