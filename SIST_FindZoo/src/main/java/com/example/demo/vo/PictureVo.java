@@ -1,9 +1,19 @@
 package com.example.demo.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class PictureVo {
 	private int picture_file_num;
 	private String picture_fname;
 	private  int board_num;
+	private MultipartFile uploadFile;
+	
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
 	public int getPicture_file_num() {
 		return picture_file_num;
 	}
@@ -22,11 +32,12 @@ public class PictureVo {
 	public void setBoard_num(int board_num) {
 		this.board_num = board_num;
 	}
-	public PictureVo(int picture_file_num, String picture_fname, int board_num) {
+	public PictureVo(int picture_file_num, String picture_fname, int board_num, MultipartFile uploadFile) {
 		super();
 		this.picture_file_num = picture_file_num;
 		this.picture_fname = picture_fname;
 		this.board_num = board_num;
+		this.uploadFile = uploadFile;
 	}
 	public PictureVo() {
 		super();
