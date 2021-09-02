@@ -8,7 +8,7 @@ public class MemberVo {
 	private String member_nick;
 	private String member_sex;
 	private String member_phone;
-	private String member_eamil;
+	private String member_email;
 	private String member_addr;
 	private int member_point;
 	private int member_sms;
@@ -19,7 +19,7 @@ public class MemberVo {
 		super();
 	}
 	public MemberVo(int member_num, String member_id, String member_pwd, String member_name, String member_nick,
-			String member_sex, String member_phone, String member_eamil, String member_addr, int member_point,
+			String member_sex, String member_phone, String member_email, String member_addr, int member_point,
 			int member_sms, int member_admin, int social_num) {
 		super();
 		this.member_num = member_num;
@@ -29,7 +29,7 @@ public class MemberVo {
 		this.member_nick = member_nick;
 		this.member_sex = member_sex;
 		this.member_phone = member_phone;
-		this.member_eamil = member_eamil;
+		this.member_email = member_email;
 		this.member_addr = member_addr;
 		this.member_point = member_point;
 		this.member_sms = member_sms;
@@ -79,11 +79,11 @@ public class MemberVo {
 	public void setMember_phone(String member_phone) {
 		this.member_phone = member_phone;
 	}
-	public String getMember_eamil() {
-		return member_eamil;
+	public String getMember_email() {
+		return member_email;
 	}
-	public void setMember_eamil(String member_eamil) {
-		this.member_eamil = member_eamil;
+	public void setMember_email(String member_email) {
+		this.member_email = member_email;
 	}
 	public String getMember_addr() {
 		return member_addr;
