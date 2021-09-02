@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.example.demo.vo.BoardVo;
+import com.example.demo.vo.DealVo;
 
 public class DBManager {
 
@@ -76,6 +77,23 @@ public class DBManager {
 		SqlSession session = factory.openSession(true);
 		session.update("board.updateHit", no);
 		session.close();
+	}
+	
+	// 거래게시판 목록 조회
+	public static List<DealVo> listDeal(){
+		SqlSession session = factory.openSession();
+		List<DealVo> list = session.selectList("deal.findAll");
+		session.close();
+		return list;
+	}
+	
+	// 거래게시판 글쓰기
+	public static int insertDeal(DealVo d) {
+		SqlSession session = factory.openSession();
+		int re = session.insert("deal.insertDeal1", d);
+		re += session.insert("deal.insertDeal2", d);
+		session.close();
+		return re;
 	}
 }
 
