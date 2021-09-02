@@ -13,7 +13,7 @@ public class BoardVo {
 	private int board_type_num;
 	private int member_num;
 	private String member_name;
-	private MultipartFile picture_file_num;
+	private MultipartFile picture_file;
 	private String picture_fname;
 	
 	public BoardVo() {
