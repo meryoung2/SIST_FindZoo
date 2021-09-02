@@ -10,7 +10,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.example.demo.vo.BoardVo;
+import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PetVo;
 import com.example.demo.vo.DealVo;
+
 
 public class DBManager {
 
@@ -26,9 +29,12 @@ public class DBManager {
 		}
 	}
 	
+	// 게시판
+	public static List<BoardVo> listBoard(){
+
 	// 자유게시판
-	
 	public static List<BoardVo> listBoard(HashMap map){
+
 		SqlSession session = factory.openSession();
 		List<BoardVo> list = session.selectList("board.findAll", map);
 		session.close();
@@ -85,11 +91,20 @@ public class DBManager {
 		session.close();
 		return re;
 	}
+
+	// 마이페이지
+	public static MemberVo getMember(int member_num) {
+		SqlSession session = factory.openSession();
+		MemberVo mb = session.selectOne("member.getMember", member_num);
+		session.close();
+		return mb; 
+	}
+	
+	public static PetVo getPet(int member_num) {
+		SqlSession session = factory.openSession();
+		PetVo pet = session.selectOne("pet.getPet", member_num);
+		session.close();
+		return pet;
+	}
+	
 }
-
-
-
-
-
-
-
