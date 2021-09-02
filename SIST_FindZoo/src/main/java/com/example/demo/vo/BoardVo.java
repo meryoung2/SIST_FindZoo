@@ -2,6 +2,8 @@ package com.example.demo.vo;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class BoardVo {
 	private int board_num;
 	private String title;
@@ -10,13 +12,17 @@ public class BoardVo {
 	private int views;
 	private int board_type_num;
 	private int member_num;
+	private String member_name;
+	private MultipartFile picture_file_num;
+	private String picture_fname;
 	
 	public BoardVo() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 	public BoardVo(int board_num, String title, String content, Date bdate, int views, int board_type_num,
-			int member_num) {
+			int member_num, String member_name, MultipartFile picture_file_num, String picture_fname) {
 		super();
 		this.board_num = board_num;
 		this.title = title;
@@ -25,6 +31,9 @@ public class BoardVo {
 		this.views = views;
 		this.board_type_num = board_type_num;
 		this.member_num = member_num;
+		this.member_name = member_name;
+		this.picture_file_num = picture_file_num;
+		this.picture_fname = picture_fname;
 	}
 	
 	public int getBoard_num() {
@@ -68,5 +77,23 @@ public class BoardVo {
 	}
 	public void setMember_num(int member_num) {
 		this.member_num = member_num;
+	}
+	public String getMember_name() {
+		return member_name;
+	}
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
+	}
+	public MultipartFile getPicture_file_num() {
+		return picture_file_num;
+	}
+	public void setPicture_file_num(MultipartFile picture_file_num) {
+		this.picture_file_num = picture_file_num;
+	}
+	public String getPicture_fname() {
+		return picture_fname;
+	}
+	public void setPicture_fname(String picture_fname) {
+		this.picture_fname = picture_fname;
 	}
 }
