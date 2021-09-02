@@ -29,9 +29,6 @@ public class DBManager {
 		}
 	}
 	
-	// 게시판
-	public static List<BoardVo> listBoard(){
-
 	// 자유게시판
 	public static List<BoardVo> listBoard(HashMap map){
 
