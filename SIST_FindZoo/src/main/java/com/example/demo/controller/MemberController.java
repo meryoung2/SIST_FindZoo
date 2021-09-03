@@ -36,7 +36,7 @@ public class MemberController {
 	public void login() {
 		
 	}
-	
+
 	@RequestMapping("/loginOK.do")
 	public ModelAndView loginOK(HttpSession session) {
 		System.out.println("로그인 성공!");
