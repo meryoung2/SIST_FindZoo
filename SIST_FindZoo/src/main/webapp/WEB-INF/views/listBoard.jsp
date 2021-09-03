@@ -23,14 +23,22 @@
 		<c:forEach var="b" items="${ list }">
 			<tr>
 				<td>${ b.board_num }</td>
+
 				<td>
 				<a href="">${ b.title }</a>
+				</td>
+				<td>
+				<a href="detailBoard.do?board_num=${ b.board_num }">${ b.title }</a>
 				</td>
 				<td>${ b.member_nick }</td>
 				<td>${ b.views }</td>
 			</tr>
 		</c:forEach>
 	</table>
+	
+	<c:forEach var="i" begin="1" end="${ totalPage }">
+		<a href="listBoard.do?pageNum=${ i }">${ i }</a>&nbsp;
+	</c:forEach>
 </body>
 </html>
 

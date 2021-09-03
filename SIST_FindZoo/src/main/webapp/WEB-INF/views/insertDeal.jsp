@@ -11,6 +11,7 @@
 	<hr>
 	<form action="insertDeal.do" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="board_num" value="${ board_num }">
+		<input type="hidden" name="board_type_num" value="${board_type_num }">
 		제목 : <input type="text" name="title"><br>
 		가격 : <input type="text" name="deal_price"><br>
 		내용 : <textarea rows="10" cols="80" name="content"></textarea><br>
