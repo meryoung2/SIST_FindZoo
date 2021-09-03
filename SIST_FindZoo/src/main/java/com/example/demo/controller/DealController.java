@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,6 +24,13 @@ public class DealController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("list", dao.findAll());
 		return mav;
+	}
+	
+	// 거래게시판 상세보기 컨트롤러
+	@RequestMapping("/detailDeal.do")
+	public void detail(HttpServletRequest request, Model model,int board_num) {
+		dao.updateHit(board_num);
+		model.addAttribute("d", dao.getDeal(board_num));
 	}
 	
 }
