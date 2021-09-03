@@ -16,16 +16,15 @@
 			비밀번호 : ${mb.member_pwd }<br>
 			이름 : ${mb.member_name }<br>
 			닉네임 : ${mb.member_nick }<br>
-			성별 : ${mb.member_sex }<br>
 			전화번호 : ${mb.member_phone }<br>
 			이메일 : ${mb.member_email }<br>
 			주소 : ${mb.member_addr }<br>
 			포인트 : ${mb.member_point }<br>
-			SMS 수신 여부 : ${mb.member_sms }<br>
+			SMS 수신 : ${mb.member_sms }<br>
 			관리자 여부 : ${mb.member_admin }<br>
 			로그인 방식 : ${mb.social_num }<br>
-			<input type="button" value="수정" onclick="#">
-			<input type="button" value="삭제" onclick="#">
+			<input type="button" value="내정보 수정" onclick="#">
+			<input type="button" value="회원탈퇴" onclick="#">
 		</div>
 		<div>
 			<h2>반려동물 정보</h2>
@@ -37,7 +36,8 @@
 			동물등록번호 : ${pet.pet_regist_num }<br>
 			반려동물생일 : ${pet.pet_birth }<br>
 			회원번호 : ${mb.member_num }<br>
-			<input type="button" value="삭제" onclick="#">
+			<input type="button" value="반려동물정보 추가" onclick="#">
+			<input type="button" value="반려동물정보 삭제" onclick="#">
 		</div>
 	</div>
 </body>

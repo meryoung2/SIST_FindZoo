@@ -3,35 +3,35 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-	<select id="findAll" resultType="boardVo">
-		select board_num, title, content, bdate, views, board_type_num, member_num, member_nick FROM(select rownum n, board_num, title, content, bdate, views, board_type_num, m.member_num, m.MEMBER_NICK from board b, MEMBER m WHERE b.MEMBER_NUM = m.MEMBER_NUM order by board_num desc) where n between #{start} and #{end}
+	<select id="findAll" resultType="boardVo"> 
+		select board_num, title, content, bdate, views, board_type_num, member_num, member_nick FROM(select rownum n, board_num, title, content, bdate, views, board_type_num, m.member_num, m.MEMBER_NICK from board b, MEMBER m WHERE b.MEMBER_NUM = m.MEMBER_NUM order by board_num desc) where n between #{start} and #{end} 
 	</select>
-  
-	<select id="getBoard" resultType="boardVo">
-		select * from board b, member m, picture p where b.member_num = m.member_num and b.board_num = p.board_num and b.board_num=#{board_num}
+	
+	<select id="getBoard" resultType="boardVo"> 
+		select * from board b, member m, picture p where b.member_num = m.member_num and b.board_num = p.board_num and b.board_num=#{board_num} 
 	</select>
-  
-	<update id="updateViews" parameterType="int">
-		update board set views=views+1 where board_num=#{board_num}
+	
+	<update id="updateViews" parameterType="int"> 
+		update board set views=views+1 where board_num=#{board_num} 
 	</update>
-  
-	<select id="totalRecord" resultType="int">
-		select count(*) from board
+	
+	<select id="totalRecord" resultType="int"> 
+		select count(*) from board 
 	</select>
-  
-	<insert id="insert" parameterType="boardVo">
-		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 34, 1)
+	
+	<insert id="insert" parameterType="boardVo"> 
+		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 34, 1) 
 	</insert>
 	
-	<insert id="insertPicture" parameterType="boardVo">
-		insert into picture values((select nvl(max(picture_file_num), 0)+1 from picture), #{picture_fname}, (select nvl(max(board_num), 0) from board))
+	<insert id="insertPicture" parameterType="boardVo"> 
+		insert into picture values((select nvl(max(picture_file_num), 0)+1 from picture), #{picture_fname}, (select nvl(max(board_num), 0) from board)) 
 	</insert>
 	
-	<delete id="delete">
-		delete board where board_num = #{board_num}
+	<delete id="delete"> 
+		delete board where board_num = #{board_num} 
 	</delete>
 	
-	<delete id="deletePicture">
-		delete picture where board_num = #{board_num}
+	<delete id="deletePicture"> 
+		delete picture where board_num = #{board_num} 
 	</delete>
 </mapper>
