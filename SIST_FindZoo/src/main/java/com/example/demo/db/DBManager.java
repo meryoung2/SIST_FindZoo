@@ -87,14 +87,21 @@ public class DBManager {
 	
 	// 거래게시판 글쓰기
 	public static int insertDeal(DealVo d) {
-		SqlSession session = factory.openSession();
-		int re = session.insert("deal.insertDeal1", d);
-		re += session.insert("deal.insertDeal2", d);
+		SqlSession session = factory.openSession(false);
+		int re = -1;		
+		int board_re = session.insert("deal.insertBoard", d);
+		int deal_re = session.insert("deal.insertDeal", d);
+		if(board_re == 1 && deal_re == 1) {
+			session.commit();
+			re = 1;
+		}else {
+			session.rollback();
+		}
 		session.close();
 		return re;
 	}
 	
-	// 거래게시판 게시판번호 조회
+	// 거래게시판 글 상세 내용을 위한 메소드
 	public static DealVo getDeal(int deal_num) {
 		SqlSession session = factory.openSession();
 		DealVo d = session.selectOne("deal.getBoard", deal_num);
@@ -103,9 +110,9 @@ public class DBManager {
 	}
 	
 	// 거래게시판 조회수 증가
-	public static void updateDealHit(int deal_num) {
+	public static void updateDealHit(int board_num) {
 		SqlSession session = factory.openSession(true);
-		session.update("deal.updateHit", deal_num);
+		session.update("deal.updateHit", board_num);
 		session.close();
 	}
 	

@@ -52,12 +52,7 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- 'ORA-17056 : 지원되지 않는 문자 집합' 에러 방지를 위한 메이븐 설정 (정민님) -->
-		<dependency>
-			<groupId>com.oracle.ojdbc</groupId>
-			<artifactId>orai18n</artifactId>
-			<version>19.3.0.0</version>
-		</dependency>
+		
 	</dependencies>
 
 	<build>

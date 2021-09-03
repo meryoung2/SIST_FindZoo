@@ -19,7 +19,7 @@
 		</tr>
 		<c:forEach items="${list }" var="d">
 			<tr>
-				<td>${d.deal_num }</td>
+				<td>${d.board_num }</td>
 				<td>${d.title }</td>
 				<td>${d.member_nick }</td>
 				<td>${d.views }</td>

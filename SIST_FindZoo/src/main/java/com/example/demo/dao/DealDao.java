@@ -17,4 +17,12 @@ public class DealDao {
 	public int insertDeal(DealVo d) {
 		return DBManager.insertDeal(d);
 	}
+	
+	public DealVo getDeal(int deal_num) {
+		return DBManager.getDeal(deal_num);
+	}
+	
+	public void updateHit(int board_num) {
+		DBManager.updateDealHit(board_num);
+	}
 }
