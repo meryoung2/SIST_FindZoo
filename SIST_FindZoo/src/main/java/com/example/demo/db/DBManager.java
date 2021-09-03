@@ -88,7 +88,31 @@ public class DBManager {
 		session.close();
 		return re;
 	}
-
+	
+	// 거래게시판 게시판번호 조회
+	public static DealVo getDeal(int deal_num) {
+		SqlSession session = factory.openSession();
+		DealVo d = session.selectOne("deal.getBoard", deal_num);
+		session.close();
+		return d;
+	}
+	
+	// 거래게시판 조회수 증가
+	public static void updateDealHit(int deal_num) {
+		SqlSession session = factory.openSession(true);
+		session.update("deal.updateHit", deal_num);
+		session.close();
+	}
+	
+	/*
+	public static int getTotalRecord() {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("board.totalRecord");
+		session.close();
+		return n;
+	}
+	*/
+	
 	// 마이페이지
 	public static MemberVo getMember(int member_num) {
 		SqlSession session = factory.openSession();

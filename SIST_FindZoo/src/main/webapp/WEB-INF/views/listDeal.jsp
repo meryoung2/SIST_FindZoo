@@ -15,12 +15,14 @@
 			<th>글번호</th>
 			<th>글제목</th>
 			<th>작성자</th>
+			<th>조회수</th>
 		</tr>
 		<c:forEach items="${list }" var="d">
 			<tr>
 				<td>${d.deal_num }</td>
 				<td>${d.title }</td>
-				<td>${d.member_name }</td>
+				<td>${d.member_nick }</td>
+				<td>${d.views }</td>
 			</tr>
 		</c:forEach>
 	</table>

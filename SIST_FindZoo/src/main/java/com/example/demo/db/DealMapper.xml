@@ -8,10 +8,15 @@
 		d.board_num = b.board_num
 	</select>
 	
-	<insert id="insertDeal1" parameterType="dealVo">
-		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values(nvl(#{no},0)+1,#{title},#{content},sysdate,0,33,#{member_num})
-	</insert>
-	<insert id="insertDeal2" parameterType="dealVo">
-		insert into deal(deal_num,deal_price,board_num) values(nvl(#{no},0)+1,#{deal_price},nvl(#{no},0)+1)
-	</insert>
+	<select id="getBoard" resultType="dealVo">
+  	select * from deal where deal_num=#{deal_num}
+  </select>
+  
+  <select id="totalRecord" resultType="int">
+  	select count(*) from deal
+  </select>
+  
+  <update id="updateHit" parameterType="int">
+  	update board set hit=hit+1 where no=#{no}
+  </update>
 </mapper>
