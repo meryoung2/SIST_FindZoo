@@ -14,4 +14,22 @@
 	<insert id="insertDeal2" parameterType="dealVo">
 		insert into deal(deal_num,deal_price,board_num) values(nvl(#{no},0)+1,#{deal_price},nvl(#{no},0)+1)
 	</insert>
+	
+	<insert id="insertDealPicture" parameterType="dealVo">
+		insert into picture(picture_file_num, picture_fname, board_num) values((select nvl(max(picture_file_num), 0)+1 from picture),#{picture_fname},(select nvl(max(board_num), 0) from board))
+	</insert>
+	
+	
+	<select id="getBoard" resultType="dealVo">
+  		select * from deal d, board b where d.board_num = b.board_num and b.board_num=${board_num}
+  	</select>
+  
+	<select id="totalRecord" resultType="int">
+  		select count(*) from deal
+	</select>
+	  
+	<update id="updateHit" parameterType="int">
+	  	update board set views = views+1 where board_num = #{board_num} and board_type_num = 33
+	</update>
+
 </mapper>

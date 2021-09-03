@@ -5,8 +5,11 @@
 <configuration>
   <properties resource="com/example/demo/db/db.properties"/>
   <typeAliases>
+  	<typeAlias type="com.example.demo.vo.MemberVo" alias="memberVo"/>
+	<typeAlias type="com.example.demo.vo.PetVo" alias="petVo"/>	
   	<typeAlias type="com.example.demo.vo.BoardVo" alias="boardVo"/>
   	<typeAlias type="com.example.demo.vo.DealVo" alias="dealVo"/>
+	<typeAlias type="com.example.demo.vo.ReplyVo" alias="replyVo"/>
   </typeAliases>
   <environments default="development">
     <environment id="development">
@@ -20,7 +23,10 @@
     </environment>
   </environments>
   <mappers>
-    <mapper resource="com/example/demo/db/BoardMapper.xml"/>
-    <mapper resource="com/example/demo/db/DealMapper.xml"/>
+  	<mapper resource="com/example/demo/db/MemberMapper.xml"/>
+	<mapper resource="com/example/demo/db/PetMapper.xml"/>
+   	 <mapper resource="com/example/demo/db/BoardMapper.xml"/>
+   	<mapper resource="com/example/demo/db/DealMapper.xml"/>
+	<mapper resource="com/example/demo/db/ReplyMapper.xml"/>
   </mappers>
 </configuration>
