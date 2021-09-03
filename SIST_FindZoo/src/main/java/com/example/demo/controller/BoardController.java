@@ -23,6 +23,7 @@ public class BoardController {
 		this.dao = dao;
 	}
 	
+	// 자유게시판 목록
 	@RequestMapping("/listBoard.do")
 	public void list(HttpServletRequest request ,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 		System.out.println(pageNum);
@@ -47,6 +48,7 @@ public class BoardController {
 		model.addAttribute("totalPage", BoardDao.totalPage);
 	}
 	
+	// 자유게시판 글 상세내용
 	@RequestMapping("/detailBoard.do")
 	public void detail(HttpServletRequest request, Model model, int board_num) {
 		model.addAttribute("b", dao.getBoard(board_num));

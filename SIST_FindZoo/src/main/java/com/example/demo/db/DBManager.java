@@ -29,7 +29,7 @@ public class DBManager {
 		}
 	}
 	
-	// 자유게시판
+	// 자유게시판 목록
 	public static List<BoardVo> listBoard(HashMap map){
 
 		SqlSession session = factory.openSession();
@@ -38,6 +38,7 @@ public class DBManager {
 		return list;
 	}
 	
+	// 자유게시판 글 작성
 	public static int insertBoard(BoardVo b) {
 		SqlSession session = factory.openSession(true);
 		int re = session.insert("board.insert", b);
@@ -45,6 +46,7 @@ public class DBManager {
 		return re;
 	}
 	
+	// 자유게시판 글 내용 상세
 	public static BoardVo getBoard(int board_num) {
 		SqlSession session = factory.openSession();
 		BoardVo b = session.selectOne("board.getBoard", board_num);
@@ -52,6 +54,7 @@ public class DBManager {
 		return b;
 	}
 	
+	// 자유게시판 글 삭제
 	public static int deleteBoard(int board_num) {
 		SqlSession session = factory.openSession(true);
 		int re = session.delete("board.delete", board_num);
@@ -59,12 +62,14 @@ public class DBManager {
 		return re;
 	}
 	
-	public static void updateHit(int board_num) {
+	// 자유게시판 조회수 증가
+	public static void updateViews(int board_num) {
 		SqlSession session = factory.openSession(true);
-		session.update("board.updateHit", board_num);
+		session.update("board.updateViews", board_num);
 		session.close();
 	}
 	
+	// 자유게시판 전체 글 갯수
 	public static int getTotalRecord() {
 		SqlSession session = factory.openSession();
 		int n = session.selectOne("board.totalRecord");
@@ -88,20 +93,4 @@ public class DBManager {
 		session.close();
 		return re;
 	}
-
-	// 마이페이지
-	public static MemberVo getMember(int member_num) {
-		SqlSession session = factory.openSession();
-		MemberVo mb = session.selectOne("member.getMember", member_num);
-		session.close();
-		return mb; 
-	}
-	
-	public static PetVo getPet(int member_num) {
-		SqlSession session = factory.openSession();
-		PetVo pet = session.selectOne("pet.getPet", member_num);
-		session.close();
-		return pet;
-	}
-	
 }
