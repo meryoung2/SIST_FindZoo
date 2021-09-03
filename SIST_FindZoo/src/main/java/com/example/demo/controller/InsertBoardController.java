@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dao.BoardDao;
 import com.example.demo.vo.BoardVo;
 
+// 자유게시판 글 작성
 @Controller
 @RequestMapping("/insertBoard.do")
 public class InsertBoardController {
@@ -66,14 +67,3 @@ public class InsertBoardController {
 		return mav;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
