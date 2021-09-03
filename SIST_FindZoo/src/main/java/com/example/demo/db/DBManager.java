@@ -77,7 +77,7 @@ public class DBManager {
 	}
 	
 	// 거래게시판 목록 조회
-	public static List<DealVo> listDeal(){
+	public static List<DealVo> listDeal(HashMap map){
 		SqlSession session = factory.openSession();
 		List<DealVo> list = session.selectList("deal.findAll");
 		session.close();
@@ -90,7 +90,8 @@ public class DBManager {
 		int re = -1;		
 		int board_re = session.insert("deal.insertBoard", d);
 		int deal_re = session.insert("deal.insertDeal", d);
-		if(board_re == 1 && deal_re == 1) {
+		int pic_re = session.insert("deal.insertDealPicture", d);
+		if(board_re == 1 && deal_re == 1 && pic_re == 1) {
 			session.commit();
 			re = 1;
 		}else {
@@ -101,9 +102,9 @@ public class DBManager {
 	}
 	
 	// 거래게시판 글 상세 내용을 위한 메소드
-	public static DealVo getDeal(int deal_num) {
+	public static DealVo getDeal(int board_num) {
 		SqlSession session = factory.openSession();
-		DealVo d = session.selectOne("deal.getBoard", deal_num);
+		DealVo d = session.selectOne("deal.getBoard", board_num);
 		session.close();
 		return d;
 	}
@@ -115,14 +116,14 @@ public class DBManager {
 		session.close();
 	}
 	
-	/*
-	public static int getTotalRecord() {
+	
+	public static int getTotalRecordDeal() {
 		SqlSession session = factory.openSession();
-		int n = session.selectOne("board.totalRecord");
+		int n = session.selectOne("deal.totalRecord");
 		session.close();
 		return n;
 	}
-	*/
+	
 	
 	// 마이페이지
 	public static MemberVo getMember(int member_num) {
