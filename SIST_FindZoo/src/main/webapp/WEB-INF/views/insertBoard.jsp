@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2>Insert Board</h2>
-	<hr>
+	<hr> 
 	<form action="insertBoard.do" method="post" enctype="multipart/form-data">
 		제목 : <input type="text" name="title"><br>
 		내용 : <textarea rows="10" cols="80" name="content"></textarea><br>
