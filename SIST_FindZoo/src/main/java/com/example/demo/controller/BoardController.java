@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 
@@ -58,14 +59,14 @@ public class BoardController {
 	
 	// 자유게시판 글 작성
 	@RequestMapping(value = "/insertBoard.do", method = RequestMethod.GET)
-	public void insertForm(HttpServletRequest request ,Model model, @RequestParam(value = "board_num", defaultValue = "0") int board_num) {
-		model.addAttribute("board_num", board_num);
+	public void insertForm(HttpServletRequest request) {
+		
 	}
 	
 	@RequestMapping(value = "/insertBoard.do", method = RequestMethod.POST)
 	public ModelAndView insertSubmit(HttpServletRequest request, BoardVo b) {
 		ModelAndView mav = new ModelAndView("redirect:/listBoard.do");
-		String path = request.getRealPath("resources\\upload");
+		String path = request.getRealPath("resources/img");
 		System.out.println(path);
 		
 		String picture_fname = null;
@@ -100,9 +101,20 @@ public class BoardController {
 	@RequestMapping("/deleteBoard.do")
 	@ResponseBody
 	public ModelAndView delete(HttpServletRequest request, int board_num) {
+		String path = request.getRealPath("resources/img");
 		ModelAndView mav = new ModelAndView("redirect:/listBoard.do");
+		String oldFname = dao.getBoard(board_num).getPicture_fname();
 		int re = dao.delete(board_num);
 		
+		if(re == 1) {
+			if(!oldFname.isEmpty()) {
+				File file = new File(path+"/"+oldFname);
+				file.delete();
+			}else {
+				mav.addObject("msg", "Fail!");
+				mav.setViewName("error");
+			}
+		}
 		return mav;
 	}
 }

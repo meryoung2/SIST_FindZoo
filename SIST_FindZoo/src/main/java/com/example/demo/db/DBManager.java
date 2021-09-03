@@ -62,16 +62,36 @@ public class DBManager {
 
 	// 자유게시판 글 작성
 	public static int insertBoard(BoardVo b) {
-		SqlSession session = factory.openSession(true);
-		int re = session.insert("board.insert", b);
+		SqlSession session = factory.openSession();
+		int reBoard = session.insert("board.insert", b);
+		int rePicture = session.insert("board.insertPicture", b);
+		int re = 0;
+		
+		if(reBoard == 1 && rePicture == 1) {
+			session.commit();
+			re = 1;
+		}else {
+			session.rollback();
+		}
+		
 		session.close();
 		return re;
 	}
 	
 	// 자유게시판 글 삭제
 	public static int deleteBoard(int board_num) {
-		SqlSession session = factory.openSession(true);
-		int re = session.delete("board.delete", board_num);
+		SqlSession session = factory.openSession();
+		int rePicture = session.delete("board.deletePicture", board_num);
+		int reBoard = session.delete("board.delete", board_num);
+		int re = 0;
+		
+		if(reBoard == 1 && rePicture == 1) {
+			session.commit();
+			re = 1;
+		}else {
+			session.rollback();
+		}
+		
 		session.close();
 		return re;
 	}

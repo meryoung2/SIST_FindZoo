@@ -8,7 +8,7 @@
 	</select>
   
 	<select id="getBoard" resultType="boardVo">
-		select * from board b, member m where b.member_num = m.member_num and board_num=#{board_num}
+		select * from board b, member m, picture p where b.member_num = m.member_num and b.board_num = p.board_num and b.board_num=#{board_num}
 	</select>
   
 	<update id="updateViews" parameterType="int">
@@ -23,7 +23,15 @@
 		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 34, 1)
 	</insert>
 	
+	<insert id="insertPicture" parameterType="boardVo">
+		insert into picture values((select nvl(max(picture_file_num), 0)+1 from picture), #{picture_fname}, (select nvl(max(board_num), 0) from board))
+	</insert>
+	
 	<delete id="delete">
 		delete board where board_num = #{board_num}
+	</delete>
+	
+	<delete id="deletePicture">
+		delete picture where board_num = #{board_num}
 	</delete>
 </mapper>

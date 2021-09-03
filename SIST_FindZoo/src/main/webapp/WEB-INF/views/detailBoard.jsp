@@ -17,7 +17,9 @@
 	작성자 : ${ b.member_nick }<br>
 	내용 <br>
 	<textarea rows="10" cols="80" readonly="readonly">${ b.content }</textarea><br>
+	<img src="${pageContext.request.contextPath}/resources/img/${ b.picture_fname }">
 	등록일 : <fmt:formatDate value="${ b.bdate }" pattern="yyyy-MM-dd hh:mm:ss" /><br>
 	조회수 : ${ b.views }<br>
+	${ b.picture_fname }
 </body>
 </html>
