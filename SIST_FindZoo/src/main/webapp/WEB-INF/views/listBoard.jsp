@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>Board List</h2>
+	<h2>자유게시판 목록</h2>
 	<hr>
 	<a href="insertBoard.do">글쓰기</a>
 	<hr>
