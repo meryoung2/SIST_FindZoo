@@ -23,7 +23,9 @@
 		<c:forEach var="b" items="${ list }">
 			<tr>
 				<td>${ b.board_num }</td>
-				<td>${ b.title }</td>
+				<td>
+				<a href="">${ b.title }</a>
+				</td>
 				<td>${ b.member_nick }</td>
 				<td>${ b.views }</td>
 			</tr>
