@@ -17,7 +17,7 @@ public class PetController {
 		this.dao = dao;
 	}
 
-	@RequestMapping("/MyInfo.do")
+	@RequestMapping("/myPet.do")
 	public void detail(int member_num, Model model) {
 		model.addAttribute("pet", dao.getPet(member_num));
 	}
