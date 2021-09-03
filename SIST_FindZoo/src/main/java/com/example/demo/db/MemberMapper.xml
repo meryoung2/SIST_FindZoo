@@ -6,4 +6,14 @@
 	<select id="findAll" resultType="memberVo">
 		select * from member
 	</select>
+	
+	<select id="getMember" resultType="memberVo">
+ 	 select * from member where id=#{username}
+ 	</select>
+ 	
+ 	
+	<insert id="">
+		insert into member (member_num, member_id, member_pwd, member_name, member_nick, member_sex, member_phone, member_email, member_addr, member_point, member_alarm, member_admin, social_num)
+		values(nvl(max(MEMBER_NUM), 0)+1, #{member_id}, #{member_pwd}, #{member_name}, #{member_nick}, #{member_sex}, #{member_phone}, #{member_email}, #{member_addr}, 0, #{member_alarm}, #{member_admin}, #{social_num})
+	</insert>
 </mapper>
