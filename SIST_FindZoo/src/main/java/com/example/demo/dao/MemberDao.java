@@ -1,7 +1,6 @@
 package com.example.demo.dao;
 
 import org.springframework.stereotype.Repository;
-
 import com.example.demo.db.DBManager;
 import com.example.demo.vo.MemberVo;
 
@@ -12,7 +11,7 @@ public class MemberDao {
 		return DBManager.insertMember(m);
 	}
 	
-	public MemberVo getMember(String username) {
-		return DBManager.getMember(username);
+	public MemberVo loginMember(String username) {
+		return DBManager.loginMember(username);
 	}
 }

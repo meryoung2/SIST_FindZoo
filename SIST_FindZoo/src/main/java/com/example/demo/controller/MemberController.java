@@ -45,7 +45,7 @@ public class MemberController {
 		
 		 String id = ((User)authentication.getPrincipal()).getUsername();
 		
-		 session.setAttribute("member", dao.getMember(id));
+		 session.setAttribute("member", dao.loginMember(id));
 		return mav;
 	}
 	
