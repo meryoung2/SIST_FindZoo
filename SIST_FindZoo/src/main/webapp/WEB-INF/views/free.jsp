@@ -14,7 +14,6 @@
 	<hr>
 	<table border="1" width="80%">
 		<tr>
-			<th width="50">글번호</th>
 			<th>글제목</th>
 			<th>작성자</th>
 			<th width="50">조회수</th>
@@ -22,7 +21,6 @@
 		
 		<c:forEach var="f" items="${ list }">
 			<tr>
-				<td>${ f.n }</td>
 				<td><a href="detailFree.do?board_num=${ f.board_num }">${ f.title }</a></td>
 				<td>${ f.member_nick }</td>
 				<td>${ f.views }</td>

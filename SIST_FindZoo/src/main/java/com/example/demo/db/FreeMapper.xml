@@ -4,7 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="free">
 	<select id="findAll" resultType="freeVo"> 
-		select n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick FROM(select rownum n, board_num, title, content, bdate, views, board_type_num, member_num, MEMBER_NICK FROM (select board_num, title, content, bdate, views, board_type_num, m.member_num, MEMBER_NICK from board b, member m WHERE b.MEMBER_NUM = m.MEMBER_NUM and board_type_num = 34 order by board_num)) where n between #{start} and #{end}  ORDER BY n desc 
+		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
+		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
+		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
+		FROM board, member WHERE BOARD_TYPE_NUM = 34
+		AND board.member_num = MEMBER.member_num
+		ORDER BY board_num DESC))
+		WHERE n BETWEEN #{start} AND #{end}
 	</select>
 	
 	<select id="getFree" resultType="freeVo"> 

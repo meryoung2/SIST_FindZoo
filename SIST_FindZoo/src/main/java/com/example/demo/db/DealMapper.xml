@@ -36,15 +36,15 @@
 	  	update board set views = views+1 where board_num = #{board_num} and board_type_num = 33
 	</update>
 
-	<update id="updateDeal" parameterType="boardVo">
+	<update id="updateDeal" parameterType="dealVo">
 	  	update deal set deal_price = #{deal_price} where board_num = #{board_num}
 	</update>
 	
-	<update id="updateBoard" parameterType="boardVo">
+	<update id="updateBoard" parameterType="dealVo">
   		update board set title=#{title},content=#{content} where board_num = #{board_num}
   	</update>
   	
-  	<update id="updateDealPicture" parameterType="boardVo">
+  	<update id="updateDealPicture" parameterType="dealVo">
   		update picture set picture_fname = #{picture_fname} where board_num = #{board_num}
   	</update>
   	

@@ -38,11 +38,11 @@ public class FreeController {
 		FreeDao.totalRecord = dao.getTotalRecord();
 		FreeDao.totalPage = (int)Math.ceil((double)FreeDao.totalRecord/FreeDao.pageSize);
 		
-		int end = (pageNum - 1) * FreeDao.pageSize + 1;
-		int start = end + FreeDao.pageSize - 1;
+		int start = (pageNum - 1) * FreeDao.pageSize + 1;
+		int end = start + FreeDao.pageSize - 1;
 		
-		if(start > FreeDao.totalRecord) {
-			start = FreeDao.totalRecord;
+		if(end > FreeDao.totalRecord) {
+			end = FreeDao.totalRecord;
 		}
 		
 		HashMap map = new HashMap();
