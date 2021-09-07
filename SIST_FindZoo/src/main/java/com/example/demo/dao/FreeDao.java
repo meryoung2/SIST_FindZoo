@@ -6,21 +6,21 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.DBManager;
-import com.example.demo.vo.BoardVo;
+import com.example.demo.vo.FreeVo;
 
 @Repository
-public class BoardDao {
+public class FreeDao {
 	
 	public static int pageSize = 10;
 	public static int totalRecord;
 	public static int totalPage;
 	
-	public List<BoardVo> findAll(HashMap map){
-		return DBManager.listBoard(map);
+	public List<FreeVo> findAll(HashMap map){
+		return DBManager.free(map);
 	}
 	
-	public BoardVo getBoard(int board_num) {
-		return DBManager.getBoard(board_num);
+	public FreeVo getFree(int board_num) {
+		return DBManager.getFree(board_num);
 	}
 	
 	public void updateViews(int board_num) {
@@ -31,11 +31,15 @@ public class BoardDao {
 		return DBManager.getTotalRecord();
 	}
 
-	public int insert(BoardVo b) {
-		return DBManager.insertBoard(b);
+	public int insert(FreeVo f) {
+		return DBManager.insertFree(f);
+	}
+	
+	public int update(FreeVo f) {
+		return DBManager.updateFree(f);
 	}
 	
 	public int delete(int board_num) {
-		return DBManager.deleteBoard(board_num);
+		return DBManager.deleteFree(board_num);
 	}
 }

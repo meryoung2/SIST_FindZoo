@@ -4,7 +4,8 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class BoardVo {
+public class FreeVo {
+	private int n;
 	private int board_num;
 	private String title;
 	private String content;
@@ -16,13 +17,14 @@ public class BoardVo {
 	private MultipartFile picture_file;
 	private String picture_fname;
 	
-	public BoardVo() {
+	public FreeVo() {
 		super();
 	}
 
-	public BoardVo(int board_num, String title, String content, Date bdate, int views, int board_type_num,
+	public FreeVo(int n, int board_num, String title, String content, Date bdate, int views, int board_type_num,
 			int member_num, String member_nick, MultipartFile picture_file, String picture_fname) {
 		super();
+		this.n = n;
 		this.board_num = board_num;
 		this.title = title;
 		this.content = content;
@@ -33,6 +35,14 @@ public class BoardVo {
 		this.member_nick = member_nick;
 		this.picture_file = picture_file;
 		this.picture_fname = picture_fname;
+	}
+
+	public int getN() {
+		return n;
+	}
+
+	public void setN(int n) {
+		this.n = n;
 	}
 
 	public int getBoard_num() {
@@ -99,14 +109,6 @@ public class BoardVo {
 		this.member_nick = member_nick;
 	}
 
-	public String getPicture_fname() {
-		return picture_fname;
-	}
-
-	public void setPicture_fname(String picture_fname) {
-		this.picture_fname = picture_fname;
-	}
-
 	public MultipartFile getPicture_file() {
 		return picture_file;
 	}
@@ -114,5 +116,12 @@ public class BoardVo {
 	public void setPicture_file(MultipartFile picture_file) {
 		this.picture_file = picture_file;
 	}
-	
+
+	public String getPicture_fname() {
+		return picture_fname;
+	}
+
+	public void setPicture_fname(String picture_fname) {
+		this.picture_fname = picture_fname;
+	}
 }
