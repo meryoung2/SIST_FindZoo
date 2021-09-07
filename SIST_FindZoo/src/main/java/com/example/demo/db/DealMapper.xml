@@ -4,15 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="deal">
 	<select id="findAll" resultType="dealVo">
-		select * from board b, member m, deal d where b.member_num = m.member_num and
-		d.board_num = b.board_num
+		select rownum n, deal_num, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
+		from (select deal_num, d.board_num, title, content, bdate,views, board_type_num, m.member_num, member_nick 
+		from board b, member m, deal d
+		where b.member_num = m.member_num and d.board_num = b.board_num and board_type_num = 33 order by d.board_num) 
+		where n between #{start} and #{end}  ORDER BY n desc
 	</select>
 	
-	<insert id="insertDeal1" parameterType="dealVo">
-		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values(nvl(#{no},0)+1,#{title},#{content},sysdate,0,33,#{member_num})
+	<insert id="insertBoard" parameterType="dealVo">
+		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 33, 1)
 	</insert>
-	<insert id="insertDeal2" parameterType="dealVo">
-		insert into deal(deal_num,deal_price,board_num) values(nvl(#{no},0)+1,#{deal_price},nvl(#{no},0)+1)
+	
+	<insert id="insertDeal" parameterType="dealVo">
+		insert into deal(deal_num,deal_price,board_num) values((select nvl(max(deal_num), 0)+1 from deal),#{deal_price},(select nvl(max(board_num), 0) from board))
 	</insert>
 	
 	<insert id="insertDealPicture" parameterType="dealVo">
@@ -21,7 +25,7 @@
 	
 	
 	<select id="getBoard" resultType="dealVo">
-  		select * from deal d, board b where d.board_num = b.board_num and b.board_num=${board_num}
+  		select * from deal d, board b, picture p, member m where d.board_num = b.board_num and p.board_num = b.board_num and m.member_num = b.member_num and b.board_num=${board_num}
   	</select>
   
 	<select id="totalRecord" resultType="int">
@@ -31,5 +35,29 @@
 	<update id="updateHit" parameterType="int">
 	  	update board set views = views+1 where board_num = #{board_num} and board_type_num = 33
 	</update>
+
+	<update id="updateDeal" parameterType="boardVo">
+	  	update deal set deal_price = #{deal_price} where board_num = #{board_num}
+	</update>
+	
+	<update id="updateBoard" parameterType="boardVo">
+  		update board set title=#{title},content=#{content} where board_num = #{board_num}
+  	</update>
+  	
+  	<update id="updateDealPicture" parameterType="boardVo">
+  		update picture set picture_fname = #{picture_fname} where board_num = #{board_num}
+  	</update>
+  	
+  	<delete id="deleteDeal">
+  		delete deal where board_num = #{board_num}
+  	</delete>
+  	
+  	<delete id="deleteBoard">
+  		delete board where board_num = #{board_num}
+  	</delete>
+  	
+  	<delete id="deleteDealPicture">
+  		delete picture where board_num = #{board_num}
+  	</delete>
 
 </mapper>

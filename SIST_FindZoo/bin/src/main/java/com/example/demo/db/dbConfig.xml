@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <properties resource="com/example/demo/db/db.properties"/>
+  <typeAliases>
+  	<typeAlias type="com.example.demo.vo.MemberVo" alias="memberVo"/>
+	<typeAlias type="com.example.demo.vo.PetVo" alias="petVo"/>	
+  	<typeAlias type="com.example.demo.vo.BoardVo" alias="boardVo"/>
+  	<typeAlias type="com.example.demo.vo.DealVo" alias="dealVo"/>
+	<typeAlias type="com.example.demo.vo.ReplyVo" alias="replyVo"/>
+  </typeAliases>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+  	<mapper resource="com/example/demo/db/MemberMapper.xml"/>
+	<mapper resource="com/example/demo/db/PetMapper.xml"/>
+   	 <mapper resource="com/example/demo/db/BoardMapper.xml"/>
+   	<mapper resource="com/example/demo/db/DealMapper.xml"/>
+	<mapper resource="com/example/demo/db/ReplyMapper.xml"/>
+  </mappers>
+</configuration>

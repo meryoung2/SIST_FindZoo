@@ -117,52 +117,89 @@ public class DBManager {
 	}
 	
 	// 거래게시판 목록 조회
-	public static List<DealVo> listDeal(HashMap map){
-		SqlSession session = factory.openSession();
-		List<DealVo> list = session.selectList("deal.findAll");
-		session.close();
-		return list;
-	}
-
-	// 거래게시판 글쓰기
-	public static int insertDeal(DealVo d) {
-		SqlSession session = factory.openSession(false);
-		int re = -1;		
-		int board_re = session.insert("deal.insertBoard", d);
-		int deal_re = session.insert("deal.insertDeal", d);
-		int pic_re = session.insert("deal.insertDealPicture", d);
-		if(board_re == 1 && deal_re == 1 && pic_re == 1) {
-			session.commit();
-			re = 1;
-		}else {
-			session.rollback();
+		public static List<DealVo> deal(HashMap map){
+			SqlSession session = factory.openSession();
+			List<DealVo> list = session.selectList("deal.findAll");
+			session.close();
+			return list;
 		}
-		session.close();
-		return re;
-	}
 
-	// 거래게시판 글 상세 내용을 위한 메소드
-	public static DealVo getDeal(int board_num) {
-		SqlSession session = factory.openSession();
-		DealVo d = session.selectOne("deal.getBoard", board_num);
-		session.close();
-		return d;
-	}
-	
-	// 거래게시판 조회수 증가
-	public static void updateDealHit(int board_num) {
-		SqlSession session = factory.openSession(true);
-		session.update("deal.updateHit", board_num);
-		session.close();
-	}
-	
-	// 거래게시판 전체 글 갯수
-	public static int getTotalRecordDeal() {
-		SqlSession session = factory.openSession();
-		int n = session.selectOne("deal.totalRecord");
-		session.close();
-		return n;
-	}
+		// 거래게시판 글쓰기
+		public static int insertDeal(DealVo d) {
+			SqlSession session = factory.openSession(false);
+			int re = -1;
+			int board_re = session.insert("deal.insertBoard", d);
+			int deal_re = session.insert("deal.insertDeal", d);
+			int pic_re = session.insert("deal.insertDealPicture", d);
+			if(board_re == 1 && deal_re == 1 && pic_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+			session.close();
+			return re;
+		}
+
+		// 거래게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
+		public static DealVo getDeal(int board_num) {
+			SqlSession session = factory.openSession();
+			DealVo d = session.selectOne("deal.getBoard", board_num);
+			session.close();
+			return d;
+		}
+		
+		// 거래게시판 글, 사진 수정
+		public static int updateDeal(DealVo d) {
+			SqlSession session = factory.openSession(false);
+			int re = -1;
+			int deal_re = session.update("deal.updateDeal",d);
+			int board_re = session.update("deal.updateBoard",d);
+			int pic_re = session.update("deal.updateDealPicture",d);
+			
+			if(pic_re == 1 && deal_re == 1 && board_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+			session.close();
+			return re;
+		}
+		
+		// 거래게시판 삭제
+		public static int deleteDeal(int board_num) {
+			SqlSession session = factory.openSession(false);
+			int re = -1;
+			int deal_re = session.delete("deal.deleteDeal", board_num);
+			int pic_re = session.delete("deal.deleteDealPicture", board_num);
+			int board_re = session.delete("deal.deleteBoard", board_num);
+			
+			if(deal_re == 1 && board_re == 1 && pic_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+			session.close();
+			return re;
+			
+		}
+		
+		// 거래게시판 조회수 증가
+		public static void updateViewsDeal(int board_num) {
+			SqlSession session = factory.openSession(true);
+			session.update("deal.updateHit", board_num);
+			session.close();
+		}
+		
+		// 거래게시판 전체 글 갯수
+		public static int getTotalRecordDeal() {
+			SqlSession session = factory.openSession();
+			int n = session.selectOne("deal.totalRecord");
+			session.close();
+			return n;
+		}
 	
 	// 마이페이지
 	public static MemberVo getMember(int member_num) {

@@ -17,7 +17,7 @@ public class DealDao {
 	
 	
 	public List<DealVo> findAll(HashMap map){
-		return DBManager.listDeal(map);
+		return DBManager.deal(map);
 	}
 	
 	public int insertDeal(DealVo d) {
@@ -28,12 +28,19 @@ public class DealDao {
 		return DBManager.getDeal(deal_num);
 	}
 	
-	public void updateHit(int board_num) {
-		DBManager.updateDealHit(board_num);
+	public void updateViewsDeal(int board_num) {
+		DBManager.updateViewsDeal(board_num);
 	}
 	
 	public int getTotalRecordDeal() {
 		return DBManager.getTotalRecordDeal();
 	}
+	
+	public int updateDeal(DealVo d) {
+		return DBManager.updateDeal(d);
+	}
 
+	public int deleteDeal(int board_num) {
+		return DBManager.deleteDeal(board_num);
+	}
 }
