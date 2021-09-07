@@ -18,6 +18,7 @@ public class DealVo {
 	private String member_name;
 	private MultipartFile picture_file;
 	private String picture_fname;
+
 	public int getDeal_num() {
 		return deal_num;
 	}
@@ -96,6 +97,7 @@ public class DealVo {
 	public void setPicture_fname(String picture_fname) {
 		this.picture_fname = picture_fname;
 	}
+
 	public DealVo(int deal_num, int deal_price, int board_num, String title, String content, Date bdate, int views,
 			int board_type_num, int member_num, String member_nick, String member_name, MultipartFile picture_file,
 			String picture_fname) {
@@ -118,7 +120,5 @@ public class DealVo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
+
 }

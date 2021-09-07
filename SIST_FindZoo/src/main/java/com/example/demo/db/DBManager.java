@@ -119,7 +119,7 @@ public class DBManager {
 	// 거래게시판 목록 조회
 		public static List<DealVo> deal(HashMap map){
 			SqlSession session = factory.openSession();
-			List<DealVo> list = session.selectList("deal.findAll");
+			List<DealVo> list = session.selectList("deal.findAll",map);
 			session.close();
 			return list;
 		}

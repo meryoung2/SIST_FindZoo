@@ -12,14 +12,12 @@
 	<hr>
 	<table border="1" width="80%">
 		<tr>
-			<th>글번호</th>
 			<th>글제목</th>
 			<th>작성자</th>
 			<th>조회수</th>
 		</tr>
 		<c:forEach items="${list }" var="d">
 			<tr>
-				<td>${d.board_num }</td>
 				<td>
 				<a href="detailDeal.do?board_num=${d.board_num}">${d.title }</a>
 				</td>

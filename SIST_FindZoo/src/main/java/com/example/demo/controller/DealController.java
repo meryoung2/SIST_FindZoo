@@ -101,7 +101,7 @@ public class DealController {
 		int re = dao.insertDeal(d);
 		if(re != 1) {
 			mav.addObject("msg","글쓰기에 실패하였습니다.");
-			mav.setViewName("redirect:/listDeal.do");
+			mav.setViewName("redirect:/deal.do");
 		}
 		return mav;
 	}
@@ -142,7 +142,7 @@ public class DealController {
 		int re = dao.updateDeal(d);
 		if(re != 1) {
 			mav.addObject("msg", "게시물 수정에 실패하였습니다.");
-			mav.setViewName("/listDeal.do");
+			mav.setViewName("/deal.do");
 		}else {
 				File file = new File(path + "/" + oldFname);
 				file.delete();
@@ -163,7 +163,7 @@ public class DealController {
 	@RequestMapping("/deleteDeal.do")
 	public ModelAndView dealDeleteSubmit(HttpServletRequest request, int board_num) {
 		String path = request.getRealPath("/resources/img");
-		ModelAndView mav = new ModelAndView("redirect:/listDeal.do");
+		ModelAndView mav = new ModelAndView("redirect:/deal.do");
 		String picture_fname = dao.getDeal(board_num).getPicture_fname();
 		
 		int re = dao.deleteDeal(board_num);
