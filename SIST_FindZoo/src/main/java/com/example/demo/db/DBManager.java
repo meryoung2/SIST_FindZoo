@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.example.demo.vo.BoardVo;
+import com.example.demo.vo.FreeVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
@@ -31,9 +31,9 @@ public class DBManager {
 	}
 	
 	// 자유게시판 목록
-	public static List<BoardVo> listBoard(HashMap map){
+	public static List<FreeVo> free(HashMap map){
 		SqlSession session = factory.openSession();
-		List<BoardVo> list = session.selectList("board.findAll", map);
+		List<FreeVo> list = session.selectList("free.findAll", map);
 		session.close();
 		return list;
 	}
@@ -41,34 +41,53 @@ public class DBManager {
 	// 자유게시판 조회수 증가
 	public static void updateViews(int board_num) {
 		SqlSession session = factory.openSession(true);
-		session.update("board.updateViews", board_num);
+		session.update("free.updateViews", board_num);
 		session.close();
 	}
 		
 	// 자유게시판 전체 글 갯수
 	public static int getTotalRecord() {
 		SqlSession session = factory.openSession();
-		int n = session.selectOne("board.totalRecord");
+		int n = session.selectOne("free.totalRecord");
 		session.close();
 		return n;
 	}
 	
 	// 자유게시판 글 내용 상세
-	public static BoardVo getBoard(int board_num) {
+	public static FreeVo getFree(int board_num) {
 		SqlSession session = factory.openSession();
-		BoardVo b = session.selectOne("board.getBoard", board_num);
+		FreeVo f = session.selectOne("free.getFree", board_num);
 		session.close();
-		return b;
+		return f;
 	}
 
 	// 자유게시판 글 작성
-	public static int insertBoard(BoardVo b) {
+	public static int insertFree(FreeVo f) {
 		SqlSession session = factory.openSession();
-		int reBoard = session.insert("board.insert", b);
-		int rePicture = session.insert("board.insertPicture", b);
+		int free_re= session.insert("free.insert", f);
+		int picture_re = session.insert("free.insertPicture", f);
 		int re = 0;
 		
-		if(reBoard == 1 && rePicture == 1) {
+		if(free_re == 1 && picture_re == 1) {
+			session.commit();
+			re = 1;
+		}else {
+			session.rollback();
+		}
+		
+		session.close();
+		return re;
+	}
+	
+	// 자유게시판 글 수정
+	public static int updateFree(FreeVo f) {
+		SqlSession session = factory.openSession();
+		int free_re = session.update("free.update", f);
+		int picture_re = session.update("free.updatePicture", f);
+		
+		int re = 0;
+		
+		if(free_re == 1 && picture_re == 1) {
 			session.commit();
 			re = 1;
 		}else {
@@ -80,13 +99,13 @@ public class DBManager {
 	}
 	
 	// 자유게시판 글 삭제
-	public static int deleteBoard(int board_num) {
+	public static int deleteFree(int board_num) {
 		SqlSession session = factory.openSession();
-		int rePicture = session.delete("board.deletePicture", board_num);
-		int reBoard = session.delete("board.delete", board_num);
+		int picture_re = session.delete("free.deletePicture", board_num);
+		int free_re = session.delete("free.delete", board_num);
 		int re = 0;
 		
-		if(reBoard == 1 && rePicture == 1) {
+		if(free_re == 1 && picture_re == 1) {
 			session.commit();
 			re = 1;
 		}else {

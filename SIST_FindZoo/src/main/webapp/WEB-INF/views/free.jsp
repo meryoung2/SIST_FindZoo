@@ -10,7 +10,7 @@
 <body>
 	<h2>자유게시판 목록</h2>
 	<hr>
-	<a href="insertBoard.do">글쓰기</a>
+	<a href="insertFree.do">글쓰기</a>
 	<hr>
 	<table border="1" width="80%">
 		<tr>
@@ -20,18 +20,18 @@
 			<th width="50">조회수</th>
 		</tr>
 		
-		<c:forEach var="b" items="${ list }">
+		<c:forEach var="f" items="${ list }">
 			<tr>
-				<td>${ b.board_num }</td>
-				<td><a href="detailBoard.do?board_num=${ b.board_num }">${ b.title }</a></td>
-				<td>${ b.member_nick }</td>
-				<td>${ b.views }</td>
+				<td>${ f.n }</td>
+				<td><a href="detailFree.do?board_num=${ f.board_num }">${ f.title }</a></td>
+				<td>${ f.member_nick }</td>
+				<td>${ f.views }</td>
 			</tr>
 		</c:forEach>
 	</table>
 	
 	<c:forEach var="i" begin="1" end="${ totalPage }">
-		<a href="listBoard.do?pageNum=${ i }">${ i }</a>&nbsp;
+		<a href="free.do?pageNum=${ i }">${ i }</a>&nbsp;
 	</c:forEach>
 </body>
 </html>
