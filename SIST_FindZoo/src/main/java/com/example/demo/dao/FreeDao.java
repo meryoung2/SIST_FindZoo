@@ -11,10 +11,6 @@ import com.example.demo.vo.FreeVo;
 @Repository
 public class FreeDao {
 	
-	public static int pageSize = 10;
-	public static int totalRecord;
-	public static int totalPage;
-	
 	public List<FreeVo> findAll(HashMap map){
 		return DBManager.free(map);
 	}
