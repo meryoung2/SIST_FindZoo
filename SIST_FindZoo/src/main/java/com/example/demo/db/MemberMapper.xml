@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="loginMember" resultType="memberVo">
- 	 select * from member where id=#{username}
+ 		select * from member where id=#{username}
  	</select>
  	
 	<insert id="">
@@ -19,6 +19,13 @@
 		
 	<!-- 마이페이지 -->
  	<select id="getMember" parameterType="int" resultType="memberVo">
- 	 select * from member where member_num = #{member_num}
+ 		select * from member where member_num = #{member_num}
  	</select>
+ 	
+ 	<update id="updateInfo" parameterType="memberVo">
+  		update member set 
+  		member_pwd = #{member_pwd}, member_nick = #{member_nick}, member_phone = #{member_phone}, 
+  		member_email = #{member_email}, member_addr = #{member_addr}, member_sms = #{member_sms} 
+  		where member_num = #{member_num}
+ 	</update>
 </mapper>

@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.MemberDao;
 import com.example.demo.dao.PetDao;
+import com.example.demo.vo.MemberVo;
 
 @Controller
 public class MyInfoController {
@@ -25,10 +29,30 @@ public class MyInfoController {
 		this.petDao = petDao;
 	} 
 	
+	// 마이페이지 내 정보 조회
 	@RequestMapping("/myInfo.do")
-	public void detail(int member_num, Model model) {
-		model.addAttribute("mb", dao.getMember(member_num));
-		model.addAttribute("pet", petDao.getPet(member_num));
+	public ModelAndView getMemberPet(int member_num) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("mb", dao.getMember(member_num));
+		mav.addObject("listPet", petDao.listPet(member_num));
+		return mav;
 	}
-
+	
+	// 마이페이지 내 정보 수정
+	@RequestMapping(value="/updateInfo.do", method=RequestMethod.GET)
+	public void updateInfoForm(int member_num, Model model) {
+		model.addAttribute("mb", dao.getMember(member_num));		
+	}
+	@RequestMapping(value="/updateInfo.do", method=RequestMethod.POST)
+	public ModelAndView updateInfoSubmit(MemberVo mb) {
+		int member_num = mb.getMember_num();
+		ModelAndView mav = new ModelAndView("redirect:/myInfo.do?member_num="+member_num);
+		int re = dao.updateInfo(mb);
+		if(re != 1) {
+			mav.addObject("msg", "내 정보 수정에 실패하였습니다.");
+			mav.setViewName("error");
+		}
+		return mav;
+	}
+	
 }

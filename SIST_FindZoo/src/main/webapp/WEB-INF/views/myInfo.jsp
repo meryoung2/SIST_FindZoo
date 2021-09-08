@@ -1,44 +1,42 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	.myInfo-container {
+		border: 1px solid black;
+		margin: 10px;
+		padding: 10px;
+	}
+</style>
 </head>
 <body>
-	<div>
-		<div>
-			<h2>È¸¿ø Á¤º¸</h2>
-			<hr>
-			È¸¿ø¹øÈ£ : ${mb.member_num }<br>
-			¾ÆÀÌµğ : ${mb.member_id }<br>	
-			ºñ¹Ğ¹øÈ£ : ${mb.member_pwd }<br>
-			ÀÌ¸§ : ${mb.member_name }<br>
-			´Ğ³×ÀÓ : ${mb.member_nick }<br>
-			ÀüÈ­¹øÈ£ : ${mb.member_phone }<br>
-			ÀÌ¸ŞÀÏ : ${mb.member_email }<br>
-			ÁÖ¼Ò : ${mb.member_addr }<br>
-			Æ÷ÀÎÆ® : ${mb.member_point }<br>
-			SMS ¼ö½Å : ${mb.member_sms }<br>
-			°ü¸®ÀÚ ¿©ºÎ : ${mb.member_admin }<br>
-			·Î±×ÀÎ ¹æ½Ä : ${mb.social_num }<br>
-			<input type="button" value="³»Á¤º¸ ¼öÁ¤" onclick="#">
-			<input type="button" value="È¸¿øÅ»Åğ" onclick="#">
-		</div>
-		<div>
-			<h2>¹İ·Áµ¿¹° Á¤º¸</h2>
-			<hr>
-			¹İ·Áµ¿¹°¹øÈ£ : ${pet.pet_num }<br>
-			¹İ·Áµ¿¹°ÀÌ¸§ : ${pet.pet_name }<br>
-			¹İ·Áµ¿¹°¼ºº° : ${pet.pet_sex }<br>
-			¹İ·Áµ¿¹°Á¾ : ${pet.pet_type }<br>
-			µ¿¹°µî·Ï¹øÈ£ : ${pet.pet_regist_num }<br>
-			¹İ·Áµ¿¹°»ıÀÏ : ${pet.pet_birth }<br>
-			È¸¿ø¹øÈ£ : ${mb.member_num }<br>
-			<input type="button" value="¹İ·Áµ¿¹°Á¤º¸ Ãß°¡" onclick="#">
-			<input type="button" value="¹İ·Áµ¿¹°Á¤º¸ »èÁ¦" onclick="#">
-		</div>
+	<div class="myInfo-container">
+		<h2>ë‚´ ì •ë³´</h2>
+		<hr>
+		íšŒì›ë²ˆí˜¸ : ${mb.member_num }<br>
+		ì•„ì´ë”” : ${mb.member_id }<br>	
+		ë¹„ë°€ë²ˆí˜¸ : ${mb.member_pwd }<br>
+		ì´ë¦„ : ${mb.member_name }<br>
+		ë‹‰ë„¤ì„ : ${mb.member_nick }<br>
+		ì „í™”ë²ˆí˜¸ : ${mb.member_phone }<br>
+		ì´ë©”ì¼ : ${mb.member_email }<br>
+		ì£¼ì†Œ : ${mb.member_addr }<br>
+		í¬ì¸íŠ¸ : ${mb.member_point }<br>
+		SMS ìˆ˜ì‹ ë™ì˜ì—¬ë¶€ : ${mb.member_sms }<br>
+		ê´€ë¦¬ì ì—¬ë¶€ : ${mb.member_admin }<br>
+		<c:if test="${mb.social_num == '0'}">ë¡œê·¸ì¸ ë°©ì‹ : ì›¹ ë¡œê·¸ì¸<br></c:if>
+		<c:if test="${mb.social_num == '1'}">ë¡œê·¸ì¸ ë°©ì‹ : ë„¤ì´ë²„ ë¡œê·¸ì¸<br></c:if>
+		<c:if test="${mb.social_num == '2'}">ë¡œê·¸ì¸ ë°©ì‹ : ì¹´ì¹´ì˜¤ ë¡œê·¸ì¸<br></c:if>
+		ë°˜ë ¤ë™ë¬¼ ì •ë³´ : <c:forEach var="pet" items="${listPet }"><a href="detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach><br>
+		<br>
+		<input type="button" value="ë‚´ ì •ë³´ ìˆ˜ì •" onclick="location.href='updateInfo.do?member_num=${mb.member_num}'">
+		<input type="button" value="ë°˜ë ¤ë™ë¬¼ ì¶”ê°€" onclick="location.href='insertPet.do'">
+		<input type="button" value="íšŒì›íƒˆí‡´" onclick="#">
 	</div>
 </body>
 </html>

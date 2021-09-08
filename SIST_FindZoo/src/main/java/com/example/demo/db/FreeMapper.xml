@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="free">
+	<select id="findAll" resultType="freeVo"> 
+		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
+		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
+		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
+		FROM board, member WHERE BOARD_TYPE_NUM = 34
+		AND board.member_num = MEMBER.member_num
+		ORDER BY board_num DESC))
+		WHERE n BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="getFree" resultType="freeVo"> 
+		select * from board b, member m, picture p where b.member_num = m.member_num and b.board_num = p.board_num and b.board_num=#{board_num} 
+	</select>
+	
+	<update id="updateViews" parameterType="int"> 
+		update board set views=views+1 where board_num=#{board_num} 
+	</update>
+	
+	<select id="totalRecord" resultType="int"> 
+		select count(*) from board where board_type_num = 34
+	</select>
+	
+	<insert id="insert" parameterType="freeVo"> 
+		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 34, 1) 
+	</insert>
+	
+	<insert id="insertPicture" parameterType="freeVo"> 
+		insert into picture values((select nvl(max(picture_file_num), 0)+1 from picture), #{picture_fname}, (select nvl(max(board_num), 0) from board)) 
+	</insert>
+	
+	<update id="update">
+		update board set title=#{title}, content=#{content} where board_num=#{board_num}
+	</update>
+	
+	<update id="updatePicture">
+		update picture set picture_fname=#{picture_fname} where board_num=#{board_num}
+	</update>
+	
+	<delete id="delete"> 
+		delete board where board_num = #{board_num} 
+	</delete>
+	
+	<delete id="deletePicture"> 
+		delete picture where board_num = #{board_num} 
+	</delete>
+</mapper>
