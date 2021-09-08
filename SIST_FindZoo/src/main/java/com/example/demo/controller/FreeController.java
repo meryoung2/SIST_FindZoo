@@ -44,7 +44,7 @@ public class FreeController {
 	@RequestMapping("/free.do")
 	public void list(HttpServletRequest request ,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 		
-		paging.totalRecord = paging.getTotalRecord();
+		paging.totalRecord = dao.getTotalRecord();
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
