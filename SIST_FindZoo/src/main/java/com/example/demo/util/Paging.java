@@ -8,13 +8,6 @@ import com.example.demo.dao.FreeDao;
 @Repository
 public class Paging {
 	
-	@Autowired
-	private FreeDao dao;	
-	
-	public void setDao(FreeDao dao) {
-		this.dao = dao;
-	}
-	
 	// 현재 페이지가 몇 페이지인지
 	public static int pageNum;
 	// 한 페이지에 나오는 게시글의 수
@@ -46,13 +39,6 @@ public class Paging {
 		return end;
 	}
 	
-	// 총 게시글 수 계산
-	public int getTotalRecord() {
-		totalRecord = dao.getTotalRecord();
-		
-		return totalRecord;
-	}
-	
 	// 총 페이지 수 계산
 	public int getTotalPage() {
 		totalPage = (int)Math.ceil((double)totalRecord/pageSize);
@@ -60,6 +46,7 @@ public class Paging {
 		return totalPage;
 	}
 	
+	// 페이지 목록 시작 숫자 계산
 	public int getListStart(int pageNum) {
 		if(pageNum > 5 && (pageNum % 5 != 0)) {
 			listStart = (pageNum / 5) * 5 + 1;
@@ -72,6 +59,7 @@ public class Paging {
 		return listStart;
 	}
 	
+	// 페이지 목록 끝 숫자 계산
 	public int getListEnd() {
 		if(listStart+4 <= totalPage) {
 			listEnd = listStart + 4;
