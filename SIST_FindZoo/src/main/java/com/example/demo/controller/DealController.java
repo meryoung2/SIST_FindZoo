@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +26,7 @@ import com.example.demo.vo.DealVo;
 
 @Controller
 public class DealController {
+	
 	@Autowired
 	private DealDao dao;
 	public void setDao(DealDao dao) {
@@ -35,6 +37,7 @@ public class DealController {
 	@RequestMapping("/deal.do")
 	public void deal(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+		
 		System.out.println("pageNum:" + pageNum);
 		DealDao.totalRecord = dao.getTotalRecordDeal();
 		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
@@ -54,8 +57,41 @@ public class DealController {
 		
 		model.addAttribute("list",dao.findAll(map));
 		model.addAttribute("totalPage", DealDao.totalPage);
-		
+
 	}
+	
+	// 거래게시판 검색 후 목록 컨트롤러
+	// 거래게시판 검색에 필요한 셀렉트에서 작성자를 기본값으로 하는 search_option과 
+	// 사용자가 입력할 검색어를 받는(기본값이 공란이라 ""임) keyword를 매개변수로 전달받은 후
+	// hash메소드를 통해 map이라는 변수에 담고 model객체를 통해 searchDeal메소드를 호출한다.
+	@RequestMapping("/searchDeal.do")
+	public void searchDeal(HttpServletRequest request, 
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model,
+			@RequestParam(defaultValue = "member_nick") String search_option, 
+			@RequestParam(defaultValue = "") String keyword) {
+		System.out.println("pageNum:" + pageNum);
+		DealDao.totalRecord = dao.getTotalRecordDeal();
+		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
+		
+		int start = (pageNum - 1)*DealDao.pageSize + 1;
+		int end = start + DealDao.pageSize - 1;
+		
+		if(end > DealDao.totalRecord) {
+			end = DealDao.totalRecord;
+		}
+		System.out.println("start" + start);
+		System.out.println("end" + end);
+		
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("keyword", keyword);
+		map.put("search_option", search_option);
+		
+		model.addAttribute("list",dao.searchDeal(map));
+		model.addAttribute("totalPage", DealDao.totalPage);
+	}
+	
 	
 	// 거래게시판 상세보기 컨트롤러
 	@RequestMapping("/detailDeal.do")

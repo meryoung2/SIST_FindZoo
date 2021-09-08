@@ -20,6 +20,10 @@ public class DealDao {
 		return DBManager.deal(map);
 	}
 	
+	public List<DealVo> searchDeal(HashMap map){
+		return DBManager.searchDeal(map);
+	}
+	
 	public int insertDeal(DealVo d) {
 		return DBManager.insertDeal(d);
 	}

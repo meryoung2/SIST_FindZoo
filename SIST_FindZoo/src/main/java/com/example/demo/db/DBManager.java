@@ -123,6 +123,15 @@ public class DBManager {
 			session.close();
 			return list;
 		}
+		
+		// 거래게시판 검색 후 목록 조회
+		public static List<DealVo> searchDeal(HashMap map){
+			SqlSession session = factory.openSession();
+			List<DealVo> list = session.selectList("deal.search", map);
+			session.close();
+			return list;
+		}
+		
 
 		// 거래게시판 글쓰기
 		public static int insertDeal(DealVo d) {

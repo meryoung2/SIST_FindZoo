@@ -29,7 +29,7 @@
 	</table>
 	
 	<c:forEach var="i" begin="1" end="${ totalPage }">
-		<a href="deal.do?pageNum=${ i }">${ i }</a>&nbsp;
+		<a href="searchDeal.do?pageNum=${ i }">${ i }</a>&nbsp;
 	</c:forEach>
 	
 	<!-- 거래게시판 검색창 -->
