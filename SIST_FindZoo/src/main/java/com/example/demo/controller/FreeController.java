@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.FreeDao;
+import com.example.demo.util.Paging;
 import com.example.demo.vo.FreeVo;
 
 @Controller
@@ -32,25 +33,39 @@ public class FreeController {
 		this.dao = dao;
 	}
 	
+	@Autowired
+	private Paging paging;
+	
+	public void setPaging(Paging paging) {
+		this.paging = paging;
+	}
+
 	// 자유게시판 목록
 	@RequestMapping("/free.do")
 	public void list(HttpServletRequest request ,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
-		FreeDao.totalRecord = dao.getTotalRecord();
-		FreeDao.totalPage = (int)Math.ceil((double)FreeDao.totalRecord/FreeDao.pageSize);
 		
-		int start = (pageNum - 1) * FreeDao.pageSize + 1;
-		int end = start + FreeDao.pageSize - 1;
+		paging.totalRecord = paging.getTotalRecord();
+		paging.totalPage = paging.getTotalPage();
+		paging.start = paging.getStart(pageNum);
+		paging.end = paging.getEnd(paging.start, pageNum);
+		paging.pageNum = pageNum;
+		paging.listStart = paging.getListStart(pageNum);
+		paging.listEnd = paging.getListEnd();
 		
-		if(end > FreeDao.totalRecord) {
-			end = FreeDao.totalRecord;
+		if(paging.end > paging.totalRecord) {
+			paging.end = paging.totalRecord;
 		}
 		
 		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
+		map.put("start", paging.start);
+		map.put("end", paging.end);
 		
 		model.addAttribute("list", dao.findAll(map));
-		model.addAttribute("totalPage", FreeDao.totalPage);
+		model.addAttribute("totalRecord", paging.totalRecord);
+		model.addAttribute("totalPage", paging.totalPage);
+		model.addAttribute("pageNum", paging.pageNum);
+		model.addAttribute("listStart", paging.listStart);
+		model.addAttribute("listEnd", paging.listEnd);
 	}
 	
 	// 자유게시판 글 상세내용

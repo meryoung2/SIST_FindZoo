@@ -54,7 +54,6 @@ public class DealController {
 		
 		model.addAttribute("list",dao.findAll(map));
 		model.addAttribute("totalPage", DealDao.totalPage);
-		
 	}
 	
 	// 거래게시판 상세보기 컨트롤러
