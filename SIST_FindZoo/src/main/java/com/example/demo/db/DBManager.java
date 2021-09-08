@@ -13,7 +13,9 @@ import com.example.demo.vo.FreeVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
+import com.example.demo.vo.BohoVo;
 import com.example.demo.vo.DealVo;
+import com.example.demo.vo.FindVo;
 
 
 public class DBManager {
@@ -258,16 +260,56 @@ public class DBManager {
 		return re;
 	}
 	
-	// 회원가입, 로그인
-	public static MemberVo loginMember(String username) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	//여기부터 진솔
 
 	public static int insertMember(MemberVo m) {
-		// TODO Auto-generated method stub
-		return 0;
+		int re = -1;
+		SqlSession session = factory.openSession();
+		re = session.insert("member.insert", m);
+		session.commit();
+		session.close();
+		return re;
 	}
+	
+	public static boolean isMember(String member_id, String member_pwd) {
+		boolean re = false;
+		SqlSession session = factory.openSession();
+		HashMap map = new HashMap();
+		map.put("member_id", member_id);
+		map.put("member_pwd", member_pwd);
+		MemberVo m = session.selectOne("member.isMember", map);
+		if(m != null) {
+			re = true;
+		}
+		session.close();
+		return re;
+		
+	}
+
+	public static MemberVo loginMember(String member_id) {
+		// TODO Auto-generated method stub
+		SqlSession session = factory.openSession();
+		MemberVo m = session.selectOne("member.loginMember", member_id);
+		session.close();
+		return m;
+	}
+	
+		public static List<FindVo> mainFind(){
+			SqlSession session = factory.openSession();
+			List<FindVo> list = session.selectList("main.mainFind");
+			session.close();
+			return list;
+		}
+		
+		public static List<BohoVo> mainBoho(){
+			SqlSession session = factory.openSession();
+			List<BohoVo> list = session.selectList("main.mainBoho");
+			session.close();
+			return list;
+		}
+	
+	//여기까지 진솔
+	
 	
 	public static List<ReplyVo> listReply(){
 		SqlSession session = factory.openSession();
