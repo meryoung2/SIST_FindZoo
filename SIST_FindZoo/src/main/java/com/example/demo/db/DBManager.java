@@ -145,7 +145,7 @@ public class DBManager {
 		return n;
 	}
 	
-	// 마이페이지
+	// 마이페이지 내 정보 조회
 	public static MemberVo getMember(int member_num) {
 		SqlSession session = factory.openSession();
 		MemberVo mb = session.selectOne("member.getMember", member_num);
@@ -153,13 +153,46 @@ public class DBManager {
 		return mb; 
 	}
 	
-	public static PetVo getPet(int member_num) {
-		SqlSession session = factory.openSession();
-		PetVo pet = session.selectOne("pet.getPet", member_num);
+	// 마이페이지 내 정보 수정
+	public static int updateInfo(MemberVo mb) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("member.updateInfo", mb);
 		session.close();
-		return pet;
+		return re;
 	}
-
+	
+	// 마이페이지에 반려동물 이름 리스트 출력
+	public static List<PetVo> listPet(int member_num) {
+		SqlSession session = factory.openSession();
+		List<PetVo> list = session.selectList("pet.listPet", member_num);
+		session.close();
+		return list;
+	}
+	
+	// 마이페이지 반려동물 정보 상세 조회
+	public static PetVo detailPet(int pet_num) {
+		SqlSession session = factory.openSession();
+		PetVo pet = session.selectOne("pet.detailPet", pet_num);
+		session.close();
+		return pet; 
+	}
+	
+	// 마이페이지 반려동물 추가
+	public static int insertPet(PetVo pet) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("pet.insertPet", pet);
+		session.close();
+		return re;
+	}
+	
+	// 마이페이지 반려동물 삭제
+	public static int deletePet(int pet_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.delete("pet.deletePet", pet_num);
+		session.close();
+		return re;
+	}
+	
 	// 회원가입, 로그인
 	public static MemberVo loginMember(String username) {
 		// TODO Auto-generated method stub

@@ -25,7 +25,7 @@
   <mappers>
   	<mapper resource="com/example/demo/db/MemberMapper.xml"/>
 	<mapper resource="com/example/demo/db/PetMapper.xml"/>
-   	<mapper resource="com/example/demo/db/BoardMapper.xml"/>
+   	 <mapper resource="com/example/demo/db/BoardMapper.xml"/>
    	<mapper resource="com/example/demo/db/DealMapper.xml"/>
 	<mapper resource="com/example/demo/db/ReplyMapper.xml"/>
   </mappers>

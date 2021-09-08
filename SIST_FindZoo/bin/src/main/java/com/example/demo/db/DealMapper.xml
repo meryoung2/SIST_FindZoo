@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="deal">
+	<select id="findAll" resultType="dealVo">
+		select * from board b, member m, deal d where b.member_num = m.member_num and
+		d.board_num = b.board_num
+	</select>
+	
+	<insert id="insertDeal1" parameterType="dealVo">
+		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values(nvl(#{no},0)+1,#{title},#{content},sysdate,0,33,#{member_num})
+	</insert>
+	<insert id="insertDeal2" parameterType="dealVo">
+		insert into deal(deal_num,deal_price,board_num) values(nvl(#{no},0)+1,#{deal_price},nvl(#{no},0)+1)
+	</insert>
+	
+	<insert id="insertDealPicture" parameterType="dealVo">
+		insert into picture(picture_file_num, picture_fname, board_num) values((select nvl(max(picture_file_num), 0)+1 from picture),#{picture_fname},(select nvl(max(board_num), 0) from board))
+	</insert>
+	
+	
+	<select id="getBoard" resultType="dealVo">
+  		select * from deal d, board b where d.board_num = b.board_num and b.board_num=${board_num}
+  	</select>
+  
+	<select id="totalRecord" resultType="int">
+  		select count(*) from deal
+	</select>
+	  
+	<update id="updateHit" parameterType="int">
+	  	update board set views = views+1 where board_num = #{board_num} and board_type_num = 33
+	</update>
+
+</mapper>
