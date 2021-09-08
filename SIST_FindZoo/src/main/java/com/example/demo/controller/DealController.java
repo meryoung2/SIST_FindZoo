@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.DealDao;
+import com.example.demo.util.Paging;
 import com.example.demo.vo.DealVo;
 
 
@@ -34,12 +35,43 @@ public class DealController {
 		this.dao = dao;
 	}
 
+	@Autowired
+	private Paging paging;
+	
+	public void setPaging(Paging paging) {
+		this.paging = paging;
+	}
 	
 	// 거래게시판, 댓글 목록 컨트롤러
 	@RequestMapping("/deal.do")
 	public void deal(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 
+		paging.totalRecord = dao.getTotalRecordDeal();
+		paging.totalPage = paging.getTotalPage();
+		paging.start = paging.getStart(pageNum);
+		paging.end = paging.getEnd(paging.start, pageNum);
+		paging.pageNum = pageNum;
+		paging.listStart = paging.getListStart(pageNum);
+		paging.listEnd = paging.getListEnd();
+		
+		if(paging.end > paging.totalRecord) {
+			paging.end = paging.totalRecord;
+		}
+		
+		HashMap map = new HashMap();
+		map.put("start", paging.start);
+		map.put("end", paging.end);
+		
+		model.addAttribute("list", dao.findAll(map));
+		model.addAttribute("totalRecord", paging.totalRecord);
+		model.addAttribute("totalPage", paging.totalPage);
+		model.addAttribute("pageNum", paging.pageNum);
+		model.addAttribute("listStart", paging.listStart);
+		model.addAttribute("listEnd", paging.listEnd);
+		
+		
+		/*
 		System.out.println("pageNum:" + pageNum);
 		DealDao.totalRecord = dao.getTotalRecordDeal();
 		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
@@ -59,7 +91,7 @@ public class DealController {
 		
 		model.addAttribute("list",dao.findAll(map));
 		model.addAttribute("totalPage", DealDao.totalPage);
-
+		*/
 	}
 	
 	// 거래게시판 검색 후 목록 컨트롤러
@@ -71,27 +103,30 @@ public class DealController {
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model,
 			@RequestParam(defaultValue = "member_nick") String search_option, 
 			@RequestParam(defaultValue = "") String keyword) {
-		System.out.println("pageNum:" + pageNum);
-		DealDao.totalRecord = dao.getTotalRecordDeal();
-		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
+		paging.totalRecord = dao.getTotalRecordDeal();
+		paging.totalPage = paging.getTotalPage();
+		paging.start = paging.getStart(pageNum);
+		paging.end = paging.getEnd(paging.start, pageNum);
+		paging.pageNum = pageNum;
+		paging.listStart = paging.getListStart(pageNum);
+		paging.listEnd = paging.getListEnd();
 		
-		int start = (pageNum - 1)*DealDao.pageSize + 1;
-		int end = start + DealDao.pageSize - 1;
-		
-		if(end > DealDao.totalRecord) {
-			end = DealDao.totalRecord;
+		if(paging.end > paging.totalRecord) {
+			paging.end = paging.totalRecord;
 		}
-		System.out.println("start" + start);
-		System.out.println("end" + end);
 		
 		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
+		map.put("start", paging.start);
+		map.put("end", paging.end);
 		map.put("keyword", keyword);
 		map.put("search_option", search_option);
 		
 		model.addAttribute("list",dao.searchDeal(map));
-		model.addAttribute("totalPage", DealDao.totalPage);
+		model.addAttribute("totalPage", paging.totalPage);
+		model.addAttribute("totalRecord", paging.totalRecord);
+		model.addAttribute("pageNum", paging.pageNum);
+		model.addAttribute("listStart", paging.listStart);
+		model.addAttribute("listEnd", paging.listEnd);
 	}
 	
 	
