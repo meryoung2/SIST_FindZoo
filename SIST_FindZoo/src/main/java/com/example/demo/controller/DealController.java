@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dao.DealDao;
 import com.example.demo.vo.DealVo;
 
+
 @Controller
 public class DealController {
 	
@@ -32,12 +33,13 @@ public class DealController {
 	public void setDao(DealDao dao) {
 		this.dao = dao;
 	}
+
 	
-	// 거래게시판 목록 컨트롤러
+	// 거래게시판, 댓글 목록 컨트롤러
 	@RequestMapping("/deal.do")
 	public void deal(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
-		
+
 		System.out.println("pageNum:" + pageNum);
 		DealDao.totalRecord = dao.getTotalRecordDeal();
 		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
@@ -98,8 +100,8 @@ public class DealController {
 	public void detail(HttpServletRequest request, Model model, int board_num) {
 		dao.updateViewsDeal(board_num);
 		model.addAttribute("d", dao.getDeal(board_num));
+		model.addAttribute("list", dao.findAll(board_num));
 	}
-	
 	// 거래게시판 글작성 컨트롤러
 	@RequestMapping(value = "/insertDeal.do", method = RequestMethod.GET)
 	public void form(HttpServletRequest request) {}
@@ -213,5 +215,4 @@ public class DealController {
 		}
 		return mav;
 	}
-	
 }

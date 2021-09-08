@@ -36,5 +36,11 @@
 	<a href="deal.do">목록</a>
 	<a href="updateDeal.do?board_num=${d.board_num }">수정</a>
 	<a href="#" onclick="confirmDealDelete(${d.board_num})">삭제</a>
+<<<<<<< HEAD
+	
+	<hr>
+	<%@ include file="../views/reply.jsp" %>
+=======
+>>>>>>> branch 'master' of https://github.com/meryoung2/SIST_FindZoo.git
 </body>
 </html>

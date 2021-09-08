@@ -13,7 +13,9 @@ import com.example.demo.vo.FreeVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
+import com.example.demo.vo.BohoVo;
 import com.example.demo.vo.DealVo;
+import com.example.demo.vo.FindVo;
 
 
 public class DBManager {
@@ -29,7 +31,7 @@ public class DBManager {
 			System.out.println("예외발생:"+e.getMessage());
 		}
 	}
-	
+
 	// 자유게시판 목록
 	public static List<FreeVo> free(HashMap map){
 		SqlSession session = factory.openSession();
@@ -131,7 +133,6 @@ public class DBManager {
 			session.close();
 			return list;
 		}
-		
 
 		// 거래게시판 글쓰기
 		public static int insertDeal(DealVo d) {
@@ -210,7 +211,8 @@ public class DBManager {
 			return n;
 		}
 	
-	// 마이페이지
+
+	// 마이페이지 내 정보 조회
 	public static MemberVo getMember(int member_num) {
 		SqlSession session = factory.openSession();
 		MemberVo mb = session.selectOne("member.getMember", member_num);
@@ -218,31 +220,106 @@ public class DBManager {
 		return mb; 
 	}
 	
-	public static PetVo getPet(int member_num) {
-		SqlSession session = factory.openSession();
-		PetVo pet = session.selectOne("pet.getPet", member_num);
+	// 마이페이지 내 정보 수정
+	public static int updateInfo(MemberVo mb) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("member.updateInfo", mb);
 		session.close();
-		return pet;
-	}
-
-	// 회원가입, 로그인
-	public static MemberVo loginMember(String username) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static int insertMember(MemberVo m) {
-		// TODO Auto-generated method stub
-		return 0;
+		return re;
 	}
 	
-	public static List<ReplyVo> listReply(){
+	// 마이페이지에 반려동물 이름 리스트 출력
+	public static List<PetVo> listPet(int member_num) {
 		SqlSession session = factory.openSession();
-		List<ReplyVo> list = session.selectList("reply.findAll");
+		List<PetVo> list = session.selectList("pet.listPet", member_num);
 		session.close();
 		return list;
 	}
+	
+	// 마이페이지 반려동물 정보 상세 조회
+	public static PetVo detailPet(int pet_num) {
+		SqlSession session = factory.openSession();
+		PetVo pet = session.selectOne("pet.detailPet", pet_num);
+		session.close();
+		return pet; 
+	}
+	
+	// 마이페이지 반려동물 추가
+	public static int insertPet(PetVo pet) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("pet.insertPet", pet);
+		session.close();
+		return re;
+	}
+	
+	// 마이페이지 반려동물 삭제
+	public static int deletePet(int pet_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.delete("pet.deletePet", pet_num);
+		session.close();
+		return re;
+	}
+	
+	//여기부터 진솔
 
+	public static int insertMember(MemberVo m) {
+		int re = -1;
+		SqlSession session = factory.openSession();
+		re = session.insert("member.insert", m);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+
+	public static boolean isMember(String member_id, String member_pwd) {
+		boolean re = false;
+		SqlSession session = factory.openSession();
+		HashMap map = new HashMap();
+		map.put("member_id", member_id);
+		map.put("member_pwd", member_pwd);
+		MemberVo m = session.selectOne("member.isMember", map);
+		if(m != null) {
+			re = true;
+		}
+		session.close();
+		return re;
+		
+	}
+
+	public static MemberVo loginMember(String member_id) {
+		// TODO Auto-generated method stub
+		SqlSession session = factory.openSession();
+		MemberVo m = session.selectOne("member.loginMember", member_id);
+		session.close();
+		return m;
+	}
+	
+		public static List<FindVo> mainFind(){
+			SqlSession session = factory.openSession();
+			List<FindVo> list = session.selectList("main.mainFind");
+			session.close();
+			return list;
+		}
+		
+		public static List<BohoVo> mainBoho(){
+			SqlSession session = factory.openSession();
+			List<BohoVo> list = session.selectList("main.mainBoho");
+			session.close();
+			return list;
+		}
+	
+	//여기까지 진솔
+	
+	
+	//댓글 목록
+	public static List<ReplyVo> listReply(int board_num){
+		SqlSession session = factory.openSession();
+		List<ReplyVo> list = session.selectList("reply.findAll", board_num);
+		session.close();
+		return list;
+	}
+	
 	// 댓글 쓰기
 	public static int insertReply(ReplyVo r) {
 		SqlSession session = factory.openSession(true);
@@ -250,4 +327,48 @@ public class DBManager {
 		session.close();
 		return re;
 	}
+	
+	public static int getNextReply_num() {
+		SqlSession session = factory.openSession();
+		int reply_num = session.selectOne("reply.getNextReply_num");
+		session.close();
+		return reply_num;
+	}
+	
+	public static ReplyVo getReply(int reply_num) {
+		SqlSession session = factory.openSession();
+		ReplyVo r = session.selectOne("board.getReply", reply_num);
+		session.close();
+		return r;
+	}
+
+	public static void updateStep(int reply_ref, int reply_step) {
+		// TODO Auto-generated method stub
+		SqlSession session = factory.openSession();
+		HashMap map = new HashMap();
+		map.put("reply_ref", reply_ref);
+		map.put("reply_step", reply_step);
+		
+		session.update("reply.updateStep", map);
+		session.commit();
+		session.close();
+	}
+	
+	public static int updateReply(ReplyVo r) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("reply.updateReply", r);
+		session.close();
+		return re;
+	}
+	
+	public static int deleteReply(int reply_num) {
+		SqlSession session = factory.openSession(true);
+		HashMap map = new HashMap();
+		map.put("reply_num", reply_num);
+		System.out.println("map:"+map);
+		int re = session.delete("reply.deleteReply", map);
+		session.close();
+		return re;
+	}
+	
 }

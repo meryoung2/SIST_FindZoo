@@ -11,6 +11,7 @@
 		AND board.member_num = MEMBER.member_num
 		ORDER BY board_num DESC))
 		WHERE n BETWEEN #{start} AND #{end}
+
 	</select>
 		
 	<select id="search" resultType="dealVo">
@@ -24,6 +25,7 @@
 		and n BETWEEN #{start} AND #{end}
 	</select>
 	
+
 	<sql id="search_ref">
 		<choose>
 			<!-- 작성자+제목+내용 검색조건으로 게시물 검색하는 쿼리 -->
