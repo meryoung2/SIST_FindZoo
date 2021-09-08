@@ -14,9 +14,11 @@ public class DealVo {
 	private int views;
 	private int board_type_num;
 	private int member_num;
+	private String member_nick;
 	private String member_name;
 	private MultipartFile picture_file;
 	private String picture_fname;
+
 	public int getDeal_num() {
 		return deal_num;
 	}
@@ -71,6 +73,12 @@ public class DealVo {
 	public void setMember_num(int member_num) {
 		this.member_num = member_num;
 	}
+	public String getMember_nick() {
+		return member_nick;
+	}
+	public void setMember_nick(String member_nick) {
+		this.member_nick = member_nick;
+	}
 	public String getMember_name() {
 		return member_name;
 	}
@@ -89,8 +97,10 @@ public class DealVo {
 	public void setPicture_fname(String picture_fname) {
 		this.picture_fname = picture_fname;
 	}
+
 	public DealVo(int deal_num, int deal_price, int board_num, String title, String content, Date bdate, int views,
-			int board_type_num, int member_num, String member_name, MultipartFile picture_file, String picture_fname) {
+			int board_type_num, int member_num, String member_nick, String member_name, MultipartFile picture_file,
+			String picture_fname) {
 		super();
 		this.deal_num = deal_num;
 		this.deal_price = deal_price;
@@ -101,6 +111,7 @@ public class DealVo {
 		this.views = views;
 		this.board_type_num = board_type_num;
 		this.member_num = member_num;
+		this.member_nick = member_nick;
 		this.member_name = member_name;
 		this.picture_file = picture_file;
 		this.picture_fname = picture_fname;
@@ -109,6 +120,5 @@ public class DealVo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
 }

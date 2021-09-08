@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.DealDao;
 import com.example.demo.vo.DealVo;
+import com.example.demo.vo.ReplyVo;
 
 @Controller
 public class DealController {
@@ -25,20 +30,24 @@ public class DealController {
 	public void setDao(DealDao dao) {
 		this.dao = dao;
 	}
+
 	
-	// 거래게시판 목록 컨트롤러
-	@RequestMapping("/listDeal.do")
-	public void list(HttpServletRequest request, 
+	// 거래게시판, 댓글 목록 컨트롤러
+	@RequestMapping("/deal.do")
+	public void deal(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+		System.out.println("pageNum:" + pageNum);
 		DealDao.totalRecord = dao.getTotalRecordDeal();
 		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
 		
-		int start = (pageNum - 1) * DealDao.pageSize + 1;
+		int start = (pageNum - 1)*DealDao.pageSize + 1;
 		int end = start + DealDao.pageSize - 1;
 		
 		if(end > DealDao.totalRecord) {
 			end = DealDao.totalRecord;
 		}
+		System.out.println("start" + start);
+		System.out.println("end" + end);
 		
 		HashMap map = new HashMap();
 		map.put("start", start);
@@ -52,26 +61,30 @@ public class DealController {
 	// 거래게시판 상세보기 컨트롤러
 	@RequestMapping("/detailDeal.do")
 	public void detail(HttpServletRequest request, Model model, int board_num) {
-		dao.updateHit(board_num);
+		dao.updateViewsDeal(board_num);
 		model.addAttribute("d", dao.getDeal(board_num));
+		model.addAttribute("list", dao.findAll(board_num));
 	}
-	
 	// 거래게시판 글작성 컨트롤러
 	@RequestMapping(value = "/insertDeal.do", method = RequestMethod.GET)
 	public void form(HttpServletRequest request) {}
-		
+	
 	@RequestMapping(value = "/insertDeal.do" , method = RequestMethod.POST)
 	public ModelAndView submit(HttpServletRequest request, DealVo d) {
-		ModelAndView mav = new ModelAndView("redirect:/listDeal.do");
+		ModelAndView mav = new ModelAndView("redirect:/deal.do");
 		String path = request.getRealPath("resources/img");
 		System.out.println(path);
 		
 		String picture_fname = null;
 		int fsize = 0;
+		
 		MultipartFile picture_file = d.getPicture_file();
 		picture_fname = picture_file.getOriginalFilename();
+		Calendar cal = Calendar.getInstance();
+		Date date = cal.getTime();
 		if(picture_fname != null && !picture_fname.equals("")) {
 			try {
+				picture_fname = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname;
 				byte[] data = picture_file.getBytes();
 				fsize = data.length;
 				d.setPicture_fname(picture_fname);
@@ -83,14 +96,87 @@ public class DealController {
 				System.out.println("파일업로드중 오류발생 : " + e.getMessage());
 			}
 		}else {
-			d.setPicture_fname("");
+			d.setPicture_fname("null");
 		}
 		
 		int re = dao.insertDeal(d);
 		if(re != 1) {
 			mav.addObject("msg","글쓰기에 실패하였습니다.");
-			mav.setViewName("redirect:/listDeal.do");
+			mav.setViewName("redirect:/deal.do");
 		}
 		return mav;
 	}
+	
+	// 거래게시판 수정 컨트롤러
+	@RequestMapping(value = "/updateDeal.do", method = RequestMethod.GET)
+	public void dealUpdateForm(HttpServletRequest request, Model model, int board_num) {
+		model.addAttribute("d", dao.getDeal(board_num));
+	}
+	
+	@RequestMapping(value = "/updateDeal.do", method = RequestMethod.POST)
+	public ModelAndView dealUpdateSubmit(HttpServletRequest request, DealVo d) {
+		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+d.getBoard_num());
+		String path = request.getRealPath("/resources/img");
+		String oldFname = d.getPicture_fname();
+		
+		String picture_fname = null;
+		
+		MultipartFile picture_file = d.getPicture_file();
+		picture_fname = picture_file.getOriginalFilename();
+		Calendar cal = Calendar.getInstance();
+		Date date = cal.getTime();
+		if(picture_fname != null && !picture_fname.equals("")) {
+			try {
+				picture_fname = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date)) + "_" + picture_fname;
+				byte []data = picture_file.getBytes();
+				FileOutputStream fos = new FileOutputStream(path + "/" + picture_fname);
+				fos.write(data);
+				fos.close();
+				d.setPicture_fname(picture_fname);
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("예외발생:"+ e.getMessage());
+			}
+		}
+		
+		int re = dao.updateDeal(d);
+		if(re != 1) {
+			mav.addObject("msg", "게시물 수정에 실패하였습니다.");
+			mav.setViewName("/deal.do");
+		}else {
+				File file = new File(path + "/" + oldFname);
+				file.delete();
+		}
+		return mav;
+	}
+	
+	/*
+	
+	@RequestMapping(value = "/deleteDeal.do", method = RequestMethod.GET)
+	public void dealDeleteForm(HttpServletRequest request, Model model, int board_num) {
+		System.out.println("deleteDeal 동작함");
+		model.addAttribute("board_num",board_num);
+	}
+	*/
+	
+	// 거래게시판 삭제 컨트롤러
+	@RequestMapping("/deleteDeal.do")
+	public ModelAndView dealDeleteSubmit(HttpServletRequest request, int board_num) {
+		String path = request.getRealPath("/resources/img");
+		ModelAndView mav = new ModelAndView("redirect:/deal.do");
+		String picture_fname = dao.getDeal(board_num).getPicture_fname();
+		
+		int re = dao.deleteDeal(board_num);
+		System.out.println(re);
+		if(re == 1) {
+			File file = new File(path + "/" + picture_fname);
+			file.delete();
+		}else {
+			mav.addObject("msg","게시물 삭제에 실패하였습니다.");
+			mav.setViewName("listDeal.do");
+		}
+		return mav;
+	}
+	
 }

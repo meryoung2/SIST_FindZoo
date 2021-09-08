@@ -9,7 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.example.demo.vo.BoardVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
@@ -30,120 +29,91 @@ public class DBManager {
 		}
 	}
 	
-	// 자유게시판 목록
-	public static List<BoardVo> listBoard(HashMap map){
-		SqlSession session = factory.openSession();
-		List<BoardVo> list = session.selectList("board.findAll", map);
-		session.close();
-		return list;
-	}
-	
-	// 자유게시판 조회수 증가
-	public static void updateViews(int board_num) {
-		SqlSession session = factory.openSession(true);
-		session.update("board.updateViews", board_num);
-		session.close();
-	}
-		
-	// 자유게시판 전체 글 갯수
-	public static int getTotalRecord() {
-		SqlSession session = factory.openSession();
-		int n = session.selectOne("board.totalRecord");
-		session.close();
-		return n;
-	}
-	
-	// 자유게시판 글 내용 상세
-	public static BoardVo getBoard(int board_num) {
-		SqlSession session = factory.openSession();
-		BoardVo b = session.selectOne("board.getBoard", board_num);
-		session.close();
-		return b;
-	}
-
-	// 자유게시판 글 작성
-	public static int insertBoard(BoardVo b) {
-		SqlSession session = factory.openSession();
-		int reBoard = session.insert("board.insert", b);
-		int rePicture = session.insert("board.insertPicture", b);
-		int re = 0;
-		
-		if(reBoard == 1 && rePicture == 1) {
-			session.commit();
-			re = 1;
-		}else {
-			session.rollback();
-		}
-		
-		session.close();
-		return re;
-	}
-	
-	// 자유게시판 글 삭제
-	public static int deleteBoard(int board_num) {
-		SqlSession session = factory.openSession();
-		int rePicture = session.delete("board.deletePicture", board_num);
-		int reBoard = session.delete("board.delete", board_num);
-		int re = 0;
-		
-		if(reBoard == 1 && rePicture == 1) {
-			session.commit();
-			re = 1;
-		}else {
-			session.rollback();
-		}
-		
-		session.close();
-		return re;
-	}
 	
 	// 거래게시판 목록 조회
-	public static List<DealVo> listDeal(HashMap map){
-		SqlSession session = factory.openSession();
-		List<DealVo> list = session.selectList("deal.findAll");
-		session.close();
-		return list;
-	}
-
-	// 거래게시판 글쓰기
-	public static int insertDeal(DealVo d) {
-		SqlSession session = factory.openSession(false);
-		int re = -1;		
-		int board_re = session.insert("deal.insertBoard", d);
-		int deal_re = session.insert("deal.insertDeal", d);
-		int pic_re = session.insert("deal.insertDealPicture", d);
-		if(board_re == 1 && deal_re == 1 && pic_re == 1) {
-			session.commit();
-			re = 1;
-		}else {
-			session.rollback();
+		public static List<DealVo> deal(HashMap map){
+			SqlSession session = factory.openSession();
+			List<DealVo> list = session.selectList("deal.findAll",map);
+			session.close();
+			return list;
 		}
-		session.close();
-		return re;
-	}
 
-	// 거래게시판 글 상세 내용을 위한 메소드
-	public static DealVo getDeal(int board_num) {
-		SqlSession session = factory.openSession();
-		DealVo d = session.selectOne("deal.getBoard", board_num);
-		session.close();
-		return d;
-	}
-	
-	// 거래게시판 조회수 증가
-	public static void updateDealHit(int board_num) {
-		SqlSession session = factory.openSession(true);
-		session.update("deal.updateHit", board_num);
-		session.close();
-	}
-	
-	// 거래게시판 전체 글 갯수
-	public static int getTotalRecordDeal() {
-		SqlSession session = factory.openSession();
-		int n = session.selectOne("deal.totalRecord");
-		session.close();
-		return n;
-	}
+		// 거래게시판 글쓰기
+		public static int insertDeal(DealVo d) {
+			SqlSession session = factory.openSession(false);
+			int re = -1;
+			int board_re = session.insert("deal.insertBoard", d);
+			int deal_re = session.insert("deal.insertDeal", d);
+			int pic_re = session.insert("deal.insertDealPicture", d);
+			if(board_re == 1 && deal_re == 1 && pic_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+			session.close();
+			return re;
+		}
+
+		// 거래게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
+		public static DealVo getDeal(int board_num) {
+			SqlSession session = factory.openSession();
+			DealVo d = session.selectOne("deal.getBoard", board_num);
+			session.close();
+			return d;
+		}
+		
+		// 거래게시판 글, 사진 수정
+		public static int updateDeal(DealVo d) {
+			SqlSession session = factory.openSession(false);
+			int re = -1;
+			int deal_re = session.update("deal.updateDeal",d);
+			int board_re = session.update("deal.updateBoard",d);
+			int pic_re = session.update("deal.updateDealPicture",d);
+			
+			if(pic_re == 1 && deal_re == 1 && board_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+			session.close();
+			return re;
+		}
+		
+		// 거래게시판 삭제
+		public static int deleteDeal(int board_num) {
+			SqlSession session = factory.openSession(false);
+			int re = -1;
+			int deal_re = session.delete("deal.deleteDeal", board_num);
+			int pic_re = session.delete("deal.deleteDealPicture", board_num);
+			int board_re = session.delete("deal.deleteBoard", board_num);
+			
+			if(deal_re == 1 && board_re == 1 && pic_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+			session.close();
+			return re;
+			
+		}
+		
+		// 거래게시판 조회수 증가
+		public static void updateViewsDeal(int board_num) {
+			SqlSession session = factory.openSession(true);
+			session.update("deal.updateHit", board_num);
+			session.close();
+		}
+		
+		// 거래게시판 전체 글 갯수
+		public static int getTotalRecordDeal() {
+			SqlSession session = factory.openSession();
+			int n = session.selectOne("deal.totalRecord");
+			session.close();
+			return n;
+		}
 	
 	// 마이페이지
 	public static MemberVo getMember(int member_num) {
@@ -171,13 +141,14 @@ public class DBManager {
 		return 0;
 	}
 	
-	public static List<ReplyVo> listReply(){
+	//댓글 목록
+	public static List<ReplyVo> listReply(int board_num){
 		SqlSession session = factory.openSession();
-		List<ReplyVo> list = session.selectList("reply.findAll");
+		List<ReplyVo> list = session.selectList("reply.findAll", board_num);
 		session.close();
 		return list;
 	}
-
+	
 	// 댓글 쓰기
 	public static int insertReply(ReplyVo r) {
 		SqlSession session = factory.openSession(true);
@@ -185,4 +156,48 @@ public class DBManager {
 		session.close();
 		return re;
 	}
+	
+	public static int getNextReply_num() {
+		SqlSession session = factory.openSession();
+		int reply_num = session.selectOne("reply.getNextReply_num");
+		session.close();
+		return reply_num;
+	}
+	
+	public static ReplyVo getReply(int reply_num) {
+		SqlSession session = factory.openSession();
+		ReplyVo r = session.selectOne("board.getReply", reply_num);
+		session.close();
+		return r;
+	}
+
+	public static void updateStep(int reply_ref, int reply_step) {
+		// TODO Auto-generated method stub
+		SqlSession session = factory.openSession();
+		HashMap map = new HashMap();
+		map.put("reply_ref", reply_ref);
+		map.put("reply_step", reply_step);
+		
+		session.update("reply.updateStep", map);
+		session.commit();
+		session.close();
+	}
+	
+	public static int updateReply(ReplyVo r) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("reply.updateReply", r);
+		session.close();
+		return re;
+	}
+	
+	public static int deleteReply(int reply_num) {
+		SqlSession session = factory.openSession(true);
+		HashMap map = new HashMap();
+		map.put("reply_num", reply_num);
+		System.out.println("map:"+map);
+		int re = session.delete("reply.deleteReply", map);
+		session.close();
+		return re;
+	}
+	
 }
