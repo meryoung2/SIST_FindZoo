@@ -70,13 +70,13 @@
 		</c:forEach>
 	</table>
 
-	<a href="#" onclick="btn_start(${ search_option }, ${ keyword })">≪</a>
-	<a href="#" onclick="btn_prev(${ s_listStart }, ${ s_listEnd }, ${ search_option }, ${ keyword })">이전</a>
+	<a href="#" onclick="btn_start(${ search_option }, '${ keyword }')">≪</a>
+	<a href="#" onclick="btn_prev(${ s_listStart }, ${ s_listEnd }, ${ search_option }, '${ keyword }')">이전</a>
 	<c:forEach var="i" begin="${ s_listStart }" end="${ s_listEnd }">
 		<a href="searchFree.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">${ i }</a>&nbsp;
 	</c:forEach>
-	<a href="#" onclick="btn_next(${ s_listStart }, ${ s_listEnd }, ${ searchPage }, ${ search_option }, ${ keyword })">다음</a>
-	<a href="#" onclick="btn_end(${ searchPage }, ${ search_option }, ${ keyword })">≫</a>
+	<a href="#" onclick="btn_next(${ s_listStart }, ${ s_listEnd }, ${ searchPage }, ${ search_option }, '${ keyword }')">다음</a>
+	<a href="#" onclick="btn_end(${ searchPage }, ${ search_option }, '${ keyword }')">≫</a>
 	
 	<!-- 검색창 -->
 	<form name="searchFree" method="get" action="searchFree.do">
