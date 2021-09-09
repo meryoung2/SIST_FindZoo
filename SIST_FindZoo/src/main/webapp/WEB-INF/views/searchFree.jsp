@@ -1,3 +1,4 @@
+<%@page import="com.example.demo.util.Paging"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -6,14 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(search_option, keyword){
-		location.href = "searchDeal.do?pageNum=1"+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchFree.do?pageNum=1"+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_end(searchPage, search_option, keyword){
-		location.href = "searchDeal.do?pageNum="+searchPage+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchFree.do?pageNum="+searchPage+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_prev(s_listStart, s_listEnd, search_option, keyword){
@@ -23,7 +23,7 @@
 			s_listStart = 1;
 		}
 		
-		location.href = "searchDeal.do?pageNum="+s_listEnd+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchFree.do?pageNum="+s_listEnd+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_next(s_listStart, s_listEnd, searchPage, search_option, keyword){
@@ -31,7 +31,7 @@
 			s_listStart += 5;
 		}
 		
-		location.href = "searchDeal.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchFree.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	// 검색창에 공백 입력 시 공백 자동 제거
@@ -50,37 +50,36 @@
 </script>
 </head>
 <body>
-	<h2>거래 게시판 목록 (검색 게시글 수 : ${ searchRecord } / 현재 페이지 : ${ pageNum })</h2>
+	<h2>자유게시판 목록 (검색 게시글 수 : ${ searchRecord } / 현재 페이지 : ${ pageNum })</h2>
 	<hr>
-	<a href="/insertDeal.do">글쓰기</a>
-	<a href="/deal.do">목록</a>
+	<a href="insertFree.do">글쓰기</a>
+	<hr>
 	<table border="1" width="80%">
 		<tr>
 			<th>글제목</th>
 			<th>작성자</th>
-			<th>조회수</th>
+			<th width="50">조회수</th>
 		</tr>
-		<c:forEach items="${ list }" var="d">
+		
+		<c:forEach var="s_f" items="${ list }">
 			<tr>
-				<td>
-				<a href="detailDeal.do?board_num=${d.board_num}">${d.title }</a>
-				</td>
-				<td>${d.member_nick }</td>
-				<td>${d.views }</td>
+				<td><a href="detailFree.do?board_num=${ s_f.board_num }">${ s_f.title }</a></td>
+				<td>${ s_f.member_nick }</td>
+				<td>${ s_f.views }</td>
 			</tr>
 		</c:forEach>
 	</table>
-	
+
 	<a href="#" onclick="btn_start(${ search_option }, ${ keyword })">≪</a>
 	<a href="#" onclick="btn_prev(${ s_listStart }, ${ s_listEnd }, ${ search_option }, ${ keyword })">이전</a>
 	<c:forEach var="i" begin="${ s_listStart }" end="${ s_listEnd }">
-		<a href="searchDeal.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">${ i }</a>&nbsp;
+		<a href="searchFree.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">${ i }</a>&nbsp;
 	</c:forEach>
 	<a href="#" onclick="btn_next(${ s_listStart }, ${ s_listEnd }, ${ searchPage }, ${ search_option }, ${ keyword })">다음</a>
 	<a href="#" onclick="btn_end(${ searchPage }, ${ search_option }, ${ keyword })">≫</a>
 	
 	<!-- 검색창 -->
-	<form id="search" name="searchDeal" method="get" action="searchDeal.do">
+	<form name="searchFree" method="get" action="searchFree.do">
 	<input type="hidden" name="pageNum" value="1">
     <select name="search_option">
 		<option value="title"<c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
@@ -90,7 +89,5 @@
 	</select>
     <input name="keyword" value="${map.keyword}" onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);" required="required">
     <input type="submit" value="검색">
-</form>
-	
 </body>
 </html>

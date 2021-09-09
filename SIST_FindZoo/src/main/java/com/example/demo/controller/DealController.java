@@ -69,50 +69,25 @@ public class DealController {
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
-		
-		
-		/*
-		System.out.println("pageNum:" + pageNum);
-		DealDao.totalRecord = dao.getTotalRecordDeal();
-		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
-		
-		int start = (pageNum - 1)*DealDao.pageSize + 1;
-		int end = start + DealDao.pageSize - 1;
-		
-		if(end > DealDao.totalRecord) {
-			end = DealDao.totalRecord;
-		}
-		System.out.println("start" + start);
-		System.out.println("end" + end);
-		
-		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
-		
-		model.addAttribute("list",dao.findAll(map));
-		model.addAttribute("totalPage", DealDao.totalPage);
-		*/
 	}
 	
-	// 거래게시판 검색 후 목록 컨트롤러
-	// 거래게시판 검색에 필요한 셀렉트에서 작성자를 기본값으로 하는 search_option과 
-	// 사용자가 입력할 검색어를 받는(기본값이 공란이라 ""임) keyword를 매개변수로 전달받은 후
-	// hash메소드를 통해 map이라는 변수에 담고 model객체를 통해 searchDeal메소드를 호출한다.
-	@RequestMapping("/searchDeal.do")
-	public void searchDeal(HttpServletRequest request, 
-			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model,
-			@RequestParam(defaultValue = "member_nick") String search_option, 
-			@RequestParam(defaultValue = "") String keyword) {
-		paging.totalRecord = dao.getTotalRecordDeal();
-		paging.totalPage = paging.getTotalPage();
+	// 거래게시판 검색 후 목록 출력
+	@RequestMapping(value = "/searchDeal.do")
+	public void searchFree(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+			@RequestParam(value = "search_option", defaultValue = "title") String search_option, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		HashMap num_map = new HashMap();
+		num_map.put("keyword", keyword);
+		num_map.put("search_option", search_option);
+		paging.searchRecord = dao.getSearchRecordDeal(num_map);
+		paging.searchPage = paging.getSearchPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
 		paging.pageNum = pageNum;
-		paging.listStart = paging.getListStart(pageNum);
-		paging.listEnd = paging.getListEnd();
+		paging.s_listStart = paging.getS_ListStart(pageNum);
+		paging.s_listEnd = paging.getS_ListEnd();
 		
-		if(paging.end > paging.totalRecord) {
-			paging.end = paging.totalRecord;
+		if(paging.end > paging.searchRecord) {
+			paging.end = paging.searchRecord;
 		}
 		
 		HashMap map = new HashMap();
@@ -120,15 +95,16 @@ public class DealController {
 		map.put("end", paging.end);
 		map.put("keyword", keyword);
 		map.put("search_option", search_option);
-		
-		model.addAttribute("list",dao.searchDeal(map));
-		model.addAttribute("totalPage", paging.totalPage);
-		model.addAttribute("totalRecord", paging.totalRecord);
+				
+		model.addAttribute("list", dao.searchDeal(map));
+		model.addAttribute("searchPage", paging.searchPage);
+		model.addAttribute("searchRecord", paging.searchRecord);
 		model.addAttribute("pageNum", paging.pageNum);
-		model.addAttribute("listStart", paging.listStart);
-		model.addAttribute("listEnd", paging.listEnd);
+		model.addAttribute("s_listStart", paging.s_listStart);
+		model.addAttribute("s_listEnd", paging.s_listEnd);
+		model.addAttribute("search_option", search_option);		
+		model.addAttribute("keyword", keyword);		
 	}
-	
 	
 	// 거래게시판 상세보기 컨트롤러
 	@RequestMapping("/detailDeal.do")
@@ -137,6 +113,7 @@ public class DealController {
 		model.addAttribute("d", dao.getDeal(board_num));
 		model.addAttribute("list", dao.findAll(board_num));
 	}
+	
 	// 거래게시판 글작성 컨트롤러
 	@RequestMapping(value = "/insertDeal.do", method = RequestMethod.GET)
 	public void form(HttpServletRequest request) {}
@@ -222,15 +199,6 @@ public class DealController {
 		}
 		return mav;
 	}
-	
-	/*
-	
-	@RequestMapping(value = "/deleteDeal.do", method = RequestMethod.GET)
-	public void dealDeleteForm(HttpServletRequest request, Model model, int board_num) {
-		System.out.println("deleteDeal 동작함");
-		model.addAttribute("board_num",board_num);
-	}
-	*/
 	
 	// 거래게시판 삭제 컨트롤러
 	@RequestMapping("/deleteDeal.do")
