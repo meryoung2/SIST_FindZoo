@@ -31,5 +31,6 @@
    	<mapper resource="com/example/demo/db/DealMapper.xml"/>
 	<mapper resource="com/example/demo/db/ReplyMapper.xml"/>
 	<mapper resource="com/example/demo/db/MainMapper.xml"/>
+	<mapper resource="com/example/demo/db/FindMapper.xml"/>
   </mappers>
 </configuration>

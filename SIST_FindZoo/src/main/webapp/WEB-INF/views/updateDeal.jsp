@@ -14,6 +14,7 @@
 		<input type="hidden" name="picture_fname" value="${d.picture_fname }">
 		
 		글제목 : <input type="text" name="title" value="${d.title }"><br>
+		가격 : <input type="text" name="deal_price" value="${d.deal_price }"><br>
 		글내용 : <br>
 		<textarea rows="10" cols="80" name="content">${d.content}</textarea><br>
 		첨부파일 : ${d.picture_fname }<br>
