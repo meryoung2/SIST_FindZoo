@@ -167,6 +167,7 @@ public class DealController {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+d.getBoard_num());
 		String path = request.getRealPath("/resources/img");
 		String oldFname = d.getPicture_fname();
+		int fsize = 0;
 		
 		String picture_fname = null;
 		
@@ -194,8 +195,10 @@ public class DealController {
 			mav.addObject("msg", "게시물 수정에 실패하였습니다.");
 			mav.setViewName("/deal.do");
 		}else {
+			if(fsize != 0) {
 				File file = new File(path + "/" + oldFname);
 				file.delete();
+			}
 		}
 		return mav;
 	}

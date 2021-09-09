@@ -162,6 +162,7 @@ public class FreeController {
 		ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+f.getBoard_num());
 		String path = request.getRealPath("resources/img");
 		String old_picture_fname = f.getPicture_fname();
+		int fsize = 0;
 		
 		Calendar cal = Calendar.getInstance();
 		Date date = cal.getTime();
@@ -174,6 +175,7 @@ public class FreeController {
 				byte[] data = picture_file.getBytes();
 				FileOutputStream fos = new FileOutputStream(path+"/"+picture_fname);
 				fos.write(data);
+				fsize = data.length;
 				fos.close();
 				f.setPicture_fname(picture_fname);
 			}catch (Exception e) {
@@ -186,8 +188,10 @@ public class FreeController {
 			mav.addObject("msg", "Fail!");
 			mav.setViewName("error");
 		}else {
-			File file = new File(path+"/"+old_picture_fname);
-			file.delete();
+			if(fsize != 0) {
+				File file = new File(path+"/"+old_picture_fname);
+				file.delete();
+			}				
 		}
 		return mav;
 	}
