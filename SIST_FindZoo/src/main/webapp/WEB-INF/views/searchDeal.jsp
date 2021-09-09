@@ -9,7 +9,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(search_option, keyword){
-		location.href = "searchDeal.do?pageNum=1"+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchDeal.do?pageNum=1&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_end(searchPage, search_option, keyword){
@@ -71,14 +71,14 @@
 		</c:forEach>
 	</table>
 	
-	<a href="#" onclick="btn_start(${ search_option }, ${ keyword })">≪</a>
-	<a href="#" onclick="btn_prev(${ s_listStart }, ${ s_listEnd }, ${ search_option }, ${ keyword })">이전</a>
+	<a href="#" onclick="btn_start(${ search_option }, '${ keyword }');">≪</a>
+	<a href="#" onclick="btn_prev(${ s_listStart }, ${ s_listEnd }, ${ search_option }, '${ keyword }');">이전</a>
 	<c:forEach var="i" begin="${ s_listStart }" end="${ s_listEnd }">
 		<a href="searchDeal.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">${ i }</a>&nbsp;
 	</c:forEach>
-	<a href="#" onclick="btn_next(${ s_listStart }, ${ s_listEnd }, ${ searchPage }, ${ search_option }, ${ keyword })">다음</a>
-	<a href="#" onclick="btn_end(${ searchPage }, ${ search_option }, ${ keyword })">≫</a>
-	
+	<a href='#' onclick="btn_next(${ s_listStart }, ${ s_listEnd }, ${ searchPage }, ${ search_option }, '${ keyword }');">다음</a>
+	<a href='#' onclick="btn_end(${ searchPage }, ${ search_option }, '${ keyword }');">≫</a>
+
 	<!-- 검색창 -->
 	<form id="search" name="searchDeal" method="get" action="searchDeal.do">
 	<input type="hidden" name="pageNum" value="1">
