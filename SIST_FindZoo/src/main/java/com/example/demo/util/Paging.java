@@ -16,10 +16,18 @@ public class Paging {
 	public static int totalRecord;
 	// 전체 페이지가 몇개인지
 	public static int totalPage;
+	// 검색 레코드가 몇개인지
+	public static int searchRecord;
+	// 검색 페이지가 몇개인지
+	public static int searchPage;
 	// 페이지 목록의 시작 숫자
 	public static int listStart = 1;
 	// 페이지 목록의 끝 숫자
 	public static int listEnd = 5;
+	// 검색 페이지 목록의 시작 숫자
+	public static int s_listStart = 1;
+	// 검색 페이지 목록의 끝 숫자
+	public static int s_listEnd = 5;
 	// 한 페이지에서 출력할 첫 번째 게시글
 	public static int start;
 	// 한 페이지에서 출력할 마지막 게시글
@@ -46,6 +54,13 @@ public class Paging {
 		return totalPage;
 	}
 	
+	// 검색 결과에 따른 페이지 수 계산
+	public int getSearchPage() {
+		searchPage = (int)Math.ceil((double)searchRecord/pageSize);
+		
+		return searchPage;
+	}
+	
 	// 페이지 목록 시작 숫자 계산
 	public int getListStart(int pageNum) {
 		if(pageNum > 5 && (pageNum % 5 != 0)) {
@@ -65,6 +80,30 @@ public class Paging {
 			listEnd = listStart + 4;
 		}else {
 			listEnd = totalPage;
+		}
+		
+		return listEnd;
+	}
+	
+	// 페이지 목록 시작 숫자 계산
+	public int getS_ListStart(int pageNum) {
+		if(pageNum > 5 && (pageNum % 5 != 0)) {
+			listStart = (pageNum / 5) * 5 + 1;
+		}else if(pageNum > 5 && (pageNum % 5 == 0)){
+			listStart = (pageNum / 6) * 5 + 1;
+		}else {
+			listStart = 1;
+		}
+		
+		return listStart;
+	}
+	
+	// 페이지 목록 끝 숫자 계산
+	public int getS_ListEnd() {
+		if(listStart+4 <= searchPage) {
+			listEnd = listStart + 4;
+		}else {
+			listEnd = searchPage;
 		}
 		
 		return listEnd;

@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(){
 		location.href = "deal.do?pageNum=1";
@@ -32,10 +33,24 @@
 		
 		location.href = "deal.do?pageNum="+listStart;
 	}
+	
+	// 검색창에 공백 입력 시 공백 자동 제거
+	function noSpaceForm(obj) 
+    {             
+        var str_space = /\s/;               // 공백 체크
+        
+        if(str_space.exec(obj.value)) 
+        {     // 공백 체크
+            alert("검색어에는 공백을 사용할 수 없습니다.");
+            obj.focus();
+            obj.value = obj.value.replace(' ',''); // 공백제거
+            return false;
+        }
+    }
 </script>
 </head>
 <body>
-	<h2>거래 게시판</h2>
+	<h2>거래 게시판 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
 	<hr>
 	<a href="/insertDeal.do">글쓰기</a>
 	<table border="1" width="80%">
@@ -63,26 +78,16 @@
 	<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage })">다음</a>
 	<a href="#" onclick="btn_end(${ totalPage })">≫</a>
 	
-	<!-- 거래게시판 검색창 -->
-	<form name="searchDeal" method="post" action="searchDeal.do">
+	<!-- 검색창 -->
+	<form name="searchDeal" method="get" action="searchDeal.do">
+	<input type="hidden" name="pageNum" value="1">
     <select name="search_option">
-        <option value="member_nick"
-			<c:if test="${map.search_option == 'member_nick'}">selected</c:if>
-			   >작성자</option>
-			
-			        <option value="title" 
-			<c:if test="${map.search_option == 'title'}">selected</c:if>
-			        >제목</option>
-			
-			        <option value="content" 
-			<c:if test="${map.search_option == 'content'}">selected</c:if>
-			        >내용</option>
-			
-			        <option value="all" 
-			<c:if test="${map.search_option == 'all'}">selected</c:if>
-			        >작성자+내용+제목</option>
-			    </select>
-    <input name="keyword" value="${map.keyword}">
+		<option value="title"<c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
+		<option value="content" <c:if test="${map.search_option == 'content'}">selected</c:if>>내용</option>
+        <option value="member_nick"<c:if test="${map.search_option == 'member_nick'}">selected</c:if>>작성자</option>
+		<option value="all"<c:if test="${map.search_option == 'all'}">selected</c:if>>전체</option>
+	</select>
+    <input name="keyword" value="${map.keyword}" onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);" required="required">
     <input type="submit" value="검색">
 </form>
 	

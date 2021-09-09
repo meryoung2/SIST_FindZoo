@@ -1,4 +1,3 @@
-<%@page import="com.example.demo.util.Paging"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -33,6 +32,20 @@
 		
 		location.href = "free.do?pageNum="+listStart;
 	}
+	
+	// 검색창에 공백 입력 시 공백 자동 제거
+	function noSpaceForm(obj) 
+    {             
+        var str_space = /\s/;               // 공백 체크
+        
+        if(str_space.exec(obj.value)) 
+        {     // 공백 체크
+            alert("검색어에는 공백을 사용할 수 없습니다.");
+            obj.focus();
+            obj.value = obj.value.replace(' ',''); // 공백제거
+            return false;
+        }
+    }
 </script>
 </head>
 <body>
@@ -63,5 +76,17 @@
 	</c:forEach>
 	<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage })">다음</a>
 	<a href="#" onclick="btn_end(${ totalPage })">≫</a>
+	
+	<!-- 검색창 -->
+	<form name="searchFree" method="get" action="searchFree.do">
+	<input type="hidden" name="pageNum" value="1">
+    <select name="search_option">
+		<option value="title"<c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
+		<option value="content" <c:if test="${map.search_option == 'content'}">selected</c:if>>내용</option>
+        <option value="member_nick"<c:if test="${map.search_option == 'member_nick'}">selected</c:if>>작성자</option>
+		<option value="all"<c:if test="${map.search_option == 'all'}">selected</c:if>>전체</option>
+	</select>
+    <input name="keyword" value="${map.keyword}" onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);" required="required">
+    <input type="submit" value="검색">
 </body>
 </html>

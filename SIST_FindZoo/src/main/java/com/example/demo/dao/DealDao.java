@@ -36,6 +36,10 @@ public class DealDao {
 		return DBManager.getTotalRecordDeal();
 	}
 	
+	public int getSearchRecordDeal(HashMap num_map) {
+		return DBManager.getSearchRecordDeal(num_map);
+	}
+	
 	public int updateDeal(DealVo d) {
 		return DBManager.updateDeal(d);
 	}
