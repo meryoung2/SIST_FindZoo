@@ -32,8 +32,11 @@
 	글내용 : <br>
 	<textarea rows="10" cols="80" readonly="readonly">${f.content }</textarea><br>
 	첨부파일 : <br>
-	<c:if test="${f.picture_fname ne 'null' }">
-	<img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }">
+	<c:if test="${ f.picture_fname ne 'default.jpg'}">
+		<img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }" width="150px">
+	</c:if>
+	<c:if test="${ f.picture_fname eq 'default.jpg'}">
+		<img src="${pageContext.request.contextPath}/resources/systems/${ f.picture_fname }" width="150px">
 	</c:if>
 	<br>
 	등록일 : <fmt:formatDate value="${ f.bdate }" pattern="yyyy-MM-dd hh:mm:ss" /><br>

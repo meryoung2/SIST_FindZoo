@@ -51,6 +51,8 @@ public class FindController {
 	public void find(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 
+		paging.pageSize = 9;
+		
 		paging.totalRecord = dao.getTotalRecordFind();
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
@@ -74,28 +76,6 @@ public class FindController {
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
 		
-		
-		/*
-		System.out.println("pageNum:" + pageNum);
-		DealDao.totalRecord = dao.getTotalRecordDeal();
-		DealDao.totalPage = (int)Math.ceil((double)DealDao.totalRecord/DealDao.pageSize);
-		
-		int start = (pageNum - 1)*DealDao.pageSize + 1;
-		int end = start + DealDao.pageSize - 1;
-		
-		if(end > DealDao.totalRecord) {
-			end = DealDao.totalRecord;
-		}
-		System.out.println("start" + start);
-		System.out.println("end" + end);
-		
-		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
-		
-		model.addAttribute("list",dao.findAll(map));
-		model.addAttribute("totalPage", DealDao.totalPage);
-		*/
 	}
 	
 	// 찾아요게시판 검색 후 목록 컨트롤러
@@ -104,19 +84,25 @@ public class FindController {
 	// hash메소드를 통해 map이라는 변수에 담고 model객체를 통해 searchFind메소드를 호출한다.
 	@RequestMapping("/searchFind.do")
 	public void searchFind(HttpServletRequest request, 
-			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model,
-			@RequestParam(defaultValue = "member_nick") String search_option, 
-			@RequestParam(defaultValue = "") String keyword) {
-		paging.totalRecord = dao.getTotalRecordFind();
-		paging.totalPage = paging.getTotalPage();
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+			@RequestParam(value = "search_option", defaultValue = "title") String search_option, 
+			@RequestParam(value = "keyword", defaultValue = "") String keyword,
+			Model model) {
+		
+		HashMap num_map = new HashMap();
+		num_map.put("keyword", keyword);
+		num_map.put("search_option", search_option);
+		
+		paging.searchRecord = dao.getSearchRecordFind(num_map);
+		paging.searchPage = paging.getSearchPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
 		paging.pageNum = pageNum;
-		paging.listStart = paging.getListStart(pageNum);
-		paging.listEnd = paging.getListEnd();
+		paging.s_listStart = paging.getS_ListStart(pageNum);
+		paging.s_listEnd = paging.getS_ListEnd();
 		
-		if(paging.end > paging.totalRecord) {
-			paging.end = paging.totalRecord;
+		if(paging.end > paging.searchRecord) {
+			paging.end = paging.searchRecord;
 		}
 		
 		HashMap map = new HashMap();
@@ -126,11 +112,13 @@ public class FindController {
 		map.put("search_option", search_option);
 		
 		model.addAttribute("list",dao.searchFind(map));
-		model.addAttribute("totalPage", paging.totalPage);
-		model.addAttribute("totalRecord", paging.totalRecord);
+		model.addAttribute("searchPage", paging.searchPage);
+		model.addAttribute("searchRecord", paging.searchRecord);
 		model.addAttribute("pageNum", paging.pageNum);
-		model.addAttribute("listStart", paging.listStart);
-		model.addAttribute("listEnd", paging.listEnd);
+		model.addAttribute("s_listStart", paging.s_listStart);
+		model.addAttribute("s_listEnd", paging.s_listEnd);
+		model.addAttribute("search_option", search_option);		
+		model.addAttribute("keyword", keyword);
 	}
 	
 	
@@ -149,19 +137,17 @@ public class FindController {
 	
 	@RequestMapping(value = "/insertFind.do" , method = RequestMethod.POST)
 	public ModelAndView submit(HttpServletRequest request, FindVo f) {
-		ModelAndView mav = new ModelAndView("redirect:/find.do");
-		String path = request.getRealPath("resources/img");
-		System.out.println(path);
-		
+		ModelAndView mav = new ModelAndView("redirect:/find.do");		
 		String picture_fname = null;
 		int fsize = 0;
 		
 		MultipartFile picture_file = f.getPicture_file();
 		picture_fname = picture_file.getOriginalFilename();
-		Calendar cal = Calendar.getInstance();
-		Date date = cal.getTime();
 		if(picture_fname != null && !picture_fname.equals("")) {
 			try {
+				String path = request.getRealPath("resources/img");
+				Calendar cal = Calendar.getInstance();
+				Date date = cal.getTime();
 				picture_fname = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname;
 				byte[] data = picture_file.getBytes();
 				fsize = data.length;
@@ -169,18 +155,28 @@ public class FindController {
 				FileOutputStream fos = new FileOutputStream(path+"/"+picture_fname);
 				fos.write(data);
 				fos.close();
+				System.out.println(path);
 			} catch (Exception e) {
 				// TODO: handle exception
-				System.out.println("파일업로드중 오류발생 : " + e.getMessage());
+				
 			}
 		}else {
-			f.setPicture_fname("null");
+			try {
+				String path = request.getRealPath("resources/systems");
+				byte[] data = picture_file.getBytes();
+				picture_fname = "default.jpg";
+				fsize = data.length;
+				f.setPicture_fname(picture_fname);
+				System.out.println(path);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 		
 		int re = dao.insertFind(f);
 		if(re != 1) {
 			mav.addObject("msg","게시물 등록에 실패하였습니다.");
-			mav.setViewName("error");
+			mav.setViewName("redirect:/find.do");
 		}
 		return mav;
 	}

@@ -268,64 +268,72 @@ public class DBManager {
 		return re;
 	}
 
-				// 찾아요게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
-				public static FindVo getFind(int board_num) {
-					SqlSession session = factory.openSession();
-					FindVo f = session.selectOne("find.getBoard", board_num);
-					session.close();
-					return f;
-				}
+	// 찾아요게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
+	public static FindVo getFind(int board_num) {
+		SqlSession session = factory.openSession();
+		FindVo f = session.selectOne("find.getBoard", board_num);
+		session.close();
+		return f;
+	}
 					
-				// 찾아요게시판 글, 사진 수정
-				public static int updateFind(FindVo f) {
-					SqlSession session = factory.openSession(false);
-					int re = -1;
-					int find_re = session.update("find.updateFind",f);
-					int board_re = session.update("find.updateBoard",f);
-					int pic_re = session.update("find.updateFindPicture",f);
+	// 찾아요게시판 글, 사진 수정
+	public static int updateFind(FindVo f) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int find_re = session.update("find.updateFind",f);
+		int board_re = session.update("find.updateBoard",f);
+		int pic_re = session.update("find.updateFindPicture",f);
 						
-						if(pic_re == 1 && find_re == 1 && board_re == 1) {
-							session.commit();
-							re = 1;
-						}else {
-							session.rollback();
-						}
-					session.close();
-					return re;
-				}
+			if(pic_re == 1 && find_re == 1 && board_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+		session.close();
+		return re;
+	}
 					
-				// 찾아요게시판 삭제
-				public static int deleteFind(int board_num) {
-					SqlSession session = factory.openSession(false);
-					int re = -1;
-					int find_re = session.delete("find.deleteFind", board_num);
-					int pic_re = session.delete("find.deleteFindPicture", board_num);
-					int board_re = session.delete("find.deleteBoard", board_num);
+	// 찾아요게시판 삭제
+	public static int deleteFind(int board_num) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int find_re = session.delete("find.deleteFind", board_num);
+		int pic_re = session.delete("find.deleteFindPicture", board_num);
+		int board_re = session.delete("find.deleteBoard", board_num);
 						
-						if(find_re == 1 && board_re == 1 && pic_re == 1) {
-							session.commit();
-							re = 1;
-						}else {
-							session.rollback();
-						}
-					session.close();
-					return re;	
-				}
+			if(find_re == 1 && board_re == 1 && pic_re == 1) {
+				session.commit();
+				re = 1;
+			}else {
+				session.rollback();
+			}
+		session.close();
+		return re;	
+	}
 					
-				// 찾아요게시판 조회수 증가
-				public static void updateViewsFind(int board_num) {
-					SqlSession session = factory.openSession(true);
-					session.update("find.updateHit", board_num);
-					session.close();
-				}
+	// 찾아요게시판 조회수 증가
+	public static void updateViewsFind(int board_num) {
+		SqlSession session = factory.openSession(true);
+		session.update("find.updateHit", board_num);
+		session.close();
+	}
 					
-				// 찾아요게시판 전체 글 갯수
-				public static int getTotalRecordFind() {
-					SqlSession session = factory.openSession();
-					int n = session.selectOne("find.totalRecord");
-					session.close();
-					return n;
-				}
+	// 찾아요게시판 전체 글 갯수
+	public static int getTotalRecordFind() {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("find.totalRecord");
+		session.close();
+		return n;
+	}
+				
+	// 거래게시판 검색 글 갯수
+	public static int getSearchRecordFind(HashMap num_map) {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("find.searchRecord", num_map);
+		session.close();
+		return n;
+	}
 	
 
 	// 마이페이지 내 정보 조회

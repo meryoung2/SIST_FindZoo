@@ -217,7 +217,7 @@ public class DealController {
 			file.delete();
 		}else {
 			mav.addObject("msg","게시물 삭제에 실패하였습니다.");
-			mav.setViewName("listDeal.do");
+			mav.setViewName("deal.do");
 		}
 		return mav;
 	}

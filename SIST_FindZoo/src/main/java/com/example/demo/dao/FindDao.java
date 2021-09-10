@@ -37,6 +37,10 @@ public class FindDao {
 		return DBManager.getTotalRecordFind();
 	}
 	
+	public int getSearchRecordFind(HashMap num_map) {
+		return DBManager.getSearchRecordFind(num_map);
+	}
+	
 	public int updateFind(FindVo f) {
 		return DBManager.updateFind(f);
 	}
