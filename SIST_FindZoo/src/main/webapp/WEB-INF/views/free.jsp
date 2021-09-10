@@ -62,8 +62,12 @@
 		
 		<c:forEach var="f" items="${ list }">
 			<tr>
-				<td><a href="detailFree.do?board_num=${ f.board_num }">${ f.title }</a></td>
-				<td>${ f.member_nick }</td>
+				<td>
+					<a href="detailFree.do?board_num=${ f.board_num }">${ f.title }</a>
+				</td>
+				<td>
+					<a href="memberBoard.do?member_num=${ f.member_num }">${ f.member_nick }</a>					
+				</td>
 				<td>${ f.views }</td>
 			</tr>
 		</c:forEach>
