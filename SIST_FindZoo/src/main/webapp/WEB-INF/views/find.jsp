@@ -72,6 +72,7 @@
 			</div>
 			<div>
 				<ul>
+					<li>${f.title }</li>
 					<li id="petType">동물종: ${f.find_pet}</li>
 					<li>사례금: ${f.find_reward}</li>
 					<li>유실지역: ${f.find_lost_loc}</li>

@@ -21,7 +21,7 @@
 		유실장소 : <input type="text" name="find_lost_loc" value="${f.find_lost_loc }"><br>
 		<fmt:parseDate var="strToDate" value="${f.find_lost_date }" pattern="yyyy-MM-dd"/>
 		<fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy년 MM월 dd일"/>
-		유실날짜 : <c:out value="${dateToStr }"/>&nbsp;<input type="date" name="find_lost_date"><br>
+		유실날짜 : <c:out value="${dateToStr }"/>&nbsp;<input type="date" name="find_lost_date" required="required"><br>
 		동물 종 :
 		<a ></a>
 		<c:choose>

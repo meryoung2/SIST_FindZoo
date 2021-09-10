@@ -51,7 +51,7 @@
 </script>
 </head>
 <body>
-	<h2>찾아요 게시판 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
+	<h2>찾아요 게시판 목록 (전체 게시글 수 : ${ searchRecord } / 현재 페이지 : ${ pageNum })</h2>
 	<hr>
 	<a href="/insertFind.do">글쓰기</a>
 	<a href="/find.do">목록</a>
@@ -59,11 +59,17 @@
 	<c:forEach items="${list }" var="f">
 			<div>
 				<ul>
-					<li><a href="detailFind.do?board_num=${f.board_num}"><img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }"></a></li>
+					<c:if test="${ f.picture_fname ne 'default.jpg'}">
+						<li><a href="detailFind.do?board_num=${f.board_num}"><img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }" width="150px"></a></li>
+					</c:if>
+					<c:if test="${ f.picture_fname eq 'default.jpg'}">
+						<li><a href="detailFind.do?board_num=${f.board_num}"><img src="${pageContext.request.contextPath}/resources/systems/${ f.picture_fname }" width="150px"></a></li>
+					</c:if>
 				</ul>
 			</div>
 			<div>
 				<ul>
+					<li>${f.title }</li>
 					<li id="petType">동물종: ${f.find_pet}</li>
 					<li>사례금: ${f.find_reward}</li>
 					<li>유실지역: ${f.find_lost_loc}</li>
