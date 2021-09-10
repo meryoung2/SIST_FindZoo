@@ -94,7 +94,6 @@ public class FreeController {
 		map.put("search_option", search_option);
 				
 		model.addAttribute("list", dao.searchFree(map));
-		System.out.println(dao.searchFree(map));
 		model.addAttribute("searchPage", paging.searchPage);
 		model.addAttribute("searchRecord", paging.searchRecord);
 		model.addAttribute("pageNum", paging.pageNum);

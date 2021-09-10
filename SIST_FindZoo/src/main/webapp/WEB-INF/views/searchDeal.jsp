@@ -60,13 +60,15 @@
 			<th>작성자</th>
 			<th>조회수</th>
 		</tr>
-		<c:forEach items="${ list }" var="d">
+		<c:forEach items="${ list }" var="s_d">
 			<tr>
 				<td>
-				<a href="detailDeal.do?board_num=${d.board_num}">${d.title }</a>
+					<a href="detailDeal.do?board_num=${s_d.board_num}">${s_d.title }</a>
 				</td>
-				<td>${d.member_nick }</td>
-				<td>${d.views }</td>
+				<td>
+					<a href="memberBoard.do?member_num=${ s_d.member_num }">${ s_d.member_nick }</a>
+				</td>
+				<td>${s_d.views }</td>
 			</tr>
 		</c:forEach>
 	</table>
