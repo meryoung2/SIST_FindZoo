@@ -29,9 +29,11 @@
 	function btn_next(s_listStart, s_listEnd, searchPage, search_option, keyword){
 		if(s_listEnd != searchPage){
 			s_listStart += 5;
+			
+			location.href = "searchDeal.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
+		}else{
+			location.reload();
 		}
-		
-		location.href = "searchDeal.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	// 검색창에 공백 입력 시 공백 자동 제거

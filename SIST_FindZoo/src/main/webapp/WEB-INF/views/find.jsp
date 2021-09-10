@@ -29,9 +29,11 @@
 	function btn_next(listStart, listEnd, totalPage){
 		if(listEnd != totalPage){
 			listStart += 5;
+			
+			location.href = "find.do?pageNum="+listStart;
+		}else{
+			location.reload();
 		}
-		
-		location.href = "find.do?pageNum="+listStart;
 	}
 	
 	function getPetType(event) {

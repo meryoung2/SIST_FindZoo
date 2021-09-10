@@ -29,9 +29,11 @@
 	function btn_next(listStart, listEnd, totalPage){
 		if(listEnd != totalPage){
 			listStart += 5;
+			
+			location.href = "deal.do?pageNum="+listStart;
+		}else{
+			location.reload();
 		}
-		
-		location.href = "deal.do?pageNum="+listStart;
 	}
 	
 	// 검색창에 공백 입력 시 공백 자동 제거
