@@ -327,33 +327,7 @@ public class DBManager {
 		session.close();
 		return re;
 	}
-	
-	public static int getNextReply_num() {
-		SqlSession session = factory.openSession();
-		int reply_num = session.selectOne("reply.getNextReply_num");
-		session.close();
-		return reply_num;
-	}
-	
-	public static ReplyVo getReply(int reply_num) {
-		SqlSession session = factory.openSession();
-		ReplyVo r = session.selectOne("board.getReply", reply_num);
-		session.close();
-		return r;
-	}
-
-	public static void updateStep(int reply_ref, int reply_step) {
-		// TODO Auto-generated method stub
-		SqlSession session = factory.openSession();
-		HashMap map = new HashMap();
-		map.put("reply_ref", reply_ref);
-		map.put("reply_step", reply_step);
-		
-		session.update("reply.updateStep", map);
-		session.commit();
-		session.close();
-	}
-	
+	//댓글수정
 	public static int updateReply(ReplyVo r) {
 		SqlSession session = factory.openSession(true);
 		int re = session.update("reply.updateReply", r);
@@ -361,14 +335,19 @@ public class DBManager {
 		return re;
 	}
 	
+	// 댓글삭제
 	public static int deleteReply(int reply_num) {
 		SqlSession session = factory.openSession(true);
-		HashMap map = new HashMap();
-		map.put("reply_num", reply_num);
-		System.out.println("map:"+map);
-		int re = session.delete("reply.deleteReply", map);
+		int re = session.delete("reply.deleteReply", reply_num);
 		session.close();
 		return re;
 	}
 	
+	// 대댓글 쓰기
+	public static int insertReReply(ReplyVo r) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("reply.insertReReply", r);
+		session.close();
+		return re;
+	}
 }

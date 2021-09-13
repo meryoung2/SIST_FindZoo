@@ -53,29 +53,20 @@ public class DealDao {
 		return DBManager.listReply(board_num);
 	}
 	
-	public ReplyVo getReply(int reply_num) {
-		return DBManager.getReply(reply_num);
-	}
-	
 	public int insertReply(ReplyVo r) {
 		return DBManager.insertReply(r);
 	}
 	
-	public int getNextReply_num() {
-		return DBManager.getNextReply_num();
-	}
-
-	public void updateStep(int reply_ref, int reply_step) {
-		// TODO Auto-generated method stub
-		DBManager.updateStep(reply_ref,reply_step);
-	}
 	
-	public int update(ReplyVo r) {
+	public int updateReply(ReplyVo r) {
 		return DBManager.updateReply(r);
 	}
 	
-	public int delelte(int reply_num) {
+	public int deleteReply(int reply_num) {
 		return DBManager.deleteReply(reply_num);
 	}
-
+	
+	public int insertReReply(ReplyVo r) {
+		return DBManager.insertReReply(r);
+	}
 }
