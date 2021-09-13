@@ -55,4 +55,33 @@ public class MyInfoController {
 		return mav;
 	}
 	
+	// 마이페이지 비밀번호 변경
+	@RequestMapping(value="/updatePwd.do", method=RequestMethod.GET)
+	public void updatePwdForm(int member_num, Model model) {
+		model.addAttribute("mb", dao.getMember(member_num));		
+	}
+	@RequestMapping(value="/updatePwd.do", method=RequestMethod.POST)
+	public ModelAndView updatePwdSubmit(MemberVo mb) {
+		int member_num = mb.getMember_num();
+		ModelAndView mav = new ModelAndView("redirect:/myInfo.do?member_num="+member_num);
+		int re = dao.updatePwd(mb);
+		if(re != 1) {
+			mav.addObject("msg", "비밀번호 변경에 실패하였습니다.");
+			mav.setViewName("error");
+		}
+		return mav;
+	}
+	
+	// 닉네임 중복 확인
+	@RequestMapping("/checkNick.do")
+	public ModelAndView checkNick() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	@RequestMapping("/checkNickProcess.do")
+	public ModelAndView checkNickProcess() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	
 }

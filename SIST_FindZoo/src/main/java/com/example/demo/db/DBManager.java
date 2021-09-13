@@ -1,8 +1,10 @@
 package com.example.demo.db;
 
 import java.io.Reader;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -30,7 +32,7 @@ public class DBManager {
 			System.out.println("예외발생:" + e.getMessage());
 		}
 	}
-	
+
 //////////////////////////////////////// 게시판 시작 ////////////////////////////////////////
 
 	// 자유게시판 목록
@@ -210,7 +212,6 @@ public class DBManager {
 		}
 		session.close();
 		return re;
-
 	}
 
 	// 거래게시판 조회수 증가
@@ -352,117 +353,7 @@ public class DBManager {
 		return n;
 	}
 
-	
-//////////////////////////////////////// 게시판 끝 ////////////////////////////////////////
-	
-//////////////////////////////////////// 진솔 ////////////////////////////////////////
-	
-//////////////////////////////////////// 진솔 ////////////////////////////////////////
-	
-//////////////////////////////////////// 정민 ////////////////////////////////////////
-	
-//////////////////////////////////////// 정민 ////////////////////////////////////////
-
-
-	// 마이페이지 내 정보 조회
-	public static MemberVo getMember(int member_num) {
-		SqlSession session = factory.openSession();
-		MemberVo mb = session.selectOne("member.getMember", member_num);
-		session.close();
-		return mb;
-	}
-
-	// 마이페이지 내 정보 수정
-	public static int updateInfo(MemberVo mb) {
-		SqlSession session = factory.openSession(true);
-		int re = session.update("member.updateInfo", mb);
-		session.close();
-		return re;
-	}
-
-	// 마이페이지에 반려동물 이름 리스트 출력
-	public static List<PetVo> listPet(int member_num) {
-		SqlSession session = factory.openSession();
-		List<PetVo> list = session.selectList("pet.listPet", member_num);
-		session.close();
-		return list;
-	}
-
-	// 마이페이지 반려동물 정보 상세 조회
-	public static PetVo detailPet(int pet_num) {
-		SqlSession session = factory.openSession();
-		PetVo pet = session.selectOne("pet.detailPet", pet_num);
-		session.close();
-		return pet;
-	}
-
-	// 마이페이지 반려동물 추가
-	public static int insertPet(PetVo pet) {
-		SqlSession session = factory.openSession(true);
-		int re = session.insert("pet.insertPet", pet);
-		session.close();
-		return re;
-	}
-
-	// 마이페이지 반려동물 삭제
-	public static int deletePet(int pet_num) {
-		SqlSession session = factory.openSession(true);
-		int re = session.delete("pet.deletePet", pet_num);
-		session.close();
-		return re;
-	}
-
-	// 여기부터 진솔
-
-	public static int insertMember(MemberVo m) {
-		int re = -1;
-		SqlSession session = factory.openSession();
-		re = session.insert("member.insert", m);
-		session.commit();
-		session.close();
-		return re;
-	}
-
-	public static boolean isMember(String member_id, String member_pwd) {
-		boolean re = false;
-		SqlSession session = factory.openSession();
-		HashMap map = new HashMap();
-		map.put("member_id", member_id);
-		map.put("member_pwd", member_pwd);
-		MemberVo m = session.selectOne("member.isMember", map);
-		if (m != null) {
-			re = true;
-		}
-		session.close();
-		return re;
-
-	}
-
-	public static MemberVo loginMember(String member_id) {
-		// TODO Auto-generated method stub
-		SqlSession session = factory.openSession();
-		MemberVo m = session.selectOne("member.loginMember", member_id);
-		session.close();
-		return m;
-	}
-
-	public static List<FindVo> mainFind() {
-		SqlSession session = factory.openSession();
-		List<FindVo> list = session.selectList("main.mainFind");
-		session.close();
-		return list;
-	}
-
-	public static List<BohoVo> mainBoho() {
-		SqlSession session = factory.openSession();
-		List<BohoVo> list = session.selectList("main.mainBoho");
-		session.close();
-		return list;
-	}
-
-	// 여기까지 진솔
-
-	// 댓글 목록
+	// 게시판 댓글 목록 조회
 	public static List<ReplyVo> listReply(int board_num) {
 		SqlSession session = factory.openSession();
 		List<ReplyVo> list = session.selectList("reply.findAll", board_num);
@@ -478,47 +369,205 @@ public class DBManager {
 		return re;
 	}
 
-	public static int getNextReply_num() {
-		SqlSession session = factory.openSession();
-		int reply_num = session.selectOne("reply.getNextReply_num");
-		session.close();
-		return reply_num;
-	}
-
-	public static ReplyVo getReply(int reply_num) {
-		SqlSession session = factory.openSession();
-		ReplyVo r = session.selectOne("board.getReply", reply_num);
-		session.close();
-		return r;
-	}
-
-	public static void updateStep(int reply_ref, int reply_step) {
-		// TODO Auto-generated method stub
-		SqlSession session = factory.openSession();
-		HashMap map = new HashMap();
-		map.put("reply_ref", reply_ref);
-		map.put("reply_step", reply_step);
-
-		session.update("reply.updateStep", map);
-		session.commit();
-		session.close();
-	}
-
+	// 댓글수정
 	public static int updateReply(ReplyVo r) {
 		SqlSession session = factory.openSession(true);
 		int re = session.update("reply.updateReply", r);
 		session.close();
 		return re;
 	}
-	
+
+	// 댓글삭제
 	public static int deleteReply(int reply_num) {
 		SqlSession session = factory.openSession(true);
-		HashMap map = new HashMap();
-		map.put("reply_num", reply_num);
-		System.out.println("map:" + map);
-		int re = session.delete("reply.deleteReply", map);
+		int re = session.delete("reply.deleteReply", reply_num);
 		session.close();
 		return re;
 	}
 
+	// 대댓글 쓰기
+	public static int insertReReply(ReplyVo r) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("reply.insertReReply", r);
+		session.close();
+		return re;
+	}
+
+	//////////////////////////////////////// 게시판 끝 ////////////////////////////////////////
+
+	//////////////////////////////////////// 진솔 시작 ////////////////////////////////////////
+
+	// 회원가입 회원추가
+	public static int insertMember(MemberVo m) {
+		int re = -1;
+		SqlSession session = factory.openSession();
+		re = session.insert("member.insert", m);
+		session.commit();
+		session.close();
+		return re;
+	}
+
+	// 로그인 시, 아이디/패스워드 일치 여부
+	public static boolean isMember(String member_id, String member_pwd) {
+		boolean re = false;
+		SqlSession session = factory.openSession();
+		HashMap map = new HashMap();
+		map.put("member_id", member_id);
+		map.put("member_pwd", member_pwd);
+		MemberVo m = session.selectOne("member.isMember", map);
+		if (m != null) {
+			re = true;
+		}
+		session.close();
+		return re;
+	}
+
+	// 로그인 시, 해당 아이디에 대한 정보 불러오기
+	public static MemberVo loginMember(String member_id) {
+		// TODO Auto-generated method stub
+		SqlSession session = factory.openSession();
+		MemberVo m = session.selectOne("member.loginMember", member_id);
+		session.close();
+		return m;
+	}
+
+	// 메인페이지에서 찾아요 게시판 최근글 리스트에 담기
+	public static List<FindVo> mainFind() {
+		SqlSession session = factory.openSession();
+		List<FindVo> list = session.selectList("main.mainFind");
+		session.close();
+		return list;
+	}
+
+	// 메인페이지에서 보호중 게시판 최근글 리스트에 담기
+	public static List<BohoVo> mainBoho() {
+		SqlSession session = factory.openSession();
+		List<BohoVo> list = session.selectList("main.mainBoho");
+		session.close();
+		return list;
+	}
+
+	// 회원가입 시, 아이디 중복체크
+	public static int idChk(String member_id) {
+		int re = 0;
+		SqlSession session = factory.openSession();
+		HashMap map = new HashMap();
+		map.put("member_id", member_id);
+		int result = session.selectOne("member.idChk", map);
+		if (result == 1) {
+			re = 409;
+		} else {
+			re = 200;
+		}
+		System.out.println(result + "아이디 중복체크");
+		session.close();
+		return re;
+	}
+
+	// 회원가입 시, 닉네임 중복체크
+	public static int nickChk(String member_nick) {
+		int re = 0;
+		SqlSession session = factory.openSession();
+		HashMap map = new HashMap();
+		map.put("member_nick", member_nick);
+		int result = session.selectOne("member.nickChk", map);
+		if (result >= 1) {
+			re = 409;
+		} else {
+			re = 200;
+		}
+		System.out.println(result);
+		session.close();
+		return re;
+	}
+
+	// 로그인 시, 아이디 찾기
+	public static MemberVo findId(String member_name, String member_phone) {
+		SqlSession session = factory.openSession();
+		Map map = new HashMap();
+		map.put("member_name", member_name);
+		map.put("member_phone", member_phone);
+		MemberVo m = session.selectOne("member.findId", map);
+		if (m != null) {
+			map.put(m, m.getMember_id());
+		}
+		session.close();
+		return m;
+	}
+
+	//////////////////////////////////////// 진솔 끝 ////////////////////////////////////////
+
+	//////////////////////////////////////// 마이페이지 시작 ////////////////////////////////////////
+
+	// 내 정보 상세 조회
+	public static MemberVo getMember(int member_num) {
+		SqlSession session = factory.openSession();
+		MemberVo mb = session.selectOne("member.getMember", member_num);
+		session.close();
+		return mb;
+	}
+
+	// 내 정보 전체 수정
+	public static int updateInfo(MemberVo mb) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("member.updateInfo", mb);
+		session.close();
+		return re;
+	}
+
+	// 비밀번호 변경
+	public static int updatePwd(MemberVo mb) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("member.updatePwd", mb);
+		session.close();
+		return re;
+	}
+
+	// 닉네임 중복 확인
+	public static boolean checkNick(String member_nick) {
+		boolean flag = false;
+		SqlSession session = factory.openSession(true);
+		int re = session.selectOne("member.checkNick", member_nick);
+		// count(*) 값이 0이면 없는(false) 닉네임, 1이면 존재하는(true) 닉네임.
+		// 혹시라도 중복 된 닉네임이 이미 있을 경우를 대비해서 re == 1 대신 re > 0
+		if (re > 0) {
+			flag = true;
+		}
+		session.close();
+		return flag;
+	}
+
+	// 내 정보에 반려동물(들) 이름 출력
+	public static List<PetVo> listPet(int member_num) {
+		SqlSession session = factory.openSession();
+		List<PetVo> list = session.selectList("pet.listPet", member_num);
+		session.close();
+		return list;
+	}
+
+	// 반려동물 정보 상세 조회
+	public static PetVo detailPet(int pet_num) {
+		SqlSession session = factory.openSession();
+		PetVo pet = session.selectOne("pet.detailPet", pet_num);
+		session.close();
+		return pet;
+	}
+
+	// 반려동물 추가
+	public static int insertPet(PetVo pet) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("pet.insertPet", pet);
+		session.close();
+		return re;
+	}
+
+	// 반려동물 삭제
+	public static int deletePet(int pet_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.delete("pet.deletePet", pet_num);
+		session.close();
+		return re;
+	}
+	
+//////////////////////////////////////// 마이페이지 끝 ////////////////////////////////////////
 }

@@ -18,6 +18,15 @@ public class MemberDao {
 		return DBManager.updateInfo(mb);
 	}
 	
+	// 마이페이지 비밀번호 변경
+	public int updatePwd(MemberVo mb) {
+		return DBManager.updatePwd(mb);
+	}
+	
+	// 닉네임 중복 확인
+	public boolean checkNick(String member_nick) {
+		return DBManager.checkNick(member_nick);
+	}
 	
 	//회원가입
 	public int insert(MemberVo m) {
@@ -31,6 +40,21 @@ public class MemberDao {
 	public MemberVo loginMember(String member_id) {
 		// TODO Auto-generated method stub
 		return DBManager.loginMember(member_id);
+	}
+	
+	//아이디 중복체크
+	public int idchk(String member_id) {
+		return DBManager.idChk(member_id);
+	}
+	
+	//아이디 중복체크
+	public int nickchk(String member_nick) {
+		return DBManager.nickChk(member_nick);
+	}
+	
+	//아이디 찾기
+	public MemberVo findId(String member_name, String member_phone) {
+		return DBManager.findId(member_name, member_phone);
 	}
 		
 }

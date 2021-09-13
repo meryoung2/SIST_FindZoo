@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -70,4 +71,31 @@ public class UserController {
 	public String main() {
 		return "main";
 	}
+	
+	@RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheck(@RequestParam("member_id") String member_id) {
+
+		return dao.idchk(member_id);
+	
+	}
+	
+	@RequestMapping(value = "/user/nickCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int nickCheck(@RequestParam("member_nick") String member_nick) {
+
+		return dao.nickchk(member_nick);
+	
+	}
+	
+	@RequestMapping(value = "/user/findId", method = RequestMethod.GET)
+	@ResponseBody
+	public MemberVo findId(@RequestParam("member_name") String member_name,
+							@RequestParam("member_phone") String member_phone) {
+
+		return dao.findId(member_name, member_phone);
+	
+	}
+	
+
 }

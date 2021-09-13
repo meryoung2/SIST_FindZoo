@@ -127,7 +127,6 @@ public class FindController {
 	public void detail(HttpServletRequest request, Model model, int board_num) {
 		dao.updateViewsFind(board_num);
 		model.addAttribute("f", dao.getFind(board_num));
-		model.addAttribute("list", dao.findAll(board_num));
 	}
 	
 	
