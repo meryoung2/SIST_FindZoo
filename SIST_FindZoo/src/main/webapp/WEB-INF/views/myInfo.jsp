@@ -156,26 +156,7 @@
 			<input type="button" value="내 정보 수정" onclick="location.href='updateInfo.do?member_num=${mb.member_num}'">
 			<input type="button" value="회원 탈퇴" onclick="#">
 		</article>
-	</div> <!-- 
-	<div class="updatePwd-modal">
-		<form action="updatePwd.do" id="updatePwd-modal-content" method="post">
-			<h2>비밀번호 변경</h2>
-			<hr>
-			* 확인 후 hidden 값으로 변경<br>
-			회원 번호: <input type="text" name="member_num" value="${mb.member_num }"><br>
-			DB 비번: <input type="text" name="db_pwd" id="db_pwd" value="${mb.member_pwd }"><br><br>
-			<label>기존 비밀번호</label>
-			<input type="text" name="old_pwd" id="old_pwd" required><br>
-			<label>새 비밀번호</label> 
-			<input type="text" name="member_pwd" id="member_pwd" required><br>
-			<label>비밀번호 확인</label>
-			<input type="text" name="member_pwd_check" id="member_pwd_check" required><br>
-			<span style = "font-size: 6px;">*영문, 숫자, 특수문자 조합의 8~20자 이내로 입력해 주세요.</span><br>
-			<br>
-			<input type="submit" value="수정">
-			<input type="button" value="취소" id="close-updatePwd-modal">					
-		</form>
-	</div> -->
+	</div> 
 	<div class="modal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">

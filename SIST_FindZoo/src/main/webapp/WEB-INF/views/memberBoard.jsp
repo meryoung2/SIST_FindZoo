@@ -36,6 +36,7 @@
 </script>
 </head>
 <body>
+<c:if test="${list[0]} == null }"></c:if>
 	<h2>${list[0].member_nick}님의 작성 게시글 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
 	<hr>
 	<table border="1" width="80%">
@@ -126,7 +127,6 @@
 	</c:forEach>
 	<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>
 	<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>
-</form>
-	
+
 </body>
 </html>
