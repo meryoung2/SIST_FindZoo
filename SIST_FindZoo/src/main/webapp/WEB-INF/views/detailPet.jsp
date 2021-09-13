@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="./css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	/* 반려동물 정보 상세 조회 */
 	.detailPet-container {
@@ -46,11 +46,11 @@
 	<div class="detailPet-container">
 		<aside class="sidebar">
 			<div class="list-group">
-				<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action active">내 정보</a>
-				<a href="#" class="list-group-item list-group-item-action active">1:1 문의</a>
-				<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action active">쪽지함</a>
-				<a href="#" class="list-group-item list-group-item-action active">내 게시물</a>
-				<a href="#" class="list-group-item list-group-item-action active">내 댓글</a>
+				<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 정보</a>
+				<a href="#" class="list-group-item list-group-item-action">1:1 문의</a>
+				<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
+				<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 게시물</a>
+				<a href="#" class="list-group-item list-group-item-action">내 댓글</a>
 			</div>
 		</aside>
 		<article class="input-container">

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
 <body>
@@ -12,8 +12,6 @@
 	<table border="1" width="80%">
                    <tr>
                        <td width="500px">
-                      
-                        이름: <input type="text" name="member_num" style="width:170px;" maxlength="10" placeholder="작성자"/>
                         <input type="submit" value="등록">
                     </td>
                    </tr>
@@ -28,20 +26,10 @@
 		<c:forEach var="b" items="${list }">
 		<tr>
 			<td>
-				<c:if test="${b.reply_level>0 }">
-					<c:forEach var="i" begin="1" end="${b.reply_level }">
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					</c:forEach>
-				</c:if>
 			작성자 : ${b.member_num }</td>
 		</tr>
 			<tr>
 				<td>
-				<c:if test="${b.reply_level>0 }">
-					<c:forEach var="i" begin="1" end="${b.reply_level }">
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					</c:forEach>
-				</c:if>
 					내용 : ${b.reply_content}
 				</td>
 			</tr>

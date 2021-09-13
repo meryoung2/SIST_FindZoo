@@ -27,5 +27,19 @@ public class MemberDao {
 	public boolean checkNick(String member_nick) {
 		return DBManager.checkNick(member_nick);
 	}
+	
+	//회원가입
+	public int insert(MemberVo m) {
+		return DBManager.insertMember(m);
+	}
+	
+	public boolean isMember(String member_id, String member_pwd) {
+		return DBManager.isMember(member_id, member_pwd);
+	}
+
+	public MemberVo loginMember(String member_id) {
+		// TODO Auto-generated method stub
+		return DBManager.loginMember(member_id);
+	}
 		
 }

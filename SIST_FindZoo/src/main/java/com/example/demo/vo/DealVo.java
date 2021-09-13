@@ -120,5 +120,4 @@ public class DealVo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 }
