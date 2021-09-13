@@ -9,10 +9,10 @@
 <script type="text/javascript">
 /*
 function findId(){
-	 var member_id = $("#member_id").val();
-	 var member_name = 
+	 var member_name = $("#member_name").val();
+	 var member_phone = $("#member_phone").val();
 	 $.ajax({
-			url : '${pageContext.request.contextPath}/user/idCheck?member_id='+ member_id,
+			url : '${pageContext.request.contextPath}/user/findId?member_name='+ member_name,
 			type : 'get',
 			success : function(data) {
 				 if(data == 409){
@@ -28,22 +28,18 @@ function findId(){
 }
 */
 
-function goFindId(){
-	
-	location.href="/views/find_id.jsp";
-}
 </script>
 </head>
 <body>
-	<h2>로그인</h2>
+	<h2>아이디 찾기</h2>
 	<hr>
-	<form action="login.do" method="post">
-		아이디 : <input type="text" name="member_id"><br>
-		암호 : <input type="password" name="member_pwd"><br>
-		<input type="submit" value="로그인">
+	<form action="findId.do" method="post">
+		이름 : <input type="text" name="member_name"><br>
+		연락처 : <input type="text" name="member_phone"><br>
+		<input type="submit" value="아이디 찾기">
 		<a href="join.jsp">회원가입</a>
-		<input type="button" id="find-id" onclick="goFindId();" value="아이디 찾기">
-		<button type="button" id="find-id" onclick="location=windows.open('find_pwd.jsp')">비밀번호 찾기</button>
+		<button id="find-id" onclick="findId();">아이디 찾기</button>
+		<button id="find-pw" onclick="findPwd();">비밀번호 찾기</button>
 	</form>
 </body>
 </html>
