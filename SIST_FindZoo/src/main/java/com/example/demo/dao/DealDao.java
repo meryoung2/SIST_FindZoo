@@ -12,11 +12,6 @@ import com.example.demo.vo.ReplyVo;
 @Repository
 public class DealDao {
 	
-	public static int pageSize = 10;
-	public static int totalRecord;
-	public static int totalPage;
-	
-	
 	public List<DealVo> findAll(HashMap map){
 		return DBManager.deal(map);
 	}
@@ -39,6 +34,10 @@ public class DealDao {
 	
 	public int getTotalRecordDeal() {
 		return DBManager.getTotalRecordDeal();
+	}
+	
+	public int getSearchRecordDeal(HashMap num_map) {
+		return DBManager.getSearchRecordDeal(num_map);
 	}
 	
 	public int updateDeal(DealVo d) {

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +9,11 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	function btn_start(){
-		location.href = "free.do?pageNum=1";
+		location.href = "find.do?pageNum=1";
 	}
 	
 	function btn_end(totalPage){
-		location.href = "free.do?pageNum="+totalPage;
+		location.href = "find.do?pageNum="+totalPage;
 	}
 	
 	function btn_prev(listStart, listEnd){
@@ -22,17 +23,21 @@
 			listStart = 1;
 		}
 		
-		location.href = "free.do?pageNum="+listEnd;
+		location.href = "find.do?pageNum="+listEnd;
 	}
 	
 	function btn_next(listStart, listEnd, totalPage){
 		if(listEnd != totalPage){
 			listStart += 5;
 			
-			location.href = "free.do?pageNum="+listStart;
+			location.href = "find.do?pageNum="+listStart;
 		}else{
 			location.reload();
 		}
+	}
+	
+	function getPetType(event) {
+		document.getElementById('petType').innerText = event.target.value;
 	}
 	
 	// 검색창에 공백 입력 시 공백 자동 제거
@@ -48,51 +53,59 @@
             return false;
         }
     }
+	
 </script>
 </head>
 <body>
-	<h2>자유게시판 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
+	<h2>찾아요 게시판 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
 	<hr>
-	<a href="insertFree.do">글쓰기</a>
+	<a href="/insertFind.do">글쓰기</a>
 	<hr>
-	<table border="1" width="80%">
-		<tr>
-			<th>글제목</th>
-			<th>작성자</th>
-			<th width="50">조회수</th>
-		</tr>
-		
-		<c:forEach var="f" items="${ list }">
-			<tr>
-				<td>
-					<a href="detailFree.do?board_num=${ f.board_num }">${ f.title }</a>
-				</td>
-				<td>
-					<a href="memberBoard.do?member_num=${ f.member_num }">${ f.member_nick }</a>					
-				</td>
-				<td>${ f.views }</td>
-			</tr>
-		</c:forEach>
-	</table>
-
+	<c:forEach items="${list }" var="f">
+			<div>
+				<ul>
+					<c:if test="${ f.picture_fname ne 'default.jpg'}">
+						<li><a href="detailFind.do?board_num=${f.board_num}"><img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }" width="150px"></a></li>
+					</c:if>
+					<c:if test="${ f.picture_fname eq 'default.jpg'}">
+						<li><a href="detailFind.do?board_num=${f.board_num}"><img src="${pageContext.request.contextPath}/resources/systems/${ f.picture_fname }" width="150px"></a></li>
+					</c:if>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li>${f.title }</li>
+					<li id="petType">동물종: ${f.find_pet}</li>
+					<li>사례금: ${f.find_reward}</li>
+					<li>유실지역: ${f.find_lost_loc}</li>
+					<li><fmt:parseDate var="strToDate" value="${f.find_lost_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy년 MM월 dd일"/>
+					유실날짜: <c:out value="${dateToStr }"/>
+					</li>
+				</ul>
+			</div>
+	</c:forEach>
+	
 	<a href="#" onclick="btn_start()">≪</a>
 	<a href="#" onclick="btn_prev(${ listStart }, ${ listEnd })">이전</a>
 	<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
-		<a href="free.do?pageNum=${ i }">${ i }</a>&nbsp;
+		<a href="find.do?pageNum=${ i }">${ i }</a>&nbsp;
 	</c:forEach>
 	<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage })">다음</a>
 	<a href="#" onclick="btn_end(${ totalPage })">≫</a>
 	
-	<!-- 검색창 -->
-	<form name="searchFree" method="get" action="searchFree.do">
+	<!-- 거래게시판 검색창 -->
+	<form name="searchFind" method="get" action="searchFind.do">
 	<input type="hidden" name="pageNum" value="1">
     <select name="search_option">
-		<option value="title"<c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
+        <option value="title"<c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
 		<option value="content" <c:if test="${map.search_option == 'content'}">selected</c:if>>내용</option>
         <option value="member_nick"<c:if test="${map.search_option == 'member_nick'}">selected</c:if>>작성자</option>
 		<option value="all"<c:if test="${map.search_option == 'all'}">selected</c:if>>전체</option>
-	</select>
+	 </select>
     <input name="keyword" value="${map.keyword}" onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);" required="required">
     <input type="submit" value="검색">
+</form>
+	
 </body>
 </html>
