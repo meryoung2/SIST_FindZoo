@@ -146,6 +146,43 @@ $(document).ready(function () {
 			        }
 			    }).open();
 			}
+		 
+		 function dupCheck(){
+			 var member_id = $("#member_id").val();
+			 $.ajax({
+					url : '${pageContext.request.contextPath}/user/idCheck?member_id='+ member_id,
+					type : 'get',
+					success : function(data) {
+						 if(data == 409){
+							 alert("이미 등록된 아이디입니다.");
+							 $("#member_id").val("");
+							 return false;
+						 }else{
+							 alert("사용 가능한 아이디입니다.");
+						 }
+					}
+			 })
+			 
+		 }
+		 
+		 function nickdupCheck(){
+			 var member_nick = $("#member_nick").val();
+			 $.ajax({
+					url : '${pageContext.request.contextPath}/user/nickCheck?member_nick='+ member_nick,
+					type : 'get',
+					success : function(data) {
+						 if(data == 409){
+							 alert("이미 등록된 닉네임입니다.");
+							 $("#member_nick").val("");
+							 return false;
+						 }else{
+							 alert("사용 가능한 닉네임입니다.");
+						 }
+					}
+			 })
+			 
+		 } 
+		 
 </script>
 </head>
 <body>
@@ -156,7 +193,7 @@ $(document).ready(function () {
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" >
 		<label for="id">아이디</label>
 		<input type="text" id="member_id" name="member_id" required="required">
-		<button type="button">중복확인</button><br>
+		<button type="button" onclick="dupCheck();">중복확인</button><br>
 		<span>*아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.</span><br>
 		
 		
@@ -173,7 +210,7 @@ $(document).ready(function () {
 		
 		<label for="nick">닉네임</label>
 		<input type="text" id="member_nick" name="member_nick" required="required">
-		<button type="button">중복확인</button><br>
+		<button type="button" onclick="nickdupCheck();">중복확인</button><br>
 		
 		
 		<label for="phone">연락처</label> 

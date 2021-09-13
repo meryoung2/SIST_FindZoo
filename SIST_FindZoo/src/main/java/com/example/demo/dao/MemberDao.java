@@ -41,5 +41,20 @@ public class MemberDao {
 		// TODO Auto-generated method stub
 		return DBManager.loginMember(member_id);
 	}
+	
+	//아이디 중복체크
+	public int idchk(String member_id) {
+		return DBManager.idChk(member_id);
+	}
+	
+	//아이디 중복체크
+	public int nickchk(String member_nick) {
+		return DBManager.nickChk(member_nick);
+	}
+	
+	//아이디 찾기
+	public MemberVo findId(String member_name, String member_phone) {
+		return DBManager.findId(member_name, member_phone);
+	}
 		
 }

@@ -15,6 +15,7 @@
 			location.href="deleteDeal.do?board_num="+board_num;
 		}
 	}
+
 </script>
 </head>
 <body>
@@ -36,6 +37,7 @@
 	<hr>
 	<a href="deal.do">목록</a>
 	<a href="updateDeal.do?board_num=${d.board_num }">수정</a>
+	<a href="#" onclick="confirmDealDelete(${d.board_num})">삭제</a>
 	<a href="#" onclick="confirmDealDelete(${d.board_num})">삭제</a>	
 	<hr>
 	<%@ include file="../views/reply.jsp" %>

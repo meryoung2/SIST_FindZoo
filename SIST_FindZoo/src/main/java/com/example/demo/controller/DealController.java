@@ -7,23 +7,28 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.DealDao;
 import com.example.demo.util.Paging;
 import com.example.demo.vo.DealVo;
+import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PetVo;
+import com.example.demo.vo.ReplyVo;
 
 
 @Controller
@@ -219,6 +224,62 @@ public class DealController {
 			mav.addObject("msg","게시물 삭제에 실패하였습니다.");
 			mav.setViewName("deal.do");
 		}
+		return mav;
+	}	
+	
+	
+	//거래게시판 댓글쓰기 컨트롤러
+	@RequestMapping(value="/insertReply.do", method=RequestMethod.POST)
+	public ModelAndView insertReplySubmit(ReplyVo r, int board_num) {
+		
+		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+	
+		int re = dao.insertReply(r);
+		if(re != 1) {
+			mav.addObject("msg", "게시물 등록에 실패하였습니다.");
+			mav.setViewName("error");
+		}
+		
+		return mav;
+	}
+	
+	//거래게시판 댓글삭제 컨트롤러	
+	@RequestMapping(value="/deleteReply.do")
+	public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
+		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+		int re = dao.deleteReply(reply_num);
+		if(re != 1) {
+			mav.addObject("msg", "댓글 삭제에 실패하였습니다..");
+			mav.setViewName("error");
+		}
+		return mav;
+	}
+	
+		
+	//댓글 수정
+	@RequestMapping(value="/updateReply.do", method=RequestMethod.POST)
+	public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
+		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+		int re = dao.updateReply(r);
+		if(re != 1) {
+			mav.addObject("msg", "내 댓글 수정에 실패하였습니다.");
+			mav.setViewName("error");
+		}
+		return mav;
+	}
+	
+	//거래게시판 대댓글쓰기
+	@RequestMapping(value="/reReply.do", method=RequestMethod.POST)
+	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num) {
+		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+		
+		int re = dao.insertReReply(r);
+		
+		if(re != 1) {
+			mav.addObject("msg", "게시물 등록에 실패하였습니다.");
+			mav.setViewName("error");
+		}
+		
 		return mav;
 	}
 }
