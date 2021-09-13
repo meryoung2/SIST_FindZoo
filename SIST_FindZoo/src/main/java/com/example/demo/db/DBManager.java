@@ -33,6 +33,7 @@ public class DBManager {
 			System.out.println("예외발생:"+e.getMessage());
 		}
 	}
+
 	
 	//////////////////////////////////////// 게시판 시작 ////////////////////////////////////////
 	
@@ -385,7 +386,17 @@ public class DBManager {
 		session.close();
 		return re;
 	}
+
 	
+	
+	// 대댓글 쓰기
+	public static int insertReReply(ReplyVo r) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("reply.insertReReply", r);
+		session.close();
+		return re;
+	}
+
 	// 대댓글을 위한 정보를 받아오는 메소드
 	public static ReplyVo getReply(int board_num) {
 		SqlSession session = factory.openSession();
@@ -450,56 +461,54 @@ public class DBManager {
 	}
 	
 	//회원가입 시, 아이디 중복체크
-	public static int idChk(String member_id) {
-		int re = 0;
-		SqlSession session = factory.openSession();
-		HashMap map = new HashMap();
-		map.put("member_id", member_id);
-		int result = session.selectOne("member.idChk", map);
-		if (result == 1) {
-		re = 409;
-		} else {
-			re=200;
-		}
-		System.out.println(result+"아이디 중복체크");
-		session.close();
-		return re;
-	}
-	
-	//회원가입 시, 닉네임 중복체크
-	public static int nickChk(String member_nick) {
+		public static int idChk(String member_id) {
 			int re = 0;
 			SqlSession session = factory.openSession();
 			HashMap map = new HashMap();
-			map.put("member_nick", member_nick);
-			int result = session.selectOne("member.nickChk", map);
-			if (result >= 1) {
-				re = 409;
+			map.put("member_id", member_id);
+			int result = session.selectOne("member.idChk", map);
+			if (result == 1) {
+			re = 409;
 			} else {
 				re=200;
 			}
-			System.out.println(result);
+			System.out.println(result+"아이디 중복체크");
 			session.close();
 			return re;
 		}
-	
-	
-	//로그인 시, 아이디 찾기
-	public static MemberVo findId(String member_name, String member_phone) {
-			SqlSession session = factory.openSession();
-			Map map = new HashMap();
-			map.put("member_name", member_name);
-			map.put("member_phone", member_phone);
-			MemberVo m = session.selectOne("member.findId", map);
-			if (m != null) {
-			map.put(m, m.getMember_id());
+		
+		//회원가입 시, 닉네임 중복체크
+		public static int nickChk(String member_nick) {
+				int re = 0;
+				SqlSession session = factory.openSession();
+				HashMap map = new HashMap();
+				map.put("member_nick", member_nick);
+				int result = session.selectOne("member.nickChk", map);
+				if (result >= 1) {
+					re = 409;
+				} else {
+					re=200;
+				}
+				System.out.println(result);
+				session.close();
+				return re;
 			}
-			session.close();
-			return m;
-		}
-	
+		
+		
+		//로그인 시, 아이디 찾기
+		public static MemberVo findId(String member_name, String member_phone) {
+				SqlSession session = factory.openSession();
+				Map map = new HashMap();
+				map.put("member_name", member_name);
+				map.put("member_phone", member_phone);
+				MemberVo m = session.selectOne("member.findId", map);
+				if (m != null) {
+				map.put(m, m.getMember_id());
+				}
+				session.close();
+				return m;
+			}
 	//////////////////////////////////////// 진솔 끝 ////////////////////////////////////////
-	
 	
 	//////////////////////////////////////// 마이페이지 시작 ////////////////////////////////////////
 
@@ -519,6 +528,7 @@ public class DBManager {
 		return re;
 	}
 	
+
 	// 비밀번호 변경
 	public static int updatePwd(MemberVo mb) {
 		SqlSession session = factory.openSession(true);
@@ -572,7 +582,4 @@ public class DBManager {
 		session.close();
 		return re;
 	}
-	
-	//////////////////////////////////////// 마이페이지 끝 ////////////////////////////////////////
-
 }

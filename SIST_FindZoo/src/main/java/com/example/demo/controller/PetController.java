@@ -53,7 +53,7 @@ public class PetController {
 
 	// 마이페이지 반려동물 삭제
 	@RequestMapping("/deletePet.do")
-	public ModelAndView deletePetSubmit(int pet_num) {
+	public ModelAndView deletePet(int pet_num) {
 		// 세션 적용이 안 되어있어서 일단 삭제하면 1번 회원 마이페이지로 이동(레코드 삭제는 됨)
 		ModelAndView mav = new ModelAndView("redirect:/myInfo.do?member_num=1");
 		int re = petDao.deletePet(pet_num);

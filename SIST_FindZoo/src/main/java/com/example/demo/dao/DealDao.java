@@ -8,14 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.DBManager;
 import com.example.demo.vo.DealVo;
+import com.example.demo.vo.ReplyVo;
 
 @Repository
 public class DealDao {
-	
-	public static int pageSize = 10;
-	public static int totalRecord;
-	public static int totalPage;
-	
 	
 	public List<DealVo> findAll(HashMap map){
 		return DBManager.deal(map);
@@ -41,11 +37,36 @@ public class DealDao {
 		return DBManager.getTotalRecordDeal();
 	}
 	
+	public int getSearchRecordDeal(HashMap num_map) {
+		return DBManager.getSearchRecordDeal(num_map);
+	}
+	
 	public int updateDeal(DealVo d) {
 		return DBManager.updateDeal(d);
 	}
 
 	public int deleteDeal(int board_num) {
 		return DBManager.deleteDeal(board_num);
+	}
+	
+	public List<ReplyVo> findAll(int board_num){
+		return DBManager.listReply(board_num);
+	}
+	
+	public int insertReply(ReplyVo r) {
+		return DBManager.insertReply(r);
+	}
+	
+	
+	public int updateReply(ReplyVo r) {
+		return DBManager.updateReply(r);
+	}
+	
+	public int deleteReply(int reply_num) {
+		return DBManager.deleteReply(reply_num);
+	}
+	
+	public int insertReReply(ReplyVo r) {
+		return DBManager.insertReReply(r);
 	}
 }

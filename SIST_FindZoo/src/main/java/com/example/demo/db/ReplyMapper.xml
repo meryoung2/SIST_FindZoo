@@ -3,13 +3,32 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reply">
-  <select id="findAll" resultType="replyVo">
-    select * from reply order by reply_ref desc, reply_step
-  </select>
+
+	<!-- 댓글리스트 -->
+	<select id="findAll" resultType="replyVo">
+    select *
+	from reply r, deal d, member m
+	where r.member_num = m.member_num and r.board_num = d.board_num and d.board_num = #{board_num}
+	</select>
   
-  <insert id="insert" parameterType="replyVo">insert into reply(reply_num,reply_ref,reply_level,reply_step, reply_content,reply_date,member_num)
-  values(#{reply_num},#{reply_ref},#{reply_level},#{reply_step},#{reply_content},sysdate,#{member_num})
-  </insert>
+	<!-- 댓글작성 -->
+	<insert id="insert" parameterType="replyVo">
+	insert into reply(reply_num,reply_ref,reply_level,reply_step, reply_content,reply_date,member_num, board_num)
+	values((select nvl(max(reply_num), 0)+1 from reply), 0, 0, 0,#{reply_content},sysdate,1, #{board_num})
+	</insert>
+
+	<!-- 댓글수정 -->
+	<update id="updateReply" parameterType="replyVo">update reply set reply_content=#{reply_content} where reply_num=#{reply_num} </update>
+
+	<!-- 댓글삭제 -->
+	<delete id="deleteReply">delete reply where reply_num=#{reply_num}</delete>
+	
+	<!-- 대댓글쓰기 -->
+	<insert id="insertReReply" parameterType="replyVo">
+	insert into reply(reply_num,reply_ref,reply_level,reply_step, reply_content,reply_date,member_num, board_num)
+	values((select nvl(max(reply_num), 0)+1 from reply), #{reply_num}, 1, 1,#{reply_content},sysdate,1, #{board_num})
+	</insert>
+	
 </mapper>
 
 

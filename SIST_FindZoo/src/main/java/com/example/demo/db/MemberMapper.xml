@@ -46,9 +46,15 @@
  	</select>
  	
  	<update id="updateInfo" parameterType="memberVo">
-  		update member set 
-  		member_pwd = #{member_pwd}, member_nick = #{member_nick}, member_phone = #{member_phone}, 
-  		member_email = #{member_email}, member_addr = #{member_addr}, member_sms = #{member_sms} 
-  		where member_num = #{member_num}
+  		update member set member_id = #{member_id}, member_name = #{member_name}, member_nick = #{member_nick}, member_phone = #{member_phone}, member_email = #{member_email}, 
+  		member_addr = #{member_addr}, member_point = #{member_point}, member_sms = #{member_sms}, member_admin = #{member_admin}, social_num = #{social_num} where member_num = #{member_num}
  	</update>
+ 	
+ 	<update id="updatePwd" parameterType="memberVo">
+  		update member set member_pwd = #{member_pwd} where member_num = #{member_num}
+ 	</update>
+ 	
+ 	<select id="checkNick" resultType="int">
+  		select count(*) from member where member_nick = #{member_nick}
+ 	</select>
 </mapper>
