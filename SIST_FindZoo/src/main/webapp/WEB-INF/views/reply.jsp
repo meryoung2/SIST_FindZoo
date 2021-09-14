@@ -39,10 +39,20 @@
 							&nbsp;&nbsp;&nbsp;&nbsp;
 						</c:forEach>
 					</c:if>
-					작성자 : ${d.member_nick }
-					<span><button type="button"  class="btn btn-primary" onclick="confirmDeleteReply(${r.reply_num}, ${d.board_num})">삭제</button></span>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateReply" onclick="updateReply(${r.reply_num })">수정</button>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reReply" onclick="reReply(${r.reply_num })">답글</button>
+					
+					<c:choose> 
+						<c:when test="${r.reply_level eq 0}">
+							작성자 : ${d.member_nick }
+							<span><button type="button"  class="btn btn-primary" onclick="confirmDeleteReply(${r.reply_num}, ${d.board_num})">삭제</button></span>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateReply" onclick="updateReply(${r.reply_num })">수정</button>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reReply" onclick="reReply(${r.reply_num })">답글</button>
+						 </c:when>
+    					<c:when test="${r.reply_level > 0}">
+    						작성자 : ${d.member_nick }
+    						<span><button type="button"  class="btn btn-primary" onclick="confirmDeleteReply(${r.reply_num}, ${d.board_num})">삭제</button></span>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateReply" onclick="updateReply(${r.reply_num })">수정</button>
+						</c:when>
+					</c:choose>
 				</td>
 			</tr>
 			<tr>

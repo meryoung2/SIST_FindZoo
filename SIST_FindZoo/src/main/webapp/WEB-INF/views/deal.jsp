@@ -53,30 +53,7 @@
 </head>
 <body>
 	<h2>거래 게시판 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
-	<hr>
-<<<<<<< HEAD
-	<table border="1" width="80%">
-		<tr>
-			<th>글제목</th>
-			<th>작성자</th>
-			<th>조회수</th>
-		</tr>
-		<c:forEach items="${list }" var="d">
-			<tr>
-				<td>
-				<a href="detailDeal.do?board_num=${d.board_num}">${d.title }</a>
-				</td>
-				<td>${d.member_nick }</td>
-				<td>${d.views }</td>
-			</tr>
-		</c:forEach>
-	</table>
-	
-	<c:forEach var="i" begin="1" end="${ totalPage }">
-		<a href="deal.do?pageNum=${ i }">${ i }</a>&nbsp;
-	</c:forEach>
-	
-	<a href="/insertDeal.do">글쓰기</a>
+	<hr>	
 	<a href="/insertDeal.do">글쓰기</a>
 	<table border="1" width="80%">
 		<tr>

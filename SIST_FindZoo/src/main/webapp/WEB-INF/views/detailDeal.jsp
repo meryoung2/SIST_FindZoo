@@ -17,6 +17,20 @@
 	}
 
 </script>
+<style type="text/css">
+	@font-face {
+	    font-family: 'GmarketSansMedium';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	*{
+		font-family: 'GmarketSansMedium';
+		font-weight: lighter;
+	}
+</style>
+
 </head>
 <body>
 	<h2>거래게시판 상세</h2>

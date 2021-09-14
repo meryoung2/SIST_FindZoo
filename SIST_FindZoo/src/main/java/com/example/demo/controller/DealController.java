@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -269,8 +271,15 @@ public class DealController {
 	}
 	
 	//거래게시판 대댓글쓰기
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public void form(Model model, @RequestParam(value = "reply_num", defaultValue = "0")  int reply_num) {
+		// int no = Integer.parseInt(request.getParamter("no"));
+		model.addAttribute("reply_num", reply_num);
+	}
+	
 	@RequestMapping(value="/reReply.do", method=RequestMethod.POST)
-	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num) {
+	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
 		
 		int re = dao.insertReReply(r);
