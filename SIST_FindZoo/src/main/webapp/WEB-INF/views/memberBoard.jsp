@@ -126,7 +126,6 @@
 	</c:forEach>
 	<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>
 	<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>
-</form>
 	
 </body>
 </html>
