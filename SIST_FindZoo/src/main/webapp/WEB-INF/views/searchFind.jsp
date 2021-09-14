@@ -98,6 +98,7 @@
 		<option value="title"<c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
 		<option value="content" <c:if test="${map.search_option == 'content'}">selected</c:if>>내용</option>
         <option value="member_nick"<c:if test="${map.search_option == 'member_nick'}">selected</c:if>>작성자</option>
+        <option value="find_lost_loc"<c:if test="${map.search_option == 'find_lost_loc'}">selected</c:if>>지역</option>
 		<option value="all"<c:if test="${map.search_option == 'all'}">selected</c:if>>전체</option>
 	</select>
     <input name="keyword" value="${map.keyword}" onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);" required="required">
