@@ -142,62 +142,15 @@
 <body>
 	<div id="myInfo-container">
 		<aside id="sidebar">
-			<div class="accordion" id="accordionExample">
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingOne">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-							aria-expanded="false" aria-controls="collapseOne">내 정보</button>
-					</h2>
-					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
-						<div class="accordion-body">
-							<input type="button" value="내 정보 수정" onclick="location.href='updateInfo.do?member_num=${mb.member_num}'">
-							<input type="button" value="회원 탈퇴" onclick="location.href='deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}'">
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingTwo">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-							aria-expanded="false" aria-controls="collapseTwo">쪽지함</button>
-					</h2>
-					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
-						<div class="accordion-body">
-							<strong>This is the second item's accordion body.</strong> It is
-							hidden by default, until the collapse plugin adds the appropriate
-							classes that we use to style each element. These classes control
-							the overall appearance, as well as the showing and hiding via CSS
-							transitions. You can modify any of this with custom CSS or
-							overriding our default variables. It's also worth noting that
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingThree">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
-							aria-expanded="false" aria-controls="collapseThree">내 게시물 & 댓글</button>
-					</h2>
-					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
-						<div class="accordion-body">
-							<strong>This is the third item's accordion body.</strong> It is
-							hidden by default, until the collapse plugin adds the appropriate
-							classes that we use to style each element. These classes control
-							the overall appearance, as well as the showing and hiding via CSS
-							transitions. You can modify any of this with custom CSS or
-							overriding our default variables. It's also worth noting that
-						</div>
-					</div>
-				</div>
-			</div>
-			<%-- 
 			<div class="list-group">
-				class에 active를 지워야 모달 창 열었을 때 bgLayer가 적용된다. 
+				<%-- class에 active를 지워야 모달 창 열었을 때 bgLayer가 적용된다. --%>
 				<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 정보</a>
 				<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
 				<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 게시글</a>
 				<a href="#" class="list-group-item list-group-item-action">내 댓글</a>
 				<c:if test="${mb.member_admin == 'ADMIN'}"><a href="#" class="list-group-item list-group-item-action">관리자 페이지</a></c:if>
-			</div>  --%>
-		</aside> 
+			</div>
+		</aside>
 		<article id="input-container">
 			<h2>내 정보</h2>
 			<hr>

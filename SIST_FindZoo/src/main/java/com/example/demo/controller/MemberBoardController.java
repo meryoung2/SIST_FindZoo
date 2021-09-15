@@ -1,13 +1,6 @@
 package com.example.demo.controller;
 
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,16 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.dao.DealDao;
 import com.example.demo.dao.MemberBoardDao;
 import com.example.demo.util.Paging;
-import com.example.demo.vo.DealVo;
 
 
 @Controller
@@ -47,8 +34,11 @@ public class MemberBoardController {
 	// 회원이 작성한 게시글 목록
 	@RequestMapping("/memberBoard.do")
 	public void deal(HttpServletRequest request, 
-			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "member_num", defaultValue = "1") int member_num, Model model) {
-
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, 
+			@RequestParam(value = "member_num", defaultValue = "1") int member_num, 
+			@RequestParam(value = "member_nick", defaultValue = "회원") String member_nick,
+			Model model) { // 추가
+		
 		paging.totalRecord = dao.getTotalRecordMemberBoard(member_num);
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
@@ -71,7 +61,9 @@ public class MemberBoardController {
 		model.addAttribute("totalPage", paging.totalPage);
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("member_num", member_num);
+		model.addAttribute("member_nick", dao.getNick(member_num)); // 추가
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
 	}
+	
 }

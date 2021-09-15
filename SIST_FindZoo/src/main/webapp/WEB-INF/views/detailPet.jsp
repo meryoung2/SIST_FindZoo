@@ -9,23 +9,46 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
-	/* 반려동물 정보 상세 조회 */
-	.detailPet-container {
-		display: flex;
-		position: absolute;
-		width: 1000px;
-		margin: auto;
-		margin-top: 20px;
-		margin-bottom: 20px;
+	a {
+		color: black;
+		text-decoration: none;
+	}
+	a:hover {
+		font-weight: bold;
+		color: #325d88;
+		text-decoration: underline;
 	}
 	
-	.detailPet-container .list-group{
-		width: 200px;
+	/* 폰트 적용 */
+	@font-face {
+		font-family: 'GmarketSansMedium';
+		src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
+	* {
+		font-family: 'GmarketSansMedium';
+		font-weight: lighter;
+	}
+	
+	/* 반려동물 정보 상세 조회 */
+	#detailPet-container {
+		display: flex;
+		position: absolute;
+		width: 70%;
+		margin: 15%;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		border: 1px solid black;
+	}
+	
+	#detailPet-container #sidebar{
+		width: 20%;
 		margin: 10px;
 		border: 1px solid black;
 	}
 	
-	.detailPet-container .input-container {
+	#detailPet-container #input-container {
 		float: right;
 		margin: 10px;
 		padding: 20px;
@@ -43,17 +66,16 @@
 </script>
 </head>
 <body>
-	<div class="detailPet-container">
-		<aside class="sidebar">
+	<div id="detailPet-container">
+		<aside id="sidebar">
 			<div class="list-group">
-				<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 정보</a>
-				<a href="#" class="list-group-item list-group-item-action">1:1 문의</a>
-				<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
-				<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 게시물</a>
+				<a href="myInfo.do?member_num=${pet.member_num}" class="list-group-item list-group-item-action">내 정보</a>
+				<a href="myNote.do?member_num=${pet.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
+				<a href="memberBoard.do?pageNum=1&member_num=${pet.member_num}" class="list-group-item list-group-item-action">내 게시글</a>
 				<a href="#" class="list-group-item list-group-item-action">내 댓글</a>
 			</div>
 		</aside>
-		<article class="input-container">
+		<article id="input-container">
 			<h2>반려동물(${pet.pet_name }) 정보</h2>
 			<hr>
 			회원번호: ${pet.member_num }<br>

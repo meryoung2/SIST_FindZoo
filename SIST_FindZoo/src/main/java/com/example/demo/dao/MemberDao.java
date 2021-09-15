@@ -28,6 +28,11 @@ public class MemberDao {
 		return DBManager.checkNick(member_nick);
 	}
 	
+	// 회원 탈퇴(해당 회원의 정보나 게시물을 실제로 삭제하지 않고 일부 정보만 수정하여 접근을 제한)
+	public int deleteChangeInfo(MemberVo mb) {
+		return DBManager.deleteChangeInfo(mb);
+	}
+	
 	//회원가입
 	public int insert(MemberVo m) {
 		return DBManager.insertMember(m);

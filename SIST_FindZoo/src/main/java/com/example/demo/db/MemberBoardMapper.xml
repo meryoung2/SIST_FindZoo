@@ -16,4 +16,8 @@
 	<select id="totalRecord" resultType="int">
   		select count(*) from board where member_num = #{member_num}
 	</select>
+	
+	<select id="getNick" parameterType="int" resultType="String">
+ 		select member_nick from member where member_num = #{member_num}
+ 	</select>
 </mapper>

@@ -33,7 +33,7 @@ public class DBManager {
 		}
 	}
 
-//////////////////////////////////////// 게시판 시작 ////////////////////////////////////////
+	//////////////////////////////////////// 게시판 시작 ////////////////////////////////////////
 
 	// 자유게시판 목록
 	public static List<FreeVo> free(HashMap map) {
@@ -337,6 +337,14 @@ public class DBManager {
 		return n;
 	}
 
+	// 특정 회원의 닉네임 출력
+	public static String getNick(int member_num) {
+		SqlSession session = factory.openSession();
+		String mn = session.selectOne("memberBoard.getNick", member_num);
+		session.close();
+		return mn;
+	}
+	
 	// 특정 회원이 작성한 목록 출력
 	public static List<MemberBoardVo> memberBoard(HashMap map) {
 		SqlSession session = factory.openSession();
@@ -537,6 +545,14 @@ public class DBManager {
 		return flag;
 	}
 
+	// 회원 탈퇴(해당 회원의 정보나 게시물을 실제로 삭제하지 않고 일부 정보만 수정하여 접근을 제한)
+	public static int deleteChangeInfo(MemberVo mb) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("member.deleteChangeInfo", mb);
+		session.close();
+		return re;
+	}
+	
 	// 내 정보에 반려동물(들) 이름 출력
 	public static List<PetVo> listPet(int member_num) {
 		SqlSession session = factory.openSession();
@@ -569,5 +585,5 @@ public class DBManager {
 		return re;
 	}
 	
-//////////////////////////////////////// 마이페이지 끝 ////////////////////////////////////////
+	//////////////////////////////////////// 마이페이지 끝 ////////////////////////////////////////
 }

@@ -27,7 +27,6 @@
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>2.2.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
@@ -57,18 +56,37 @@
 			<groupId>com.oracle.ojdbc</groupId>
 			<artifactId>orai18n</artifactId>
 		</dependency> -->
-		
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
-
-<dependency>
-
-    <groupId>org.json</groupId>
-
-    <artifactId>json</artifactId>
-
-    <version>20180130</version>
-
-</dependency>
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20180130</version>
+		</dependency>
+		<!-- 연락처 변경 시 SMS 인증코드 발송 -->
+		<dependency>
+		    <groupId>commons-discovery</groupId>
+		    <artifactId>commons-discovery</artifactId>
+		    <version>0.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.xml</groupId>
+		    <artifactId>jaxrpc</artifactId>
+		    <version>1.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.xml.soap</groupId>
+		    <artifactId>saaj-api</artifactId>
+		    <version>1.3.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>wsdl4j</groupId>
+		    <artifactId>wsdl4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
