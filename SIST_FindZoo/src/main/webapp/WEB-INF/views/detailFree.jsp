@@ -32,6 +32,10 @@
 		text-decoration: underline;
 	}
 	
+	button{
+		margin-right: 1%;
+	}
+	
 	#free-container{
 		display: flex;
 		justify-content: center;
@@ -41,6 +45,7 @@
 		display: inline-block;
 		width: 70%;
 		margin-top: 2%;
+		margin-bottom: 2%;
 	}
 	
 	#member_modal{
@@ -61,6 +66,7 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
+	// 삭제 관련 알림 창
 	function confirm_del(board_num){
 		
 		var re = confirm("정말 삭제하시겠습니까?");
@@ -70,7 +76,22 @@
 		}
 	}
 	
+	// Textarea 크기에 따라 창을 수정해주는 함수
+	function resize(obj) {
+		  obj.style.height = "1px";
+		  obj.style.height = (12+obj.scrollHeight)+"px";
+	}
+	
 	$(function() {
+		
+		// 글 내용의 길이에 따라 스크롤을 사용하지 않고 내용 출력
+		var ta = $("#ta");
+	    if (ta) {
+	        ta.each(function(){
+	            $(this).height(this.scrollHeight);
+	        });
+	    }
+		
 		// 멤버 닉네임 클릭 시
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
@@ -104,11 +125,11 @@
 			<h4>${ f.title }</h4>
 			<hr>
 			<a class="member_nick" href="#" member_num=${ f.member_num }>${ f.member_nick }</a>&nbsp;|&nbsp;<h6 style="display: inline-block;"><fmt:formatDate value="${ f.bdate }" pattern="yyyy-MM-dd hh:mm:ss" /></h6>
-			<h6 style="float: right;">조회수 : ${ f.views }</h6>
-			<textarea rows="15" readonly="readonly" style="width: 100%">${ f.content }</textarea><br>
+			<h6 style="float: right;">조회수 : ${ f.views }</h6><hr>
 			<c:if test="${ f.picture_fname ne null}">
 				<img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }"><br>
 			</c:if>
+			<textarea id="ta" readonly="readonly" style="width: 100%; outline: none; border: none;">${ f.content }</textarea><br>
 			<hr>
 			<button class="btn btn-primary" onclick="location.href='free.do'" style="float: left;">목록</button>
 			<button class="btn btn-primary" onclick="location.href='updateFree.do?board_num=${ f.board_num }'" style="float: right;">수정</button>

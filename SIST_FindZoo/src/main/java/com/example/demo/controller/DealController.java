@@ -128,9 +128,7 @@ public class DealController {
 	@RequestMapping(value = "/insertDeal.do" , method = RequestMethod.POST)
 	public ModelAndView submit(HttpServletRequest request, DealVo d) {
 		ModelAndView mav = new ModelAndView("redirect:/deal.do");
-		String path = request.getRealPath("resources/img");
-		System.out.println(path);
-		
+		String path = request.getRealPath("resources/img");		
 		String picture_fname = null;
 		int fsize = 0;
 		
@@ -152,7 +150,7 @@ public class DealController {
 				System.out.println("파일업로드중 오류발생 : " + e.getMessage());
 			}
 		}else {
-			d.setPicture_fname("null");
+			d.setPicture_fname("");
 		}
 		
 		int re = dao.insertDeal(d);

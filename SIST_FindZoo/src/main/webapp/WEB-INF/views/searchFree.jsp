@@ -152,7 +152,7 @@
 <body>
 	<div id="free-container">
 		<div id="content">
-			<h2>자유게시판</h2>
+			<h2><a href="free.do">자유게시판</a></h2>
 			<h6>(검색 게시글 수 : ${ searchRecord })</h6>
 			<hr>
 			<div id="board">
