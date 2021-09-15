@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.db.DBManager;
 import com.example.demo.vo.DealVo;
 import com.example.demo.vo.FreeVo;
+import com.example.demo.vo.ReplyVo;
 
 @Repository
 public class FreeDao {
@@ -47,5 +48,26 @@ public class FreeDao {
 	
 	public int delete(int board_num) {
 		return DBManager.deleteFree(board_num);
+	}
+	
+	public List<ReplyVo> findAll(int board_num){
+		return DBManager.listReply(board_num);
+	}
+	
+	public int insertReply(ReplyVo r) {
+		return DBManager.insertReply(r);
+	}
+	
+	
+	public int updateReply(ReplyVo r) {
+		return DBManager.updateReply(r);
+	}
+	
+	public int deleteReply(int reply_num) {
+		return DBManager.deleteReply(reply_num);
+	}
+	
+	public int insertReReply(ReplyVo r) {
+		return DBManager.insertReReply(r);
 	}
 }

@@ -231,7 +231,7 @@ public class DealController {
 	
 	
 	//거래게시판 댓글쓰기 컨트롤러
-	@RequestMapping(value="/insertReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/dealInsertReply.do", method=RequestMethod.POST)
 	public ModelAndView insertReplySubmit(ReplyVo r, int board_num) {
 		
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
@@ -246,7 +246,7 @@ public class DealController {
 	}
 	
 	//거래게시판 댓글삭제 컨트롤러	
-	@RequestMapping(value="/deleteReply.do")
+	@RequestMapping(value="/dealDeleteReply.do")
 	public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
 		int re = dao.deleteReply(reply_num);
@@ -259,7 +259,7 @@ public class DealController {
 	
 		
 	//댓글 수정
-	@RequestMapping(value="/updateReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/dealUpdateReply.do", method=RequestMethod.POST)
 	public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
 		int re = dao.updateReply(r);
@@ -278,7 +278,7 @@ public class DealController {
 		model.addAttribute("reply_num", reply_num);
 	}
 	
-	@RequestMapping(value="/reReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/dealReReply.do", method=RequestMethod.POST)
 	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
 		

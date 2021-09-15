@@ -52,6 +52,7 @@
 		background-color: white;
 		border: 1px black solid;
 		overflow: hidden;
+		
 	}
 	
 	#member_act{
@@ -62,7 +63,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function confirm_del(board_num){
-		
 		var re = confirm("정말 삭제하시겠습니까?");
 		
 		if(re){
@@ -76,8 +76,8 @@
 			let member_num = $(this).attr("member_num");
 			$('#member_board').attr("href", "memberBoard.do?member_num="+member_num);
 			
-			var divLeft = e.clientX;
-			var divTop = e.clientY;
+			var divLeft = e.pageX;
+			var divTop = e.pageY;
 			
 			console.log(divLeft, divTop);
 			
@@ -86,8 +86,8 @@
 				"left": divLeft,
 				"position": "absolute"
 			}).show();
+			return false;
 		});
-		
 		// 모달 창 바깥 클릭 시
 		$(document).mouseup(function (e){
 			var member_modal = $("#member_modal");
@@ -96,6 +96,25 @@
 			}
 		});
 	});
+	
+	
+	//댓글삭제 스크립트
+	function confirmDeleteReply(reply_num, board_num){
+	var re = confirm("댓글을 삭제하시겠습니까?");
+		if(re==true){
+			location.href="freeDeleteReply.do?board_num="+board_num+"&reply_num="+reply_num;
+		}
+	}
+	
+	//댓글수정 스크립트
+	function updateReply(reply_num){
+		$('#reply_num').val(reply_num)
+	}
+	
+	//대댓글 스크립트
+	function reReply(reply_num){
+		$('#reply_number').val(reply_num)
+	}
 </script>
 </head>
 <body>
@@ -103,20 +122,160 @@
 		<div id="content">
 			<h4>${ f.title }</h4>
 			<hr>
-			<a class="member_nick" href="#" member_num=${ f.member_num }>${ f.member_nick }</a>&nbsp;|&nbsp;<h6 style="display: inline-block;"><fmt:formatDate value="${ f.bdate }" pattern="yyyy-MM-dd hh:mm:ss" /></h6>
+			<a class="member_nick" href="#a" member_num=${ f.member_num }>${ f.member_nick }</a>&nbsp;|&nbsp;
+			<h6 style="display: inline-block;">
+				<fmt:formatDate value="${ f.bdate }" pattern="yyyy-MM-dd hh:mm:ss" />
+			</h6>
 			<h6 style="float: right;">조회수 : ${ f.views }</h6>
-			<textarea rows="15" readonly="readonly" style="width: 100%">${ f.content }</textarea><br>
+			<textarea rows="15" readonly="readonly" style="width: 100%">${ f.content }</textarea>
+			<br>
 			<c:if test="${ f.picture_fname ne null}">
-				<img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }"><br>
+				<img
+					src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }">
+				<br>
 			</c:if>
 			<hr>
-			<button class="btn btn-primary" onclick="location.href='free.do'" style="float: left;">목록</button>
-			<button class="btn btn-primary" onclick="location.href='updateFree.do?board_num=${ f.board_num }'" style="float: right;">수정</button>
-			<button class="btn btn-primary" onclick="confirm_del(${ f.board_num })" style="float: right;">삭제</button>		
+			<button class="btn btn-primary" onclick="location.href='free.do'"
+				style="float: left;">목록</button>
+			<button class="btn btn-primary"
+				onclick="location.href='updateFree.do?board_num=${ f.board_num }'"
+				style="float: right;">수정</button>
+			<c:forEach var="r" items="${list }">
+				<button class="btn btn-primary"
+					onclick="confirm_del(${ f.board_num})" style="float: right;">삭제</button>
+			</c:forEach>
+			<br>
+
+			<hr>
+			<h4>댓글</h4>
+			<table frame=void width="100%">
+				<c:forEach var="r" items="${list }">
+					<tr>
+						<td><c:if test="${r.reply_level>0 }">
+								<c:forEach var="i" begin="1" end="${r.reply_level }">
+							&nbsp;&nbsp;&nbsp;&nbsp;
+						</c:forEach>
+							</c:if> <c:choose>
+								<c:when test="${r.reply_level eq 0}">
+									<a class="member_nick" href="#" member_num=${ f.member_num }>${ f.member_nick }</a>
+							&nbsp;|&nbsp; <fmt:formatDate value="${r.reply_date}"
+										pattern="yyyy-MM-dd hh:mm" />
+									<button type="button" class="btn btn-primary"
+										data-bs-toggle="modal" data-bs-target="#reReply"
+										onclick="reReply(${r.reply_num })">답글</button>
+									<button type="button" class="btn btn-primary"
+										onclick="confirmDeleteReply(${r.reply_num}, ${f.board_num})">삭제</button>
+									<button type="button" class="btn btn-primary"
+										data-bs-toggle="modal" data-bs-target="#updateReply"
+										onclick="updateReply(${r.reply_num })">수정</button>
+								</c:when>
+								<c:when test="${r.reply_level > 0}">
+									<a class="member_nick" href="#" member_num=${ f.member_num }>${ f.member_nick }</a>
+							&nbsp;|&nbsp; <fmt:formatDate value="${r.reply_date}"
+										pattern="yyyy-MM-dd hh:mm" />
+									<span><button type="button" class="btn btn-primary"
+											onclick="confirmDeleteReply(${r.reply_num}, ${f.board_num})">삭제</button></span>
+									<button type="button" class="btn btn-primary"
+										data-bs-toggle="modal" data-bs-target="#updateReply"
+										onclick="updateReply(${r.reply_num })">수정</button>
+								</c:when>
+							</c:choose></td>
+					</tr>
+					<tr>
+						<td><c:if test="${r.reply_level>0 }">
+								<c:forEach var="i" begin="1" end="${r.reply_level }">
+							&nbsp;&nbsp;&nbsp;&nbsp;
+						</c:forEach>
+							</c:if> ${r.reply_content}
+							<hr></td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td width="500px">
+						<form action="freeInsertReply.do" method="post">
+							${f.member_nick } <input type="submit" value="등록"> <input
+								type="hidden" name="board_num" value="${f.board_num }"><br>
+							<textarea name="reply_content"
+								style="border: 1px solid rgb(224, 224, 224)" rows="4" cols="50"
+								placeholder="댓글을 입력하세요."></textarea>
+						</form>
+					</td>
+				</tr>
+			</table>
+
 		</div>
 	</div>
 
-	<div class="modal" id="member_modal">
+
+
+
+	<!-- 댓글수정 모달 -->
+<div class="modal fade" id="updateReply" tabindex="-1" aria-labelledby="updateReplyLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="/freeUpdateReply.do" method="post">
+      <div class="modal-header">
+        <h4 class="modal-title" id="updateReplyLabel">댓글 수정창</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      	<div class="form-group">
+      		<label for="reply_num">댓글번호</label>
+      		<input class="form-control" id="reply_num" name="reply_num" value="${reply_num }" readonly>
+      	</div>
+      	<div class="form-group">
+      		<label for="member_num">댓글 작성자</label>
+      		<input class="form-control" id="member_nick" name="member_nick" value="${f.member_nick }" readonly>
+			<input type="hidden" name="board_num" value="${f.board_num }"><br>
+      	</div>
+      	<div class="form-group">
+      		<label for="reply_content">댓글 내용</label>
+      		<input class="form-control" id="reply_content" name="reply_content" placeholder="댓글 내용을 입력해주세요">
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success modalModBtn" onclick="updateReply(${r.reply_num}, ${f.board_num})">수정</button> 
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- 대댓글 모달 -->
+<div class="modal fade" id="reReply" tabindex="-1" aria-labelledby="reReplyLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="/freeReReply.do" method="post">
+      <div class="modal-header">
+        <h4 class="modal-title" id="reReplyLabel">답글달기</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      	<div class="form-group">
+      		<label for="reply_num">참조 댓글번호</label>
+      		<input class="form-control" id="reply_number" name="reply_num" value="${reply_num }" readonly>
+      	</div>
+      	<div class="form-group">
+      		<label for="member_nick">답글 작성자</label>
+      		<input class="form-control" id="member_nick" name="member_nick" value="${f.member_nick }" readonly>
+			<input type="hidden" name="board_num" value="${f.board_num }"><br>
+      	</div>
+      	<div class="form-group">
+      		<label for="reply_content">답글 내용</label>
+      		<input class="form-control" id="reply_content" name="reply_content" placeholder="댓글 내용을 입력해주세요">
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success modalModBtn" onclick="reReply(${r.reply_num}, ${f.board_num})">답글작성</button> 
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="member_modal">
 		<table class="table table-hover" id="member_act">
 			<tr>
 				<td><a>회원 정보 보기</a></td>
@@ -129,5 +288,7 @@
 			</tr>
 		</table>
 	</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
 </html>
