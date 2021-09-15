@@ -7,8 +7,8 @@
 	<!-- 댓글리스트 -->
 	<select id="findAll" resultType="replyVo">
     select *
-	from reply r, deal d, member m
-	where r.member_num = m.member_num and r.board_num = d.board_num and d.board_num = #{board_num}
+	from reply r, board b, member m
+	where r.member_num = m.member_num and r.board_num = b.board_num and b.board_num = #{board_num}
 	order by reply_ref, reply_num
 	</select>
   
@@ -29,7 +29,6 @@
 	insert into reply(reply_num,reply_ref,reply_level,reply_step, reply_content,reply_date,member_num, board_num)
 	values((select nvl(max(reply_num), 0)+1 from reply), #{reply_num}, 2, 2,#{reply_content},sysdate,1, #{board_num})
 	</insert>
-	
 </mapper>
 
 
