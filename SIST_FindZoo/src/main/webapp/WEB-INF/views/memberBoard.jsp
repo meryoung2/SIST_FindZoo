@@ -1,11 +1,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<style type="text/css">
+	@font-face {
+	    font-family: 'GmarketSansMedium';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	*{
+		font-family: 'GmarketSansMedium';
+		font-weight: lighter;
+	}
+	
+	a{
+		color: black;
+		text-decoration: none;
+	}
+	
+	a:hover{
+		font-weight: bold;
+		color: #325d88;
+		text-decoration: underline;
+	}
+	
+	table{
+		border-right: none;
+		border-left: none;
+	}
+	
+	th{
+		text-align: center;
+	}
+	
+	#free-container{
+		display: flex;
+		justify-content: center;
+	}
+	
+	#content{
+		display: inline-block;
+		width: 70%;
+		margin-top: 2%;
+	}
+
+	#page{
+		text-align: center;
+		margin-top: 5%;
+	}
+	
+	#search{
+		text-align: center;
+	}
+</style>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(member_num){
@@ -36,17 +92,21 @@
 </script>
 </head>
 <body>
+<div id="free-container">
+		<div id="content">
 	<h2>${list[0].member_nick}님의 작성 게시글 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
 	<hr>
-	<table border="1" width="80%">
+	<table border="1" class="table table-hover">
+		<thead class="table-active">
 		<tr>
 			<th>게시판</th>
 			<th>글제목</th>
 			<th>조회수</th>
 		</tr>
+		</thead>
 		<c:forEach items="${ list }" var="m">
 			<tr>
-				<td>
+				<td width="10%" style="text-align: center;">
 					<c:choose>
 						<c:when test="${ m.board_type_num eq 11}">
 							<a href="find.do">찾아요</a>
@@ -80,7 +140,7 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td>
+				<td width="80%">&nbsp;&nbsp;&nbsp;
 					<c:choose>
 						<c:when test="${ m.board_type_num eq 11}">
 							<a href="detailFind.do?board_num=${ m.board_num }">${ m.title }</a>
@@ -114,7 +174,7 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td>${ m.views }</td>
+				<td width="10%" style="text-align: center;">${ m.views }</td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -126,6 +186,7 @@
 	</c:forEach>
 	<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>
 	<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>
-	
+	</div>
+</div>
 </body>
 </html>

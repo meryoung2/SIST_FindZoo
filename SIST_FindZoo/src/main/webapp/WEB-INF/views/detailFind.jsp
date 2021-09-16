@@ -102,7 +102,6 @@
 	<a href="updateFind.do?board_num=${f.board_num }">수정</a>
 	<a href="#" onclick="confirmFindDelete(${f.board_num})">삭제</a>	
 	<hr>
-	<%@ include file="../views/reply.jsp" %>
 
 </body>
 </html>
