@@ -58,19 +58,21 @@
 	<a href="/insertFind.do">글쓰기</a>
 	<a href="/find.do">목록</a>
 	<hr>
+	${ p }	
+		<div>
+			<c:forEach items="${ p }" var="pic" begin="0" end="27" step="3">
+				<c:if test="${ pic ne 'default.jpg'}">
+					<li><img src="${pageContext.request.contextPath}/resources/img/${ pic }" width="150px"></li>
+				</c:if>
+				<c:if test="${ pic eq 'default.jpg'}">
+					<li><img src="${pageContext.request.contextPath}/resources/systems/${ pic }" width="150px"></li>
+				</c:if>
+			</c:forEach>
+		</div>
+	
 	<c:forEach items="${list }" var="f">
-			<div>
-				<ul>
-					<c:if test="${ f.picture_fname ne 'default.jpg'}">
-						<li><a href="detailFind.do?board_num=${f.board_num}"><img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname }" width="150px"></a></li>
-					</c:if>
-					<c:if test="${ f.picture_fname eq 'default.jpg'}">
-						<li><a href="detailFind.do?board_num=${f.board_num}"><img src="${pageContext.request.contextPath}/resources/systems/${ f.picture_fname }" width="150px"></a></li>
-					</c:if>
-				</ul>
-			</div>
-			<div>
-				<ul>
+		<div>
+			<ul>
 					<li>${f.title }</li>
 					<li id="petType">동물종: ${f.find_pet}</li>
 					<li>사례금: ${f.find_reward}</li>

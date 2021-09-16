@@ -244,6 +244,15 @@ public class DBManager {
 		session.close();
 		return list;
 	}
+	
+	// 찾아요게시판 목록에 해당하는 사진 불러오기
+	public static List<String> findPicture(HashMap map_pic) {
+		SqlSession session = factory.openSession();
+		List<String> p = session.selectList("find.findAllPicture", map_pic);
+		System.out.println(p.size());
+		session.close();
+		return p;
+	}
 
 	// 찾아요게시판 검색 후 목록 조회
 	public static List<FindVo> searchFind(HashMap map) {
@@ -252,15 +261,32 @@ public class DBManager {
 		session.close();
 		return list;
 	}
+	
+	// 찾아요게시판 검색 후 목록에 해당하는 사진 불러오기
+		public static List<String> searchFindPicture(HashMap map_pic) {
+			SqlSession session = factory.openSession();
+			List<String> p = session.selectList("find.searchPicture", map_pic);
+			System.out.println(p.size());
+			session.close();
+			return p;
+		}
 
 	// 찾아요게시판 글쓰기
 	public static int insertFind(FindVo f) {
 		SqlSession session = factory.openSession(false);
 		int re = -1;
+		
+		int pic_re1 = 0;
+		int pic_re2 = 0;
+		int pic_re3 = 0;
+		
 		int board_re = session.insert("find.insertBoard", f);
 		int find_re = session.insert("find.insertFind", f);
-		int pic_re = session.insert("find.insertFindPicture", f);
-		if (board_re == 1 && find_re == 1 && pic_re == 1) {
+		
+		if(board_re == 1 && find_re == 1) {
+			pic_re1 = session.insert("find.insertFindPicture1", f);
+			pic_re2 = session.insert("find.insertFindPicture2", f);
+			pic_re3 = session.insert("find.insertFindPicture3", f);
 			session.commit();
 			re = 1;
 		} else {
@@ -270,12 +296,29 @@ public class DBManager {
 		return re;
 	}
 
-	// 찾아요게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
+	// 찾아요게시판 특정 게시글 상세 내용 불러오기 메소드
 	public static FindVo getFind(int board_num) {
 		SqlSession session = factory.openSession();
 		FindVo f = session.selectOne("find.getBoard", board_num);
+		List<String> p = getFindPicture(board_num);
+		String p1 = p.get(0);
+		String p2 = p.get(1);
+		String p3 = p.get(2);
+		
+		f.setPicture_fname1(p1);
+		f.setPicture_fname2(p2);
+		f.setPicture_fname3(p3);
+		
 		session.close();
 		return f;
+	}
+	
+	// 찾아요게시판 특정 게시글 의 사진 불러오기 메소드
+	public static List<String> getFindPicture(int board_num) {
+		SqlSession session = factory.openSession();
+		List<String> p = session.selectList("find.getPicture", board_num);
+		session.close();
+		return p;
 	}
 
 	// 찾아요게시판 글, 사진 수정

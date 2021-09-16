@@ -53,7 +53,9 @@
 		사례금 : <input type="text" name="find_reward" placeholder="사례금을 입력해주세요(없을시에는 0)" value="${f.find_reward }"><br>
 		글내용 : <br>
 		<textarea rows="10" cols="80" name="content">${f.content}</textarea><br>
-		첨부파일 : ${f.picture_fname }<br>
+		첨부파일1 : ${f.picture_fname1 }
+		첨부파일2 : ${f.picture_fname2 }
+		첨부파일3 : ${f.picture_fname3 }<br>
 		<input type="file" name="picture_file"><br>
 		<input type="submit" value="수정">
 		<input type="reset" value="취소">		
