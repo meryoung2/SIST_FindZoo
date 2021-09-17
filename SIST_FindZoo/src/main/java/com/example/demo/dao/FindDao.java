@@ -17,8 +17,16 @@ public class FindDao {
 		return DBManager.find(map);
 	}
 	
+	public List<String> findAllPicture(HashMap map_pic){
+		return DBManager.findPicture(map_pic);
+	}
+	
 	public List<FindVo> searchFind(HashMap map){
 		return DBManager.searchFind(map);
+	}
+	
+	public List<String> searchFindPicture(HashMap map_pic){
+		return DBManager.searchFindPicture(map_pic);
 	}
 	
 	public int insertFind(FindVo f) {
@@ -27,6 +35,10 @@ public class FindDao {
 	
 	public FindVo getFind(int find_num) {
 		return DBManager.getFind(find_num);
+	}
+	
+	public List<String> getFindPicture(int find_num) {
+		return DBManager.getFindPicture(find_num);
 	}
 	
 	public void updateViewsFind(int board_num) {

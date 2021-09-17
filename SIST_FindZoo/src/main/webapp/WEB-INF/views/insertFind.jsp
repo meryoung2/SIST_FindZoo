@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
 <meta charset="EUC-KR">
@@ -120,7 +120,9 @@ $(document).ready(function(){
 		사례금
 		<input class="form-control" id="disabledInput" type="number" placeholder="사례금을 입력해주세요(없을시에는 0)" name="find_reward" size="20px"><br>
 		내용 : <textarea rows="10" cols="80" name="content"></textarea><br>
-		파일 : <input type="file" name="picture_file"><br>
+		첨부파일1 : <input type="file" name="picture_file1"><br>
+		첨부파일2 : <input type="file" name="picture_file2"><br>
+		첨부파일3 : <input type="file" name="picture_file3"><br>
 		<input type="submit" value="등록">
 		<input type="reset" value="취소">
 	</form>

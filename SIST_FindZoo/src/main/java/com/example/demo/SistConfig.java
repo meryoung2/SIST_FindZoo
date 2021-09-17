@@ -13,7 +13,7 @@ public class SistConfig implements WebMvcConfigurer {
 		//WebMvcConfigurer.super.addInterceptors(registry);
 		
 		registry.addInterceptor(new LoginInterceptor())
-		.addPathPatterns("/로그인 후 들어갈 수 있는 뷰(인터셉터)/**");
+		.addPathPatterns("/member/**");
 	}
 	
 }

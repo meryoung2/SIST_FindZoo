@@ -17,12 +17,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		// TODO Auto-generated method stub
 		System.out.println("로그인 인터셉터 동작함!");
 		HttpSession session = request.getSession();
-		if(session.getAttribute("loginM") != null) {
-		return super.preHandle(request, response, handler);
-		}else {
-			response.sendRedirect("/login.do");
-			return false;
-		}
+			if(session.getAttribute("loginM") != null) {
+				return super.preHandle(request, response, handler);
+			}else {
+				response.sendRedirect("/login.do");
+				return false;
+			}
 	}
 
 }
