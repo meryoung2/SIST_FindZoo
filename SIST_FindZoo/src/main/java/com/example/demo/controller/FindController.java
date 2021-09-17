@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.DealDao;
@@ -46,6 +47,13 @@ public class FindController {
 		this.paging = paging;
 	}
 	
+	@Autowired
+	private Paging paging_pic;
+	
+	public void setPaging_pic(Paging paging_pic) {
+		this.paging_pic = paging_pic;
+	}
+	
 	// 찾아요게시판, 댓글 목록 컨트롤러
 	@RequestMapping("/find.do")
 	public void find(HttpServletRequest request, 
@@ -69,8 +77,28 @@ public class FindController {
 		map.put("start", paging.start);
 		map.put("end", paging.end);
 		
+		paging_pic.pageSize = 27;
+		
+		paging_pic.totalRecord = dao.getTotalRecordFind() * 3;
+		
+		paging_pic.totalPage = paging_pic.getTotalPage();
+		paging_pic.start = paging_pic.getStart(pageNum);
+		paging_pic.end = paging_pic.getEnd(paging.start, pageNum);
+		paging_pic.pageNum = pageNum;
+		paging_pic.listStart = paging_pic.getListStart(pageNum);
+		paging_pic.listEnd = paging_pic.getListEnd();
+		
+		if(paging_pic.end > paging_pic.totalRecord) {
+			paging_pic.end = paging_pic.totalRecord;
+		}
+		
+		HashMap map_pic = new HashMap();
+		map_pic.put("start", paging_pic.start);
+		map_pic.put("end", paging_pic.end);
+		
 		model.addAttribute("list", dao.findAll(map));
-		model.addAttribute("totalRecord", paging.totalRecord);
+		model.addAttribute("p", dao.findAllPicture(map_pic));
+		model.addAttribute("totalRecord", paging.totalRecord/3);
 		model.addAttribute("totalPage", paging.totalPage);
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("listStart", paging.listStart);
@@ -111,9 +139,31 @@ public class FindController {
 		map.put("keyword", keyword);
 		map.put("search_option", search_option);
 		
+		paging_pic.pageSize = 27;
+		
+		paging_pic.totalRecord = dao.getTotalRecordFind() * 3;
+		
+		paging_pic.totalPage = paging_pic.getTotalPage();
+		paging_pic.start = paging_pic.getStart(pageNum);
+		paging_pic.end = paging_pic.getEnd(paging.start, pageNum);
+		paging_pic.pageNum = pageNum;
+		paging_pic.listStart = paging_pic.getListStart(pageNum);
+		paging_pic.listEnd = paging_pic.getListEnd();
+		
+		if(paging_pic.end > paging_pic.totalRecord) {
+			paging_pic.end = paging_pic.totalRecord;
+		}
+		
+		HashMap map_pic = new HashMap();
+		map_pic.put("start", paging_pic.start);
+		map_pic.put("end", paging_pic.end);
+		map_pic.put("keyword", keyword);
+		map_pic.put("search_option", search_option);
+		
 		model.addAttribute("list",dao.searchFind(map));
+		model.addAttribute("p",dao.searchFindPicture(map_pic));
 		model.addAttribute("searchPage", paging.searchPage);
-		model.addAttribute("searchRecord", paging.searchRecord);
+		model.addAttribute("searchRecord", paging.searchRecord/3);
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("s_listStart", paging.s_listStart);
 		model.addAttribute("s_listEnd", paging.s_listEnd);
@@ -127,58 +177,266 @@ public class FindController {
 	public void detail(HttpServletRequest request, Model model, int board_num) {
 		dao.updateViewsFind(board_num);
 		model.addAttribute("f", dao.getFind(board_num));
+		model.addAttribute("p", dao.getFindPicture(board_num));
 	}
 	
 	
 	// 찾아요게시판 글작성 컨트롤러
-	@RequestMapping(value = "/insertFind.do", method = RequestMethod.GET)
-	public void form(HttpServletRequest request) {}
-	
-	@RequestMapping(value = "/insertFind.do" , method = RequestMethod.POST)
-	public ModelAndView submit(HttpServletRequest request, FindVo f) {
-		ModelAndView mav = new ModelAndView("redirect:/find.do");		
-		String picture_fname = null;
-		int fsize = 0;
+		@RequestMapping(value = "/insertFind.do", method = RequestMethod.GET)
+		public void form(HttpServletRequest request) {}
 		
-		MultipartFile picture_file = f.getPicture_file();
-		picture_fname = picture_file.getOriginalFilename();
-		if(picture_fname != null && !picture_fname.equals("")) {
-			try {
-				String path = request.getRealPath("resources/img");
-				Calendar cal = Calendar.getInstance();
-				Date date = cal.getTime();
-				picture_fname = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname;
-				byte[] data = picture_file.getBytes();
-				fsize = data.length;
-				f.setPicture_fname(picture_fname);
-				FileOutputStream fos = new FileOutputStream(path+"/"+picture_fname);
-				fos.write(data);
-				fos.close();
-				System.out.println(path);
-			} catch (Exception e) {
-				// TODO: handle exception
+		@RequestMapping(value = "/insertFind.do" , method = RequestMethod.POST)
+		public ModelAndView submit(HttpServletRequest request, FindVo f) {
+			ModelAndView mav = new ModelAndView("redirect:/find.do");		
+			String picture_fname1 = null;
+			String picture_fname2 = null;
+			String picture_fname3 = null;
+			int fsize1 = 0;
+			int fsize2 = 0;
+			int fsize3 = 0;
+			
+			MultipartFile picture_file1 = f.getPicture_file1();
+			MultipartFile picture_file2 = f.getPicture_file2();
+			MultipartFile picture_file3 = f.getPicture_file3();
+			picture_fname1 = picture_file1.getOriginalFilename();
+			picture_fname2 = picture_file2.getOriginalFilename();
+			picture_fname3 = picture_file3.getOriginalFilename();
+			
+			int pic_re1 = -1;
+			int pic_re2 = -1;
+			int pic_re3 = -1;
+			
+			String path = request.getRealPath("resources/img");
+			Calendar cal = Calendar.getInstance();
+			Date date = cal.getTime();
+			
+			if(picture_fname1 != null && !picture_fname1.equals("")) {
+				try {
+					picture_fname1 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname1;
+					byte[] data1 = picture_file1.getBytes();
+					fsize1 = data1.length;
+					f.setPicture_fname1(picture_fname1);
+					FileOutputStream fos1 = new FileOutputStream(path+"/"+picture_fname1);
+					fos1.write(data1);
+					fos1.close();
+					System.out.println(path);
+					pic_re1 = 1;
+					
+					if(picture_fname2 != null && !picture_fname2.equals("")) {
+						try {
+							path = request.getRealPath("resources/img");
+							cal = Calendar.getInstance();
+							date = cal.getTime();
+							picture_fname2 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname2;
+							byte[] data2 = picture_file2.getBytes();
+							fsize2 = data2.length;
+							f.setPicture_fname2(picture_fname2);
+							FileOutputStream fos2 = new FileOutputStream(path+"/"+picture_fname2);
+							fos2.write(data2);
+							fos2.close();
+							System.out.println(path);
+							pic_re2 = 1;
+							
+							if(picture_fname3 != null && !picture_fname3.equals("")) {
+								try {
+									path = request.getRealPath("resources/img");
+									cal = Calendar.getInstance();
+									date = cal.getTime();
+									picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
+									byte[] data3 = picture_file3.getBytes();
+									fsize3 = data3.length;
+									f.setPicture_fname3(picture_fname3);
+									FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
+									fos3.write(data3);
+									fos3.close();
+									System.out.println(path);
+									pic_re3 = 1;
+								} catch (Exception e) {
+									// TODO: handle exception
+								}
+							}else {
+								try {
+									path = request.getRealPath("resources/systems");
+									byte[] data3 = picture_file3.getBytes();
+									picture_fname3 = "default.jpg";
+									fsize3 = data3.length;
+									f.setPicture_fname3(picture_fname3);
+									System.out.println(path);
+									pic_re3 = 1;
+								} catch (Exception e) {
+									// TODO: handle exception
+								}
+							}
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+					}else {
+						try {
+							path = request.getRealPath("resources/systems");
+							byte[] data2 = picture_file2.getBytes();
+							picture_fname2 = "default.jpg";
+							fsize2 = data2.length;
+							f.setPicture_fname2(picture_fname2);
+							System.out.println(path);
+							pic_re2 = 1;
+							
+							if(picture_fname3 != null && !picture_fname3.equals("")) {
+								try {
+									path = request.getRealPath("resources/img");
+									cal = Calendar.getInstance();
+									date = cal.getTime();
+									picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
+									byte[] data3 = picture_file3.getBytes();
+									fsize3 = data3.length;
+									f.setPicture_fname3(picture_fname3);
+									FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
+									fos3.write(data3);
+									fos3.close();
+									System.out.println(path);
+									pic_re3 = 1;
+								} catch (Exception e) {
+									// TODO: handle exception
+								}
+							}else {
+								try {
+									path = request.getRealPath("resources/systems");
+									byte[] data3 = picture_file3.getBytes();
+									picture_fname3 = "default.jpg";
+									fsize3 = data3.length;
+									f.setPicture_fname3(picture_fname3);
+									System.out.println(path);
+									pic_re3 = 1;
+								} catch (Exception e) {
+									// TODO: handle exception
+								}
+							}
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}else {
+				try {
+					path = request.getRealPath("resources/systems");
+					byte[] data1 = picture_file1.getBytes();
+					picture_fname1 = "default.jpg";
+					fsize1 = data1.length;
+					f.setPicture_fname1(picture_fname1);
+					System.out.println(path);
+					pic_re1 = 1;
+					
+					if(picture_fname2 != null && !picture_fname2.equals("")) {
+						try {
+							path = request.getRealPath("resources/img");
+							cal = Calendar.getInstance();
+							date = cal.getTime();
+							picture_fname2 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname2;
+							byte[] data2 = picture_file2.getBytes();
+							fsize2 = data2.length;
+							f.setPicture_fname2(picture_fname2);
+							FileOutputStream fos2 = new FileOutputStream(path+"/"+picture_fname2);
+							fos2.write(data2);
+							fos2.close();
+							System.out.println(path);
+							pic_re2 = 1;
+							
+							
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+						
+						if(picture_fname3 != null && !picture_fname3.equals("")) {
+							try {
+								path = request.getRealPath("resources/img");
+								cal = Calendar.getInstance();
+								date = cal.getTime();
+								picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
+								byte[] data3 = picture_file3.getBytes();
+								fsize3 = data3.length;
+								f.setPicture_fname3(picture_fname3);
+								FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
+								fos3.write(data3);
+								fos3.close();
+								System.out.println(path);
+								pic_re3 = 1;
+							} catch (Exception e) {
+								// TODO: handle exception
+							}
+						}else {
+							try {
+								path = request.getRealPath("resources/systems");
+								byte[] data3 = picture_file3.getBytes();
+								picture_fname3 = "default.jpg";
+								fsize3 = data3.length;
+								f.setPicture_fname3(picture_fname3);
+								System.out.println(path);
+								pic_re3 = 1;
+							} catch (Exception e) {
+								// TODO: handle exception
+							}
+						}
+					}else {
+						try {
+							path = request.getRealPath("resources/systems");
+							byte[] data2 = picture_file2.getBytes();
+							picture_fname2 = "default.jpg";
+							fsize2 = data2.length;
+							f.setPicture_fname2(picture_fname2);
+							System.out.println(path);
+							pic_re2 = 1;
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+						
+						if(picture_fname3 != null && !picture_fname3.equals("")) {
+							try {
+								path = request.getRealPath("resources/img");
+								cal = Calendar.getInstance();
+								date = cal.getTime();
+								picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
+								byte[] data3 = picture_file3.getBytes();
+								fsize3 = data3.length;
+								f.setPicture_fname3(picture_fname3);
+								FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
+								fos3.write(data3);
+								fos3.close();
+								System.out.println(path);
+								pic_re3 = 1;
+							} catch (Exception e) {
+								// TODO: handle exception
+							}
+						}else {
+							try {
+								path = request.getRealPath("resources/systems");
+								byte[] data3 = picture_file3.getBytes();
+								picture_fname3 = "default.jpg";
+								fsize3 = data3.length;
+								f.setPicture_fname3(picture_fname3);
+								System.out.println(path);
+								pic_re3 = 1;
+							} catch (Exception e) {
+								// TODO: handle exception
+							}
+						}
+						
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+			
+			if(pic_re1 == 1 && pic_re2 == 1 && pic_re3 == 1) {
+				int re = dao.insertFind(f);
 				
+				if(re != 1) {
+					mav.addObject("msg","게시물 등록에 실패하였습니다.");
+					mav.setViewName("redirect:/find.do");
+				}
 			}
-		}else {
-			try {
-				String path = request.getRealPath("resources/systems");
-				byte[] data = picture_file.getBytes();
-				picture_fname = "default.jpg";
-				fsize = data.length;
-				f.setPicture_fname(picture_fname);
-				System.out.println(path);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+			return mav;
 		}
-		
-		int re = dao.insertFind(f);
-		if(re != 1) {
-			mav.addObject("msg","게시물 등록에 실패하였습니다.");
-			mav.setViewName("redirect:/find.do");
-		}
-		return mav;
-	}
 	
 	// 찾아요게시판 수정 컨트롤러
 	@RequestMapping(value = "/updateFind.do", method = RequestMethod.GET)
@@ -190,24 +448,48 @@ public class FindController {
 	public ModelAndView findUpdateSubmit(HttpServletRequest request, FindVo f) {
 		ModelAndView mav = new ModelAndView("redirect:/detailFind.do?board_num="+f.getBoard_num());
 		String path = request.getRealPath("/resources/img");
-		String oldFname = f.getPicture_fname();
+		String oldFname1 = f.getPicture_fname1();
+		String oldFname2 = f.getPicture_fname2();
+		String oldFname3 = f.getPicture_fname3();
 		
-		String picture_fname = null;
-		int fsize = 0;
+		String picture_fname1 = null;
+		String picture_fname2 = null;
+		String picture_fname3 = null;
+		int fsize1 = 0;
+		int fsize2 = 0;
+		int fsize3 = 0;
 		
-		MultipartFile picture_file = f.getPicture_file();
-		picture_fname = picture_file.getOriginalFilename();
+		MultipartFile picture_file1 = f.getPicture_file1();
+		MultipartFile picture_file2 = f.getPicture_file2();
+		MultipartFile picture_file3 = f.getPicture_file3();
+		picture_fname1 = picture_file1.getOriginalFilename();
+		picture_fname2 = picture_file2.getOriginalFilename();
+		picture_fname3 = picture_file3.getOriginalFilename();
 		Calendar cal = Calendar.getInstance();
 		Date date = cal.getTime();
-		if(picture_fname != null && !picture_fname.equals("")) {
+		if(picture_fname1 != null && !picture_fname1.equals("")) {
 			try {
-				picture_fname = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date)) + "_" + picture_fname;
-				byte []data = picture_file.getBytes();
-				FileOutputStream fos = new FileOutputStream(path + "/" + picture_fname);
-				fos.write(data);
-				fsize = data.length;
-				fos.close();
-				f.setPicture_fname(picture_fname);
+				picture_fname1 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date)) + "_" + picture_fname1;
+				picture_fname2 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date)) + "_" + picture_fname2;
+				picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date)) + "_" + picture_fname3;
+				byte []data1 = picture_file1.getBytes();
+				byte []data2 = picture_file2.getBytes();
+				byte []data3 = picture_file3.getBytes();
+				FileOutputStream fos1 = new FileOutputStream(path + "/" + picture_fname1);
+				FileOutputStream fos2 = new FileOutputStream(path + "/" + picture_fname2);
+				FileOutputStream fos3 = new FileOutputStream(path + "/" + picture_fname3);
+				fos1.write(data1);
+				fos2.write(data2);
+				fos3.write(data3);
+				fsize1 = data1.length;
+				fsize2 = data2.length;
+				fsize3 = data3.length;
+				fos1.close();
+				fos2.close();
+				fos3.close();
+				f.setPicture_fname1(picture_fname1);
+				f.setPicture_fname2(picture_fname2);
+				f.setPicture_fname3(picture_fname3);
 				
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -220,9 +502,13 @@ public class FindController {
 			mav.addObject("msg", "게시물 수정에 실패하였습니다.");
 			mav.setViewName("/find.do");
 		}else {
-			if(fsize != 0)	{
-			File file = new File(path + "/" + oldFname);
-				file.delete();
+			if(fsize1 != 0 && fsize2 != 0 && fsize3 != 0)	{
+			File file1 = new File(path + "/" + oldFname1);
+			File file2 = new File(path + "/" + oldFname2);
+			File file3 = new File(path + "/" + oldFname3);
+				file1.delete();
+				file2.delete();
+				file3.delete();
 			}
 		}
 		return mav;
@@ -242,13 +528,19 @@ public class FindController {
 	public ModelAndView findDeleteSubmit(HttpServletRequest request, int board_num) {
 		String path = request.getRealPath("/resources/img");
 		ModelAndView mav = new ModelAndView("redirect:/find.do");
-		String picture_fname = dao.getFind(board_num).getPicture_fname();
+		String picture_fname1 = dao.getFind(board_num).getPicture_fname1();
+		String picture_fname2 = dao.getFind(board_num).getPicture_fname2();
+		String picture_fname3 = dao.getFind(board_num).getPicture_fname3();
 		
 		int re = dao.deleteFind(board_num);
 		System.out.println(re);
 		if(re == 1) {
-			File file = new File(path + "/" + picture_fname);
-			file.delete();
+			File file1 = new File(path + "/" + picture_fname1);
+			File file2 = new File(path + "/" + picture_fname2);
+			File file3 = new File(path + "/" + picture_fname3);
+			file1.delete();
+			file2.delete();
+			file3.delete();
 		}else {
 			mav.addObject("msg","게시물 삭제에 실패하였습니다.");
 			mav.setViewName("find.do");

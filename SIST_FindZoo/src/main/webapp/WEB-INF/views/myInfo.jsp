@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
 <meta charset="UTF-8">
@@ -9,25 +9,24 @@
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	/* 내 정보 상세 조회 */
-	.myInfo-container {
+	#myInfo-container {
 		display: flex;
-		position: absolute;
-		width: 1000px;
-		margin: auto;
-		margin-top: 20px;
-		margin-bottom: 20px;
+		justify-content: center;
 	}
 	
-	.myInfo-container .list-group{
-		width: 200px;
-		margin: 10px;
+	#content{
+		display: inline-block;
+		width: 70%;
+		margin-top: 2%;
+	}
+	
+	#myInfo-container #sidebar{
+		width: 10%;
 		border: 1px solid black;
 	}
 	
-	.myInfo-container .input-container {
-		float: right;
-		margin: 10px;
-		padding: 20px;
+	#myInfo-container #input-container {
+		width: 50%;
 		border: 1px solid black;
 	}
 	
@@ -121,41 +120,43 @@
 </script>
 </head>
 <body>
-	<div class="myInfo-container">
-		<aside class="sidebar">
-			<div class="list-group">
-				<%-- class에 active를 지워야 모달 창 열었을 때 bgLayer가 적용된다. --%>
-				<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 정보</a>
-				<a href="#" class="list-group-item list-group-item-action">1:1 문의</a>
-				<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
-				<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 게시물</a>
-				<a href="#" class="list-group-item list-group-item-action">내 댓글</a>
-			</div>
-		</aside>
-		<article class="input-container">
-			<h2>내 정보</h2>
-			<hr>
-			회원번호: ${mb.member_num }<br>
-			아이디: ${mb.member_id }<br>	
-			비밀번호: ${mb.member_pwd }&nbsp;<input type="button" id="open-updatePwd-modal" value="비밀번호 변경"><br>
-			이름: ${mb.member_name }<br>
-			닉네임: ${mb.member_nick }<br>
-			전화번호: ${mb.member_phone }<br>
-			이메일: ${mb.member_email }<br>
-			주소: ${mb.member_addr }<br>
-			포인트: ${mb.member_point }point<br>
-			알림 서비스: ${mb.member_sms }<br>
-			관리자 여부: ${mb.member_admin }<br>
-				<c:if test="${mb.social_num == '0'}">로그인 방식: 웹 로그인<br></c:if>
-				<c:if test="${mb.social_num == '1'}">로그인 방식: 네이버 로그인<br></c:if>
-				<c:if test="${mb.social_num == '2'}">로그인 방식: 카카오 로그인<br></c:if>
-			반려동물 정보: 
-				<c:forEach var="pet" items="${listPet }"><a href="detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach>
-				<input type="button" value="반려동물 추가" onclick="location.href='insertPet.do?member_num=${mb.member_num}'"><br>
-			<br>
-			<input type="button" value="내 정보 수정" onclick="location.href='updateInfo.do?member_num=${mb.member_num}'">
-			<input type="button" value="회원 탈퇴" onclick="#">
-		</article>
+	<div id="myInfo-container">
+		<div id="content">
+			<aside id="sidebar">
+				<div class="list-group">
+					<%-- class에 active를 지워야 모달 창 열었을 때 bgLayer가 적용된다. --%>
+					<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 정보</a>
+					<a href="#" class="list-group-item list-group-item-action">1:1 문의</a>
+					<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
+					<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 게시물</a>
+					<a href="#" class="list-group-item list-group-item-action">내 댓글</a>
+				</div>
+			</aside>
+			<article id="input-container">
+				<h2>내 정보</h2>
+				<hr>
+				회원번호: ${mb.member_num }<br>
+				아이디: ${mb.member_id }<br>	
+				비밀번호: ${mb.member_pwd }&nbsp;<input type="button" id="open-updatePwd-modal" value="비밀번호 변경"><br>
+				이름: ${mb.member_name }<br>
+				닉네임: ${mb.member_nick }<br>
+				전화번호: ${mb.member_phone }<br>
+				이메일: ${mb.member_email }<br>
+				주소: ${mb.member_addr }<br>
+				포인트: ${mb.member_point }point<br>
+				알림 서비스: ${mb.member_sms }<br>
+				관리자 여부: ${mb.member_admin }<br>
+					<c:if test="${mb.social_num == '0'}">로그인 방식: 웹 로그인<br></c:if>
+					<c:if test="${mb.social_num == '1'}">로그인 방식: 네이버 로그인<br></c:if>
+					<c:if test="${mb.social_num == '2'}">로그인 방식: 카카오 로그인<br></c:if>
+				반려동물 정보: 
+					<c:forEach var="pet" items="${listPet }"><a href="detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach>
+					<input type="button" value="반려동물 추가" onclick="location.href='insertPet.do?member_num=${mb.member_num}'"><br>
+				<br>
+				<input type="button" value="내 정보 수정" onclick="location.href='updateInfo.do?member_num=${mb.member_num}'">
+				<input type="button" value="회원 탈퇴" onclick="#">
+			</article>
+		</div>
 	</div> <!-- 
 	<div class="updatePwd-modal">
 		<form action="updatePwd.do" id="updatePwd-modal-content" method="post">
