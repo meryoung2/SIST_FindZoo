@@ -53,7 +53,7 @@
 <body>
 	<h2>자유게시판 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
 	<hr>
-	<a href="insertFree.do">글쓰기</a>
+	<a href="/member/insertFree.do">글쓰기</a>
 	<hr>
 	<table border="1" width="80%">
 		<tr>

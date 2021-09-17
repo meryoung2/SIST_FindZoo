@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dao.FreeDao;
 import com.example.demo.util.Paging;
 import com.example.demo.vo.FreeVo;
+import com.example.demo.vo.MemberVo;
 
 @Controller
 public class FreeController {
@@ -111,14 +113,16 @@ public class FreeController {
 	}
 	
 	// 자유게시판 글 작성
-	@RequestMapping(value = "/insertFree.do", method = RequestMethod.GET)
-	public void insertForm(HttpServletRequest request) {
+	@RequestMapping(value = "/member/insertFree.do", method = RequestMethod.GET)
+	public void insertForm(HttpServletRequest request, HttpSession session) {
 		
 	}
 	
-	@RequestMapping(value = "/insertFree.do", method = RequestMethod.POST)
-	public ModelAndView insertSubmit(HttpServletRequest request, FreeVo f) {
+	@RequestMapping(value = "/member/insertFree.do", method = RequestMethod.POST)
+	public ModelAndView insertSubmit(HttpServletRequest request, HttpSession session, FreeVo f) {
 		ModelAndView mav = new ModelAndView("redirect:/free.do");
+		int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		f.setMember_num(member_num);
 		String path = request.getRealPath("resources/img");
 		
 		Calendar cal = Calendar.getInstance();

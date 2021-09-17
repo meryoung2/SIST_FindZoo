@@ -39,6 +39,13 @@
 	  <select id="findId" resultType="memberVo">
 	  	select member_id from member where member_name=#{member_name} and member_phone=#{member_phone}
 	  </select>
+	  
+	  <!-- 비밀번호 재설정 -->
+	  <update id="findPwd" parameterType="memberVo">
+	  	update member set member_pwd = #{member_pwd} where member_name = #{member_name} and member_id=#{member_id} and member_phone = #{member_phone}
+	  </update>
+
+	
 
 	<!-- 마이페이지 -->
  	<select id="getMember" parameterType="int" resultType="memberVo">

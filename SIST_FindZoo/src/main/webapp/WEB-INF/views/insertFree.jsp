@@ -9,7 +9,7 @@
 <body>
 	<h2>자유게시글 등록</h2>
 	<hr> 
-	<form action="insertFree.do" method="post" enctype="multipart/form-data">
+	<form action="/member/insertFree.do" method="post" enctype="multipart/form-data">
 		제목 : <input type="text" name="title"><br>
 		내용 : <textarea rows="10" cols="80" name="content"></textarea><br>
 		파일 : <input type="file" name="picture_file"><br>
