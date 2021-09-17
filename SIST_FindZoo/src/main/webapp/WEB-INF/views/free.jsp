@@ -63,12 +63,13 @@
 	#member_modal{
 		position: absolute;
 		display: none;
-		width: 10%;
+		width: 8%;
 		height: 10%;
 		text-align: center;
 		background-color: white;
 		border: 1px black solid;
 		overflow: hidden;
+		font-size : 12px;
 	}
 	
 	#member_act{

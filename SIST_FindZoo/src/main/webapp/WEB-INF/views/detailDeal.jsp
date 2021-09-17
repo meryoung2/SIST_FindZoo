@@ -51,12 +51,13 @@
 	#member_modal{
 		position: absolute;
 		display: none;
-		width: 10%;
-		height: 20%;
+		width: 8%;
+		height: 10%;
 		text-align: center;
 		background-color: white;
 		border: 1px black solid;
 		overflow: hidden;
+		font-size : 12px;
 	}
 	
 	#member_act{
@@ -305,10 +306,7 @@
 	<div class="modal" id="member_modal">
 		<table class="table table-hover" id="member_act">
 			<tr>
-				<td><a>회원 정보 보기</a></td>
-			</tr>
-			<tr>
-				<td><a id="member_board">작성 글 보기</a></td>
+				<td><a id="member_board">회원 정보 보기</a></td>
 			</tr>
 			<tr>
 				<td><a>쪽지 보내기</a></td>

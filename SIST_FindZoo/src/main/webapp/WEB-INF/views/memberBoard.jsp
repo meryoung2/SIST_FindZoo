@@ -54,12 +54,11 @@
 
 	#page{
 		text-align: center;
-		margin-top: 5%;
 	}
 	
-	#search{
-		text-align: center;
-	}
+
+	
+	
 </style>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -94,8 +93,33 @@
 <body>
 <div id="free-container">
 		<div id="content">
-	<h2>${list[0].member_nick}님의 작성 게시글 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
-	<hr>
+		<c:set var="memberId" value="${mb.member_id}" />
+		<h4>${mb.member_nick}(<c:out value="${fn:substring(memberId, 0, fn:length(memberId) - 4)}" />****) 님의 회원정보</h4>
+		이름 : ${mb.member_name }<br>
+		이메일 : ${mb.member_email}<br>
+		포인트 : ${mb.member_point }
+		<hr>
+		<h4>반려동물정보</h4>
+
+		<table class="petInfo">
+			<tr>
+				<c:forEach items="${listPet }" var="p">
+					<th>${p.pet_name }&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				</c:forEach>
+			</tr>
+			<tr>
+				<c:forEach items="${listPet }" var="p">
+					<th>종류 : ${p.pet_type }&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				</c:forEach>
+			</tr>
+			<tr>
+				<c:forEach items="${listPet }" var="p">
+					<th>성별 : ${p.pet_sex }&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				</c:forEach>
+			</tr>
+		</table>
+		<hr>
+	<h4>작성 게시글 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h4>
 	<table border="1" class="table table-hover">
 		<thead class="table-active">
 		<tr>
@@ -178,14 +202,15 @@
 			</tr>
 		</c:forEach>
 	</table>
-	
-	<a href="#" onclick="btn_start(${ member_num })">≪</a>
-	<a href="#" onclick="btn_prev(${ listStart }, ${ listEnd }, ${ member_num })">이전</a>
-	<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
-		<a href="memberBoard.do?pageNum=${ i }&member_num=${ member_num }">${ i }</a>&nbsp;
-	</c:forEach>
-	<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>
-	<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>
+		<div id="page">
+			<a href="#" onclick="btn_start(${ member_num })">≪</a>
+			<a href="#" onclick="btn_prev(${ listStart }, ${ listEnd }, ${ member_num })">이전</a>
+			<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
+				<a href="memberBoard.do?pageNum=${ i }&member_num=${ member_num }">${ i }</a>&nbsp;
+			</c:forEach>
+			<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>
+			<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>
+		</div>
 	</div>
 </div>
 </body>

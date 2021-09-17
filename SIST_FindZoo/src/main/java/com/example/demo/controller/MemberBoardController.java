@@ -49,6 +49,7 @@ public class MemberBoardController {
 	public void deal(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "member_num", defaultValue = "1") int member_num, Model model) {
 
+		
 		paging.totalRecord = dao.getTotalRecordMemberBoard(member_num);
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
@@ -66,12 +67,16 @@ public class MemberBoardController {
 		map.put("end", paging.end);
 		map.put("member_num", member_num);
 		
+		
+		model.addAttribute("mb", dao.getMember(member_num));
 		model.addAttribute("list", dao.findAll(map));
+		model.addAttribute("listPet", dao.listPet(member_num));
 		model.addAttribute("totalRecord", paging.totalRecord);
 		model.addAttribute("totalPage", paging.totalPage);
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("member_num", member_num);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
+		
 	}
 }

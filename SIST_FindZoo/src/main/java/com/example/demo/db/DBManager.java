@@ -352,7 +352,7 @@ public class DBManager {
 		session.close();
 		return n;
 	}
-
+	
 	// 게시판 댓글 목록 조회
 	public static List<ReplyVo> listReply(int board_num) {
 		SqlSession session = factory.openSession();
