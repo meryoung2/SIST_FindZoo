@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dao.FreeDao;
 import com.example.demo.util.Paging;
 import com.example.demo.vo.FreeVo;
+import com.example.demo.vo.ReplyVo;
 
 @Controller
 public class FreeController {
@@ -108,6 +109,7 @@ public class FreeController {
 	public void detail(HttpServletRequest request, Model model, int board_num) {
 		dao.updateViews(board_num);
 		model.addAttribute("f", dao.getFree(board_num));
+		model.addAttribute("list", dao.findAll(board_num));
 	}
 	
 	// 자유게시판 글 작성
@@ -214,4 +216,60 @@ public class FreeController {
 		}
 		return mav;
 	}
+	
+	
+	//댓글쓰기 컨트롤러
+		@RequestMapping(value="/freeInsertReply.do", method=RequestMethod.POST)
+		public ModelAndView insertReplySubmit(ReplyVo r, int board_num) {
+			
+			ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+		
+			int re = dao.insertReply(r);
+			if(re != 1) {
+				mav.addObject("msg", "게시물 등록에 실패하였습니다.");
+				mav.setViewName("error");
+			}
+			
+			return mav;
+		}
+		
+		//댓글삭제 컨트롤러	
+		@RequestMapping(value="/freeDeleteReply.do")
+		public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
+			ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+			int re = dao.deleteReply(reply_num);
+			if(re != 1) {
+				mav.addObject("msg", "댓글 삭제에 실패하였습니다..");
+				mav.setViewName("error");
+			}
+			return mav;
+		}
+		
+			
+		//댓글 수정
+		@RequestMapping(value="/freeUpdateReply.do", method=RequestMethod.POST)
+		public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
+			ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+			int re = dao.updateReply(r);
+			if(re != 1) {
+				mav.addObject("msg", "내 댓글 수정에 실패하였습니다.");
+				mav.setViewName("error");
+			}
+			return mav;
+		}
+		
+		//대댓글쓰기		
+		@RequestMapping(value="/freeReReply.do", method=RequestMethod.POST)
+		public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
+			ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+			
+			int re = dao.insertReReply(r);
+			
+			if(re != 1) {
+				mav.addObject("msg", "게시물 등록에 실패하였습니다.");
+				mav.setViewName("error");
+			}
+			
+			return mav;
+		}
 }

@@ -37,7 +37,7 @@ public class MemberBoardController {
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, 
 			@RequestParam(value = "member_num", defaultValue = "1") int member_num, 
 			@RequestParam(value = "member_nick", defaultValue = "회원") String member_nick,
-			Model model) { // 추가
+			Model model) {
 		
 		paging.totalRecord = dao.getTotalRecordMemberBoard(member_num);
 		paging.totalPage = paging.getTotalPage();
@@ -55,15 +55,16 @@ public class MemberBoardController {
 		map.put("start", paging.start);
 		map.put("end", paging.end);
 		map.put("member_num", member_num);
-		
+
 		model.addAttribute("list", dao.findAll(map));
 		model.addAttribute("totalRecord", paging.totalRecord);
 		model.addAttribute("totalPage", paging.totalPage);
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("member_num", member_num);
-		model.addAttribute("member_nick", dao.getNick(member_num)); // 추가
+		model.addAttribute("member_nick", dao.getNick(member_num));
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
+		
 	}
 	
 }

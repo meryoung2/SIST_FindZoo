@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.DBManager;
@@ -38,10 +40,12 @@ public class MemberDao {
 		return DBManager.insertMember(m);
 	}
 	
+	//로그인
 	public boolean isMember(String member_id, String member_pwd) {
 		return DBManager.isMember(member_id, member_pwd);
 	}
 
+	//로그인 시, 아이디로 비밀번호 찾기
 	public MemberVo loginMember(String member_id) {
 		// TODO Auto-generated method stub
 		return DBManager.loginMember(member_id);
@@ -52,13 +56,14 @@ public class MemberDao {
 		return DBManager.idChk(member_id);
 	}
 	
-	//아이디 중복체크
+	//닉네임 중복체크
 	public int nickchk(String member_nick) {
 		return DBManager.nickChk(member_nick);
 	}
 	
 	//아이디 찾기
-	public MemberVo findId(String member_name, String member_phone) {
+	public Map<String, Object> findId(String member_name, String member_phone) {
+		System.out.println(member_name);
 		return DBManager.findId(member_name, member_phone);
 	}
 		

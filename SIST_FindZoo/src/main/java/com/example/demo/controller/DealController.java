@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -126,9 +128,7 @@ public class DealController {
 	@RequestMapping(value = "/insertDeal.do" , method = RequestMethod.POST)
 	public ModelAndView submit(HttpServletRequest request, DealVo d) {
 		ModelAndView mav = new ModelAndView("redirect:/deal.do");
-		String path = request.getRealPath("resources/img");
-		System.out.println(path);
-		
+		String path = request.getRealPath("resources/img");		
 		String picture_fname = null;
 		int fsize = 0;
 		
@@ -150,7 +150,7 @@ public class DealController {
 				System.out.println("파일업로드중 오류발생 : " + e.getMessage());
 			}
 		}else {
-			d.setPicture_fname("null");
+			d.setPicture_fname("");
 		}
 		
 		int re = dao.insertDeal(d);
@@ -229,7 +229,7 @@ public class DealController {
 	
 	
 	//거래게시판 댓글쓰기 컨트롤러
-	@RequestMapping(value="/insertReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/dealInsertReply.do", method=RequestMethod.POST)
 	public ModelAndView insertReplySubmit(ReplyVo r, int board_num) {
 		
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
@@ -244,7 +244,7 @@ public class DealController {
 	}
 	
 	//거래게시판 댓글삭제 컨트롤러	
-	@RequestMapping(value="/deleteReply.do")
+	@RequestMapping(value="/dealDeleteReply.do")
 	public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
 		int re = dao.deleteReply(reply_num);
@@ -257,7 +257,7 @@ public class DealController {
 	
 		
 	//댓글 수정
-	@RequestMapping(value="/updateReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/dealUpdateReply.do", method=RequestMethod.POST)
 	public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
 		int re = dao.updateReply(r);
@@ -269,8 +269,8 @@ public class DealController {
 	}
 	
 	//거래게시판 대댓글쓰기
-	@RequestMapping(value="/reReply.do", method=RequestMethod.POST)
-	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num) {
+	@RequestMapping(value="/dealReReply.do", method=RequestMethod.POST)
+	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
 		
 		int re = dao.insertReReply(r);

@@ -245,6 +245,15 @@ public class DBManager {
 		session.close();
 		return list;
 	}
+	
+	// 찾아요게시판 목록에 해당하는 사진 불러오기
+	public static List<String> findPicture(HashMap map_pic) {
+		SqlSession session = factory.openSession();
+		List<String> p = session.selectList("find.findAllPicture", map_pic);
+		System.out.println(p.size());
+		session.close();
+		return p;
+	}
 
 	// 찾아요게시판 검색 후 목록 조회
 	public static List<FindVo> searchFind(HashMap map) {
@@ -253,15 +262,32 @@ public class DBManager {
 		session.close();
 		return list;
 	}
+	
+	// 찾아요게시판 검색 후 목록에 해당하는 사진 불러오기
+		public static List<String> searchFindPicture(HashMap map_pic) {
+			SqlSession session = factory.openSession();
+			List<String> p = session.selectList("find.searchPicture", map_pic);
+			System.out.println(p.size());
+			session.close();
+			return p;
+		}
 
 	// 찾아요게시판 글쓰기
 	public static int insertFind(FindVo f) {
 		SqlSession session = factory.openSession(false);
 		int re = -1;
+		
+		int pic_re1 = 0;
+		int pic_re2 = 0;
+		int pic_re3 = 0;
+		
 		int board_re = session.insert("find.insertBoard", f);
 		int find_re = session.insert("find.insertFind", f);
-		int pic_re = session.insert("find.insertFindPicture", f);
-		if (board_re == 1 && find_re == 1 && pic_re == 1) {
+		
+		if(board_re == 1 && find_re == 1) {
+			pic_re1 = session.insert("find.insertFindPicture1", f);
+			pic_re2 = session.insert("find.insertFindPicture2", f);
+			pic_re3 = session.insert("find.insertFindPicture3", f);
 			session.commit();
 			re = 1;
 		} else {
@@ -271,12 +297,46 @@ public class DBManager {
 		return re;
 	}
 
-	// 찾아요게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
+	// 찾아요게시판 특정 게시글 상세 내용 불러오기 메소드
 	public static FindVo getFind(int board_num) {
 		SqlSession session = factory.openSession();
 		FindVo f = session.selectOne("find.getBoard", board_num);
+		List<String> p = getFindPicture(board_num);
+		List<String> n = getFindPictureNum(board_num);
+		String p1 = p.get(0);
+		String p2 = p.get(1);
+		String p3 = p.get(2);
+		
+		String n1 = n.get(0);
+		String n2 = n.get(1);
+		String n3 = n.get(2);
+		
+		f.setPicture_fname1(p1);
+		f.setPicture_fname2(p2);
+		f.setPicture_fname3(p3);
+		
+		f.setPicture_file_num1(n1);
+		f.setPicture_file_num2(n2);
+		f.setPicture_file_num3(n3);
+		
 		session.close();
 		return f;
+	}
+	
+	// 찾아요게시판 특정 게시글 의 사진 불러오기 메소드
+	public static List<String> getFindPicture(int board_num) {
+		SqlSession session = factory.openSession();
+		List<String> p = session.selectList("find.getPicture", board_num);
+		session.close();
+		return p;
+	}
+	
+	// 찾아요게시판 특정 게시글 의 사진번호 불러오기 메소드
+	public static List<String> getFindPictureNum(int board_num) {
+		SqlSession session = factory.openSession();
+		List<String> n = session.selectList("find.getPictureNum", board_num);
+		session.close();
+		return n;
 	}
 
 	// 찾아요게시판 글, 사진 수정
@@ -285,14 +345,17 @@ public class DBManager {
 		int re = -1;
 		int find_re = session.update("find.updateFind", f);
 		int board_re = session.update("find.updateBoard", f);
-		int pic_re = session.update("find.updateFindPicture", f);
-
-		if (pic_re == 1 && find_re == 1 && board_re == 1) {
+		
+		if(board_re == 1 && find_re == 1) {
+			int pic_re1 = session.update("find.updateFindPicture1", f);
+			int pic_re2 = session.update("find.updateFindPicture2", f);
+			int pic_re3 = session.update("find.updateFindPicture3", f);
 			session.commit();
 			re = 1;
 		} else {
 			session.rollback();
 		}
+		
 		session.close();
 		return re;
 	}
@@ -302,10 +365,14 @@ public class DBManager {
 		SqlSession session = factory.openSession(false);
 		int re = -1;
 		int find_re = session.delete("find.deleteFind", board_num);
+		System.out.println(find_re);
 		int pic_re = session.delete("find.deleteFindPicture", board_num);
+		System.out.println(pic_re);
 		int board_re = session.delete("find.deleteBoard", board_num);
+		System.out.println(board_re);
 
-		if (find_re == 1 && board_re == 1 && pic_re == 1) {
+
+		if (find_re == 1 && board_re == 1 && pic_re == 3) {
 			session.commit();
 			re = 1;
 		} else {
@@ -361,7 +428,7 @@ public class DBManager {
 		session.close();
 		return n;
 	}
-
+	
 	// 게시판 댓글 목록 조회
 	public static List<ReplyVo> listReply(int board_num) {
 		SqlSession session = factory.openSession();
@@ -463,7 +530,7 @@ public class DBManager {
 		HashMap map = new HashMap();
 		map.put("member_id", member_id);
 		int result = session.selectOne("member.idChk", map);
-		if (result == 1) {
+		if (result >= 1) {
 			re = 409;
 		} else {
 			re = 200;
@@ -485,24 +552,37 @@ public class DBManager {
 		} else {
 			re = 200;
 		}
-		System.out.println(result);
+		System.out.println(result + "닉네임 중복체크");
 		session.close();
 		return re;
 	}
 
 	// 로그인 시, 아이디 찾기
-	public static MemberVo findId(String member_name, String member_phone) {
+	public static Map findId(String member_name, String member_phone) {
 		SqlSession session = factory.openSession();
+		
+		System.out.println(member_name);
 		Map map = new HashMap();
 		map.put("member_name", member_name);
 		map.put("member_phone", member_phone);
 		MemberVo m = session.selectOne("member.findId", map);
-		if (m != null) {
-			map.put(m, m.getMember_id());
-		}
+			if(m != null) {
+				map.put("member_id", m.getMember_id());
+				map.put("code", 200);
+			} else {
+				map.put("code", 204);
+			}	
 		session.close();
-		return m;
+		return map;
 	}
+	
+	// 비밀번호 찾기 / 비밀번호 재설정
+		public static int findPwd(MemberVo mb) {
+			SqlSession session = factory.openSession(true);
+			int re = session.update("member.findPwd", mb);
+			session.close();
+			return re;
+		}
 
 	//////////////////////////////////////// 진솔 끝 ////////////////////////////////////////
 

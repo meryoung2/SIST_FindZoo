@@ -6,44 +6,69 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-/*
-function findId(){
-	 var member_id = $("#member_id").val();
-	 var member_name = 
-	 $.ajax({
-			url : '${pageContext.request.contextPath}/user/idCheck?member_id='+ member_id,
-			type : 'get',
-			success : function(data) {
-				 if(data == 409){
-					 alert("이미 등록된 아이디입니다.");
-					 $("#member_id").val("");
-					 return false;
-				 }else{
-					 alert("사용 가능한 아이디입니다.");
-				 }
-			}
-	 })
-	 
-}
-*/
+<style type="text/css">
+@font-face {
+	    font-family: 'GmarketSansMedium';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
 
-function goFindId(){
+	*{
+		font-family: 'GmarketSansMedium';
+		font-weight: lighter;
+	}
 	
-	location.href="/views/find_id.jsp";
+	#free-container{
+		display: flex;
+		justify-content: center;
+	}
+	
+	#content{
+		display: inline-block;
+		width: 70%;
+		margin-top: 2%;
+	}
+</style>
+<script type="text/javascript">
+function goFindId(){
+	location.href="/find_id.do";
 }
 </script>
 </head>
 <body>
-	<h2>로그인</h2>
-	<hr>
+<jsp:include page="findZoo_Header.jsp"/>
+
+	<div id="free-container">
+	<div id="content">
 	<form action="login.do" method="post">
-		아이디 : <input type="text" name="member_id"><br>
-		암호 : <input type="password" name="member_pwd"><br>
-		<input type="submit" value="로그인">
-		<a href="join.jsp">회원가입</a>
-		<input type="button" id="find-id" onclick="goFindId();" value="아이디 찾기">
-		<button type="button" id="find-id" onclick="location=windows.open('find_pwd.jsp')">비밀번호 찾기</button>
+		<fieldset>
+	    <legend>로그인</legend>
+	    
+		    <div class="form-group">
+		    	<label for="id" class="form-label mt-4">아이디</label>
+		    	<input type="text" id="member_id" name="member_id" required="required" class="form-control">
+		    	
+		    	<label for="pw" class="form-label mt-4">비밀번호</label>
+			<input type="password" class="form-control" id="member_pwd" name="member_pwd" required="required" placeholder="Password">
+
+			</div>
 	</form>
+		<div class="modal-footer">
+			<input type="submit" class="btn btn-primary" value="로그인">
+			<a href="join.do"><input type="button" class="btn btn-primary" value="회원가입"></a>
+			<a href="find_id.do"><input type="button" class="btn btn-primary" value="아이디 찾기"></a>
+			<a href="find_pwd.do"><input type="button" class="btn btn-primary" value="비밀번호 찾기"></a>
+			
+			<!--  
+			<input type="button" id="find-id" onclick="goFindId();" value="아이디 찾기">
+			<button type="button" id="find-id" onclick="location=windows.open('find_pwd.jsp')">비밀번호 찾기</button>
+			-->
+			
+		</div>
+		</fieldset>
+	</div>
+	</div>
+	<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

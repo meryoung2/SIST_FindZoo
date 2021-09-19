@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.DBManager;
 import com.example.demo.vo.MemberBoardVo;
-import com.example.demo.vo.PetVo;
 
 @Repository
 public class MemberBoardDao {
@@ -25,5 +24,4 @@ public class MemberBoardDao {
 	public int getTotalRecordMemberBoard(int member_num) {
 		return DBManager.getTotalRecordMemberBoard(member_num);
 	}
-
 }

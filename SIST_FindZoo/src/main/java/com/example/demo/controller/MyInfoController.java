@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,17 +37,20 @@ public class MyInfoController {
 	} 
 	
 	// 마이페이지 내 정보 조회
-	@RequestMapping("/myInfo.do")
-	public ModelAndView getMemberPet(int member_num) {
+	@RequestMapping("/member/myInfo.do")
+	public ModelAndView getMemberPet(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		System.out.println(member_num);
 		mav.addObject("mb", dao.getMember(member_num));
 		mav.addObject("listPet", petDao.listPet(member_num));
 		return mav;
 	}
 	
 	// 마이페이지 내 정보 수정
-	@RequestMapping(value="/updateInfo.do", method=RequestMethod.GET)
-	public void updateInfoForm(int member_num, Model model) {
+	@RequestMapping(value="/member/updateInfo.do", method=RequestMethod.GET)
+	public void updateInfoForm(HttpSession session, Model model) {
+		int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
 		model.addAttribute("mb", dao.getMember(member_num));		
 	}
 	@RequestMapping(value="/updateInfo.do", method=RequestMethod.POST)
