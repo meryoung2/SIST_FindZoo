@@ -9,12 +9,29 @@
 <link rel="stylesheet" type="text/css" href="./css/findZoo.css">
 <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script></head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<style type="text/css">
+@font-face {
+	    font-family: 'GmarketSansMedium';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	*{
+		font-family: 'GmarketSansMedium';
+		font-weight: lighter;
+	}
+</style>
+</head>
 <body>
 
 	<c:if test="${not empty loginM }">
 		${loginM.member_name }(${loginM.member_id })님 로그인 하였습니다.
+		${loginM.member_num}
 		<a href="logout.do">로그아웃</a>
+		
+		<a href="/member/myInfo.do">마이페이지</a>
 	</c:if>
 	
 	<c:if test="${empty loginM }">

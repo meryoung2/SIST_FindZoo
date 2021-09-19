@@ -419,7 +419,7 @@ public class DBManager {
 		session.close();
 		return n;
 	}
-
+	
 	// 게시판 댓글 목록 조회
 	public static List<ReplyVo> listReply(int board_num) {
 		SqlSession session = factory.openSession();
@@ -521,7 +521,7 @@ public class DBManager {
 		HashMap map = new HashMap();
 		map.put("member_id", member_id);
 		int result = session.selectOne("member.idChk", map);
-		if (result == 1) {
+		if (result >= 1) {
 			re = 409;
 		} else {
 			re = 200;
@@ -543,24 +543,37 @@ public class DBManager {
 		} else {
 			re = 200;
 		}
-		System.out.println(result);
+		System.out.println(result + "닉네임 중복체크");
 		session.close();
 		return re;
 	}
 
 	// 로그인 시, 아이디 찾기
-	public static MemberVo findId(String member_name, String member_phone) {
+	public static Map findId(String member_name, String member_phone) {
 		SqlSession session = factory.openSession();
+		
+		System.out.println(member_name);
 		Map map = new HashMap();
 		map.put("member_name", member_name);
 		map.put("member_phone", member_phone);
 		MemberVo m = session.selectOne("member.findId", map);
-		if (m != null) {
-			map.put(m, m.getMember_id());
-		}
+			if(m != null) {
+				map.put("member_id", m.getMember_id());
+				map.put("code", 200);
+			} else {
+				map.put("code", 204);
+			}	
 		session.close();
-		return m;
+		return map;
 	}
+	
+	// 비밀번호 찾기 / 비밀번호 재설정
+		public static int findPwd(MemberVo mb) {
+			SqlSession session = factory.openSession(true);
+			int re = session.update("member.findPwd", mb);
+			session.close();
+			return re;
+		}
 
 	//////////////////////////////////////// 진솔 끝 ////////////////////////////////////////
 

@@ -6,8 +6,11 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+	
+</style>
 <script type="text/javascript">
-function id_search() { 
+function pwd_search() { 
 	
 	var name = $("#member_name").val();
 	 var member_name = decodeURI(name);
@@ -47,25 +50,30 @@ function id_search() {
 </script>
 </head>
 <body>
-	<h2>아이디 찾기</h2>
+	<h2>비밀번호 찾기</h2>
 	<hr>
 	<form>
 			
 		<section class = "form-search">
-			<div class = "find-name">
-				<label>이름</label>
-				<input type="text" name="member_name" id="member_name" class = "btn-name" placeholder = "등록한 이름">
+			<div class = "find-id">
+				<label>비밀번호</label>
+				<input type="text" name="member_id" id="member_id" class = "btn-name" placeholder = "등록한 아이디">
 			<br>
 			</div>
 			<div class = "find-phone">
 				<label>번호</label>
 				<input type="text" name="member_phone" id="member_phone" class = "btn-phone" placeholder = "휴대폰번호를 '-'없이 입력">
+					<input type="button" id="send-code-btn" value="인증코드 전송">&nbsp;
+					<span id="time">02:00</span>
+					<input type="tel" id="sms-code" size="6" maxlength="6">
+					<input type="button" id="check-code-btn" value="인증코드 확인">
+					<input type="button" id="cancel-btn" value="취소"><br>
 			</div>
 			<br>
 		</section>
 		<div class ="btnSearch">
-			<input type="button" name="enter" value="찾기"  onClick="id_search()">
-			<a href="login.do"><input type="button" name="cancle" value="돌아가기"></a>
+			<input type="submit" value=""  onClick="pwd_search()">
+			<a href="login.do"></a><input type="button" name="cancle" value="돌아가기">/a>
 	 	</div>
 	</form>
 </body>
