@@ -103,6 +103,10 @@
   	<select id="getPicture" resultType="String">
   		select picture_fname from picture p, board b where p.board_num = b.board_num and b.board_num = #{board_num}
   	</select>
+  	
+  	<select id="getPictureNum" resultType="String">
+  		select picture_file_num from picture p, board b where p.board_num = b.board_num and b.board_num = #{board_num}
+  	</select>
   
 	<select id="totalRecord" resultType="int">
   		select count(*) from find
@@ -146,8 +150,16 @@
   		update board set title=#{title},content=#{content} where board_num = #{board_num}
   	</update>
   	
-  	<update id="updateFindPicture" parameterType="findVo">
-  		update picture set picture_fname = #{picture_fname} where board_num = #{board_num}
+  	<update id="updateFindPicture1" parameterType="findVo">
+  		update picture set picture_fname = #{picture_fname1} where board_num = #{board_num} and picture_file_num = #{picture_file_num1} 
+  	</update>
+  	
+  	<update id="updateFindPicture2" parameterType="findVo">
+  		update picture set picture_fname = #{picture_fname2} where board_num = #{board_num} and picture_file_num = #{picture_file_num2}
+  	</update>
+  	
+  	<update id="updateFindPicture3" parameterType="findVo">
+  		update picture set picture_fname = #{picture_fname3} where board_num = #{board_num} and picture_file_num = #{picture_file_num3}
   	</update>
   	
   	<delete id="deleteFind">

@@ -269,13 +269,6 @@ public class DealController {
 	}
 	
 	//거래게시판 대댓글쓰기
-	
-	@RequestMapping(method = RequestMethod.GET)
-	public void form(Model model, @RequestParam(value = "reply_num", defaultValue = "0")  int reply_num) {
-		// int no = Integer.parseInt(request.getParamter("no"));
-		model.addAttribute("reply_num", reply_num);
-	}
-	
 	@RequestMapping(value="/dealReReply.do", method=RequestMethod.POST)
 	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
