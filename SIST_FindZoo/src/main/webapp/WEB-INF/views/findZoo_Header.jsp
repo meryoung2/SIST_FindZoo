@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,9 +49,20 @@
 <body>
 	<header>
 		<div id="join_login">
-		<a href="main.do">HOME&nbsp;&nbsp;/&nbsp;</a>
-		<a href="join.do">회원가입&nbsp;&nbsp;/&nbsp;</a>
-		<a href="login.do">로그인</a>
+		
+		<c:if test="${not empty loginM }">
+			<a href="main.do">HOME&nbsp;&nbsp;/&nbsp;</a>
+			<a href="logout.do">로그아웃&nbsp;&nbsp;/&nbsp;</a>
+			<a href="/member/myInfo.do">마이페이지</a><br>
+			${loginM.member_name }(${loginM.member_id })님 로그인 하였습니다.
+		</c:if>
+	
+		<c:if test="${empty loginM }">
+			<a href="main.do">HOME&nbsp;&nbsp;/&nbsp;</a>
+			<a href="join.do">회원가입&nbsp;&nbsp;/&nbsp;</a>
+			<a href="login.do">로그인</a>
+		</c:if>
+
 		</div>
 		<div class="header-title">
 			<a href="main.do"><h1 id="title" style="font-size: 80px; text-align:center;">찾아주개</h1></a>

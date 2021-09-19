@@ -43,7 +43,7 @@ function goFindId(){
 	<div id="content">
 	<form action="login.do" method="post">
 		<fieldset>
-	    <legend>회원가입</legend>
+	    <legend>로그인</legend>
 	    
 		    <div class="form-group">
 		    	<label for="id" class="form-label mt-4">아이디</label>

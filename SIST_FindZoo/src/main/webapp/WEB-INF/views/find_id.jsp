@@ -54,12 +54,12 @@ function id_search() {
 		<section class = "form-search">
 			<div class = "find-name">
 				<label>이름</label>
-				<input type="text" name="member_name" id="member_name" class = "btn-name" placeholder = "등록한 이름">
+				<input type="text" name="member_name" id="member_name" class = "btn-name" placeholder = "등록한 이름" required="required">
 			<br>
 			</div>
 			<div class = "find-phone">
 				<label>번호</label>
-				<input type="text" name="member_phone" id="member_phone" class = "btn-phone" placeholder = "휴대폰번호를 '-'없이 입력">
+				<input type="text" name="member_phone" id="member_phone" class = "btn-phone" placeholder = "휴대폰번호를 '-'없이 입력" required="required">
 			</div>
 			<br>
 		</section>
