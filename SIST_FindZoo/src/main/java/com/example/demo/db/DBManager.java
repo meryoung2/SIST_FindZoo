@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.example.demo.vo.FreeVo;
 import com.example.demo.vo.MemberBoardVo;
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.NoteVo;
 import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
 import com.example.demo.vo.BohoVo;
@@ -585,5 +586,85 @@ public class DBManager {
 		return re;
 	}
 	
+	// 보낸 쪽지함
+	public static List<NoteVo> sendNoteList(int note_sender_num) {
+		SqlSession session = factory.openSession();
+		List<NoteVo> list = session.selectList("note.sendNoteList", note_sender_num);
+		session.close();
+		return list;
+	}
+	
+	// 보낸 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd
+	public static NoteVo getSenderInfo(int note_sender_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.getSenderInfo", note_sender_num);
+		session.close();
+		return nt;
+	}
+	
+	// 받은 쪽지함
+	public static List<NoteVo> receiveNoteList(int note_receiver_num) {
+		SqlSession session = factory.openSession();
+		List<NoteVo> list = session.selectList("note.receiveNoteList", note_receiver_num);
+		session.close();
+		return list;
+	}
+	
+	// 받은 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd
+	public static NoteVo getReceiverInfo(int note_receiver_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.getReceiverInfo", note_receiver_num);
+		session.close();
+		return nt;
+	}
+
+	// 보낸 쪽지 내용 상세 조회 + 해당 쪽지를 받는 사람의 정보
+	public static NoteVo detailSendNote(int note_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.detailSendNote", note_num);
+		session.close();
+		return nt;
+	}
+	
+	// 받은 쪽지 내용 상세 조회 + 해당 쪽지를 보낸(답장시 쪽지를 받을) 사람의 정보
+	public static NoteVo detailReceiveNote(int note_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.detailReceiveNote", note_num);
+		session.close();
+		return nt;
+	}
+	
+	// 쪽지 답장
+	public static int sendReplyNote(NoteVo nt) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("note.sendReplyNote", nt);
+		session.close();
+		return re;
+	}
+
+	/* 해당 쪽지 삭제
+	public static int deleteNote(int note_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.delete("note.deleteNote", note_num);
+		session.close();
+		return re;
+	} */
+	
+	// 보낸 쪽지함에서 쪽지 선택 삭제시, 보낸 사람의 회원번호를 관리자 번호인 -1로 변경하여 보낸 쪽지함 목록에서 제외
+	public static int deleteChangeSenderNum(int note_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("note.deleteChangeSenderNum", note_num);
+		session.close();
+		return re;
+	}
+	
+	// 받은 쪽지함에서 쪽지 선택 삭제시, 받은 사람의 회원번호를 관리자 번호인 -1로 변경하여 받은 쪽지함 목록에서 제외
+	public static int deleteChangeReceiverNum(int note_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("note.deleteChangeReceiverNum", note_num);
+		session.close();
+		return re;
+	}
+
 	//////////////////////////////////////// 마이페이지 끝 ////////////////////////////////////////
 }

@@ -30,7 +30,7 @@
 		font-weight: lighter;
 	}
 	
-	/* 내 게시글 전체 조회 */
+	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#memberBoard-container {
 		display: flex;
 		position: absolute;
@@ -52,6 +52,12 @@
 		margin: 10px;
 		padding: 20px;
 		border: 1px solid black;
+	}
+	
+	/* 페이지 이동 관련 버튼들을 가운데에 정렬 */
+	#paging-container {
+		display: flex;
+		justify-content: center;
 	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -86,26 +92,58 @@
 <body>
 	<div id="memberBoard-container">
 		<aside id="sidebar">
-			<div class="list-group">
-				<%-- class에 active를 지워야 모달 창 열었을 때 bgLayer가 적용된다. --%>
-				<a href="myInfo.do?member_num=${member_num}" class="list-group-item list-group-item-action">내 정보</a>
-				<a href="myNote.do?member_num=${member_num}" class="list-group-item list-group-item-action">쪽지함</a>
-				<a href="memberBoard.do?pageNum=1&member_num=${member_num}" class="list-group-item list-group-item-action">내 게시글</a>
-				<a href="#" class="list-group-item list-group-item-action">내 댓글</a>				
+			<div class="accordion" id="accordionExample">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingOne">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+							aria-expanded="false" aria-controls="collapseOne">내 정보</button>
+					</h2>
+					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+						<div class="accordion-body">
+							<a href="myInfo.do?member_num=${member_num}"> - 내 정보</a><br>
+							<a href="updateInfo.do?member_num=${member_num}"> - 내 정보 수정</a><br>
+							<a href="deleteChangeInfo.do?member_num=${member_num}&member_pwd=${member_pwd}"> - 회원 탈퇴</a><br>
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingTwo">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+							aria-expanded="false" aria-controls="collapseTwo">쪽지함</button>
+					</h2>
+					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
+						<div class="accordion-body">
+							<a href="sendNoteList.do?note_sender_num=${member_num}"> - 보낸 쪽지함</a><br>
+							<a href="receiveNoteList.do?note_receiver_num=${member_num}"> - 받은 쪽지함</a><br>
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingThree">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+							aria-expanded="false" aria-controls="collapseThree">내가 쓴 글</button>
+					</h2>
+					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
+						<div class="accordion-body">
+							<a href="memberBoard.do?pageNum=1&member_num=${member_num}"> - 내가 쓴 게시글</a><br>
+							<a href="#"> - 내가 쓴 댓글</a><br>
+						</div>
+					</div>
+				</div>
 			</div>
 		</aside>
 		<article id="table-container">
 			<c:if test="${list[0] == null }">
-				<h2>${member_nick}님의 작성 게시글 목록</h2>
+				<h2>내가 쓴 게시글</h2>
 				<hr>
 				작성하신 게시글이 없습니다.
 				<br>
 				<input type="button" value="내 정보" onclick="location.href='myInfo.do?member_num=${member_num}'">
 			</c:if>
 			<c:if test="${list[0] != null }">
-				<h2>${list[0].member_nick}님의 작성 게시글 목록 (전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
-				<hr>
-				<table border="1" width="80%">
+				<h2>내가 쓴 게시글<br>(전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
+				<hr><br>
+				<table border="1" width="100%">
 					<tr>
 						<th>게시판</th>
 						<th>글제목</th>
@@ -185,16 +223,16 @@
 						</tr>
 					</c:forEach>
 				</table>
-				
-				<a href="#" onclick="btn_start(${ member_num })">≪</a>
-				<a href="#" onclick="btn_prev(${ listStart }, ${ listEnd }, ${ member_num })">이전</a>
-				<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
-					<a href="memberBoard.do?pageNum=${ i }&member_num=${ member_num }">${ i }</a>&nbsp;
-				</c:forEach>
-				<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>
-				<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>
 				<br>
-				<input type="button" value="내 정보" onclick="location.href='myInfo.do?member_num=${member_num}'">
+				<div id="paging-container">
+					<a href="#" onclick="btn_start(${ member_num })">≪</a>&nbsp;&nbsp;
+					<a href="#" onclick="btn_prev(${ listStart }, ${ listEnd }, ${ member_num })">이전</a>&nbsp;&nbsp;
+					<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
+						<a href="memberBoard.do?pageNum=${ i }&member_num=${ member_num }">${ i }</a>&nbsp;
+					</c:forEach>
+					<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>&nbsp;&nbsp;
+					<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>&nbsp;&nbsp;
+				</div>
 			</c:if>
 		</article>
 	</div>

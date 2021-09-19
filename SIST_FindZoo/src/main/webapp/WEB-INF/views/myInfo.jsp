@@ -15,7 +15,7 @@
 	a:hover {
 		font-weight: bold;
 		color: #325d88;
-		text-decoration: underline;
+		text-decoration: none;
 	}
 	
 	/* 폰트 적용 */
@@ -30,7 +30,7 @@
 		font-weight: lighter;
 	}
 	
-	/* 내 정보 상세 조회 */
+	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#myInfo-container {
 		display: flex;
 		position: absolute;
@@ -53,6 +53,10 @@
 		margin: 10px;
 		padding: 20px;
 		border: 1px solid black;
+	}
+	
+	#myInfo-container #input-container a {
+		font-weight: 600;
 	}
 	
 	/* 비밀번호 변경을 위한 모달창 */
@@ -106,6 +110,9 @@
 		});
 		// 모달창 바깥이나 '취소', 'x'를 클릭하면 모달창을 숨긴다.
 		$("#close-updatePwd-modal, .btn-close, .updatePwd-modal-bgLayer").mouseup(function(){
+			$("#old_pwd").val("");
+			$("#member_pwd").val("");
+			$("#member_pwd_check").val("");
 			$(".modal").hide();
 			$(".updatePwd-modal-bgLayer").attr("style", "display: none");
 		});
@@ -150,8 +157,9 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<input type="button" value="내 정보 수정" onclick="location.href='updateInfo.do?member_num=${mb.member_num}'">
-							<input type="button" value="회원 탈퇴" onclick="location.href='deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}'">
+							<a href="myInfo.do?member_num=${mb.member_num}"> - 내 정보</a><br>
+							<a href="updateInfo.do?member_num=${mb.member_num}"> - 내 정보 수정</a><br>
+							<a href="deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
 				</div>
@@ -162,48 +170,31 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<strong>This is the second item's accordion body.</strong> It is
-							hidden by default, until the collapse plugin adds the appropriate
-							classes that we use to style each element. These classes control
-							the overall appearance, as well as the showing and hiding via CSS
-							transitions. You can modify any of this with custom CSS or
-							overriding our default variables. It's also worth noting that
+							<a href="sendNoteList.do?note_sender_num=${mb.member_num}"> - 보낸 쪽지함</a><br>
+							<a href="receiveNoteList.do?note_receiver_num=${mb.member_num}"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
 				</div>
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="headingThree">
 						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
-							aria-expanded="false" aria-controls="collapseThree">내 게시물 & 댓글</button>
+							aria-expanded="false" aria-controls="collapseThree">내가 쓴 글</button>
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<strong>This is the third item's accordion body.</strong> It is
-							hidden by default, until the collapse plugin adds the appropriate
-							classes that we use to style each element. These classes control
-							the overall appearance, as well as the showing and hiding via CSS
-							transitions. You can modify any of this with custom CSS or
-							overriding our default variables. It's also worth noting that
+							<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}"> - 내가 쓴 게시글</a><br>
+							<a href="#"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
 				</div>
 			</div>
-			<%-- 
-			<div class="list-group">
-				class에 active를 지워야 모달 창 열었을 때 bgLayer가 적용된다. 
-				<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 정보</a>
-				<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
-				<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 게시글</a>
-				<a href="#" class="list-group-item list-group-item-action">내 댓글</a>
-				<c:if test="${mb.member_admin == 'ADMIN'}"><a href="#" class="list-group-item list-group-item-action">관리자 페이지</a></c:if>
-			</div>  --%>
 		</aside> 
 		<article id="input-container">
 			<h2>내 정보</h2>
 			<hr>
 			회원번호: ${mb.member_num }<br>
 			아이디: ${mb.member_id }<br>	
-			비밀번호: ${mb.member_pwd }&nbsp;<input type="button" id="open-updatePwd-modal" value="비밀번호 변경"><br>
+			비밀번호: ${mb.member_pwd }&nbsp;&nbsp;<input type="button" id="open-updatePwd-modal" value="비밀번호 변경"><br>
 			이름: ${mb.member_name }<br>
 			닉네임: ${mb.member_nick }<br>
 			전화번호: ${mb.member_phone }<br>
@@ -218,9 +209,6 @@
 			반려동물 정보: 
 				<c:forEach var="pet" items="${listPet }"><a href="detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach>
 				<input type="button" value="반려동물 추가" onclick="location.href='insertPet.do?member_num=${mb.member_num}'"><br>
-			<br>
-			<input type="button" value="내 정보 수정" onclick="location.href='updateInfo.do?member_num=${mb.member_num}'">
-			<input type="button" value="회원 탈퇴" onclick="location.href='deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}'">
 		</article>
 	</div> 
 	<div class="modal">

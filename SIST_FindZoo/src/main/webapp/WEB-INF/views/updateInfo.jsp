@@ -30,7 +30,7 @@
 		font-weight: lighter;
 	}
 	
-	/* 내 정보 전체 수정 */
+	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#updateInfo-container {
 		display: flex;
 		position: absolute;
@@ -201,11 +201,44 @@
 <body>
 	<div id="updateInfo-container">
 		<aside id="sidebar">
-			<div class="list-group">
-				<a href="myInfo.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 정보</a>
-				<a href="myNote.do?member_num=${mb.member_num}" class="list-group-item list-group-item-action">쪽지함</a>
-				<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}" class="list-group-item list-group-item-action">내 게시글</a>
-				<a href="#" class="list-group-item list-group-item-action">내 댓글</a>
+			<div class="accordion" id="accordionExample">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingOne">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+							aria-expanded="false" aria-controls="collapseOne">내 정보</button>
+					</h2>
+					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+						<div class="accordion-body">
+							<a href="myInfo.do?member_num=${mb.member_num}"> - 내 정보</a><br>
+							<a href="updateInfo.do?member_num=${mb.member_num}"> - 내 정보 수정</a><br>
+							<a href="deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}"> - 회원 탈퇴</a><br>
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingTwo">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+							aria-expanded="false" aria-controls="collapseTwo">쪽지함</button>
+					</h2>
+					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
+						<div class="accordion-body">
+							<a href="sendNoteList.do?note_sender_num=${mb.member_num}"> - 보낸 쪽지함</a><br>
+							<a href="receiveNoteList.do?note_receiver_num=${mb.member_num}"> - 받은 쪽지함</a><br>
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingThree">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+							aria-expanded="false" aria-controls="collapseThree">내가 쓴 글</button>
+					</h2>
+					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
+						<div class="accordion-body">
+							<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}"> - 내가 쓴 게시글</a><br>
+							<a href="#"> - 내가 쓴 댓글</a><br>
+						</div>
+					</div>
+				</div>
 			</div>
 		</aside>
 		<article id="input-container">

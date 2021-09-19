@@ -26,9 +26,9 @@
 	}
 </style>
 <script type="text/javascript">
-	//중복 확인을 완료한 닉네임을 메인창(부모창)에 적용
+	// 중복 확인을 완료한 닉네임을 메인창(부모창)에 적용
 	function apply(member_nick){
-		//부모창 opener
+		// opener(부모창)의 id가 member_nick인 칸에 해당 member_nick을 넣는다.
 		opener.document.querySelector("#member_nick").value = member_nick;
 		window.close();
 	}
@@ -56,7 +56,6 @@
 		}
 	%>	
 		<input type="button" value="다시 검색" onclick="javascript:history.back()">
-		<input type="button" value="창 닫기" onclick="javascript:window.close()">
 	</div>
 </body>
 </html>
