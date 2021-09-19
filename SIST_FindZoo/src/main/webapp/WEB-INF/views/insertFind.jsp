@@ -51,7 +51,7 @@ $(document).ready(function(){
 		 <input id="addr1" name="addr1" type="text" placeholder="주소검색" readonly="readonly" onclick="findAddr()">
 		 <input type="hidden" id="addr2" name="addr2" placeholder="상세주소">
 		 <input id="post"  type="hidden" placeholder="우편번호" readonly="readonly">
-		 <input type="hidden" name="find_lost_loc" id="find_lost_loc"><button type="button" onclick="getAddr()">주소등록</button><br>
+		 <input type="hidden" name="find_lost_loc" id="find_lost_loc"><button type="button" onclick="getAddr()">위치등록</button><br>
 		 
 		<p style="margin-top:-12px">
     	<em class="link">

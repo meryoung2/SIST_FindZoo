@@ -301,13 +301,22 @@ public class DBManager {
 		SqlSession session = factory.openSession();
 		FindVo f = session.selectOne("find.getBoard", board_num);
 		List<String> p = getFindPicture(board_num);
+		List<String> n = getFindPictureNum(board_num);
 		String p1 = p.get(0);
 		String p2 = p.get(1);
 		String p3 = p.get(2);
 		
+		String n1 = n.get(0);
+		String n2 = n.get(1);
+		String n3 = n.get(2);
+		
 		f.setPicture_fname1(p1);
 		f.setPicture_fname2(p2);
 		f.setPicture_fname3(p3);
+		
+		f.setPicture_file_num1(n1);
+		f.setPicture_file_num2(n2);
+		f.setPicture_file_num3(n3);
 		
 		session.close();
 		return f;
@@ -320,6 +329,14 @@ public class DBManager {
 		session.close();
 		return p;
 	}
+	
+	// 찾아요게시판 특정 게시글 의 사진번호 불러오기 메소드
+	public static List<String> getFindPictureNum(int board_num) {
+		SqlSession session = factory.openSession();
+		List<String> n = session.selectList("find.getPictureNum", board_num);
+		session.close();
+		return n;
+	}
 
 	// 찾아요게시판 글, 사진 수정
 	public static int updateFind(FindVo f) {
@@ -327,14 +344,17 @@ public class DBManager {
 		int re = -1;
 		int find_re = session.update("find.updateFind", f);
 		int board_re = session.update("find.updateBoard", f);
-		int pic_re = session.update("find.updateFindPicture", f);
-
-		if (pic_re == 1 && find_re == 1 && board_re == 1) {
+		
+		if(board_re == 1 && find_re == 1) {
+			int pic_re1 = session.update("find.updateFindPicture1", f);
+			int pic_re2 = session.update("find.updateFindPicture2", f);
+			int pic_re3 = session.update("find.updateFindPicture3", f);
 			session.commit();
 			re = 1;
 		} else {
 			session.rollback();
 		}
+		
 		session.close();
 		return re;
 	}
@@ -344,10 +364,14 @@ public class DBManager {
 		SqlSession session = factory.openSession(false);
 		int re = -1;
 		int find_re = session.delete("find.deleteFind", board_num);
+		System.out.println(find_re);
 		int pic_re = session.delete("find.deleteFindPicture", board_num);
+		System.out.println(pic_re);
 		int board_re = session.delete("find.deleteBoard", board_num);
+		System.out.println(board_re);
 
-		if (find_re == 1 && board_re == 1 && pic_re == 1) {
+
+		if (find_re == 1 && board_re == 1 && pic_re == 3) {
 			session.commit();
 			re = 1;
 		} else {
