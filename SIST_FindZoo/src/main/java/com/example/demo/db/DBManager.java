@@ -404,6 +404,170 @@ public class DBManager {
 		session.close();
 		return n;
 	}
+	
+	// 보호중게시판 목록 조회
+	public static List<BohoVo> boho(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<BohoVo> list = session.selectList("boho.findAll", map);
+		session.close();
+		return list;
+	}
+	
+	// 보호중게시판 목록에 해당하는 사진 불러오기
+	public static List<String> bohoPicture(HashMap map_pic) {
+		SqlSession session = factory.openSession();
+		List<String> p = session.selectList("boho.findAllPicture", map_pic);
+		System.out.println(p.size());
+		session.close();
+		return p;
+	}
+	
+	// 보호중게시판 검색 후 목록 조회
+	public static List<BohoVo> searchBoho(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<BohoVo> list = session.selectList("boho.search", map);
+		session.close();
+		return list;
+	}
+	
+	// 보호중게시판 검색 후 목록에 해당하는 사진 불러오기
+	public static List<String> searchBohoPicture(HashMap map_pic) {
+		SqlSession session = factory.openSession();
+		List<String> p = session.selectList("boho.searchPicture", map_pic);
+		System.out.println(p.size());
+		session.close();
+		return p;
+	}
+	
+	// 보호중게시판 글쓰기
+	public static int insertBoho(BohoVo bh) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		
+		int pic_re1 = 0;
+		int pic_re2 = 0;
+		int pic_re3 = 0;
+		
+		int board_re = session.insert("boho.insertBoard", bh);
+		int boho_re = session.insert("boho.insertBoho", bh);
+		
+		if(board_re == 1 && boho_re == 1) {
+			pic_re1 = session.insert("boho.insertBohoPicture1", bh);
+			pic_re2 = session.insert("boho.insertBohoPicture2", bh);
+			pic_re3 = session.insert("boho.insertBohoPicture3", bh);
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+	
+	// 보호중게시판 특정 게시글 상세 내용 불러오기 메소드
+	public static BohoVo getBoho(int board_num) {
+		SqlSession session = factory.openSession();
+		BohoVo bh = session.selectOne("boho.getBoard", board_num);
+		List<String> p = getBohoPicture(board_num);
+		List<String> n = getBohoPictureNum(board_num);
+		String p1 = p.get(0);
+		String p2 = p.get(1);
+		String p3 = p.get(2);
+		
+		String n1 = n.get(0);
+		String n2 = n.get(1);
+		String n3 = n.get(2);
+		
+		bh.setPicture_fname1(p1);
+		bh.setPicture_fname2(p2);
+		bh.setPicture_fname3(p3);
+		
+		bh.setPicture_file_num1(n1);
+		bh.setPicture_file_num2(n2);
+		bh.setPicture_file_num3(n3);
+		
+		session.close();
+		return bh;
+	}
+	
+	// 보호중게시판 특정 게시글 의 사진 불러오기 메소드
+	public static List<String> getBohoPicture(int board_num) {
+		SqlSession session = factory.openSession();
+		List<String> p = session.selectList("boho.getPicture", board_num);
+		session.close();
+		return p;
+	}
+	
+	// 보호중게시판 특정 게시글 의 사진번호 불러오기 메소드
+	public static List<String> getBohoPictureNum(int board_num) {
+		SqlSession session = factory.openSession();
+		List<String> n = session.selectList("boho.getPictureNum", board_num);
+		session.close();
+		return n;
+	}
+	
+	// 보호중게시판 글, 사진 수정
+	public static int updateBoho(BohoVo bh) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int boho_re = session.update("boho.updateBoho", bh);
+		int board_re = session.update("boho.updateBoard", bh);
+		
+		if(board_re == 1 && boho_re == 1) {
+			int pic_re1 = session.update("boho.updateBohoPicture1", bh);
+			int pic_re2 = session.update("boho.updateBohoPicture2", bh);
+			int pic_re3 = session.update("boho.updateBohoPicture3", bh);
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		
+		session.close();
+		return re;
+	}
+	
+	// 보호중게시판 삭제
+	public static int deleteBoho(int board_num) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int boho_re = session.delete("boho.deleteBoho", board_num);
+		int pic_re = session.delete("boho.deleteBohoPicture", board_num);
+		int board_re = session.delete("boho.deleteBoard", board_num);
+		
+		
+		if (boho_re == 1 && board_re == 1 && pic_re == 3) {
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+	
+	// 보호중게시판 조회수 증가
+	public static void updateViewsBoho(int board_num) {
+		SqlSession session = factory.openSession(true);
+		session.update("boho.updateHit", board_num);
+		session.close();
+	}
+	
+	// 보호중게시판 전체 글 갯수
+	public static int getTotalRecordBoho() {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("boho.totalRecord");
+		session.close();
+		return n;
+	}
+	
+	// 보호중게시판 검색 글 갯수
+	public static int getSearchRecordBoho(HashMap num_map) {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("boho.searchRecord", num_map);
+		session.close();
+		return n;
+	}
 
 	// 특정 회원의 닉네임 출력
 	public static String getNick(int member_num) {

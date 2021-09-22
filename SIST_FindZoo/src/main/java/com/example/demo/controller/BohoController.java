@@ -24,21 +24,21 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.DealDao;
-import com.example.demo.dao.FindDao;
+import com.example.demo.dao.BohoDao;
 import com.example.demo.util.Paging;
 import com.example.demo.vo.DealVo;
-import com.example.demo.vo.FindVo;
+import com.example.demo.vo.BohoVo;
 import com.example.demo.vo.MemberVo;
 
 import ch.qos.logback.core.util.FileSize;
 
 
 @Controller
-public class FindController {
+public class BohoController {
 	
 	@Autowired
-	private FindDao dao;
-	public void setDao(FindDao dao) {
+	private BohoDao dao;
+	public void setDao(BohoDao dao) {
 		this.dao = dao;
 	}
 
@@ -56,14 +56,13 @@ public class FindController {
 		this.paging_pic = paging_pic;
 	}
 	
-	// 찾아요게시판, 댓글 목록 컨트롤러
-	@RequestMapping("/find.do")
-	public void find(HttpServletRequest request, 
+	@RequestMapping("/boho.do")
+	public void boho(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 
 		paging.pageSize = 9;
 		
-		paging.totalRecord = dao.getTotalRecordFind();
+		paging.totalRecord = dao.getTotalRecordBoho();
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
@@ -81,7 +80,7 @@ public class FindController {
 		
 		paging_pic.pageSize = 27;
 		
-		paging_pic.totalRecord = dao.getTotalRecordFind() * 3;
+		paging_pic.totalRecord = dao.getTotalRecordBoho() * 3;
 		
 		paging_pic.totalPage = paging_pic.getTotalPage();
 		paging_pic.start = paging_pic.getStart(pageNum);
@@ -108,12 +107,8 @@ public class FindController {
 		
 	}
 	
-	// 찾아요게시판 검색 후 목록 컨트롤러
-	// 찾아요게시판 검색에 필요한 셀렉트에서 작성자를 기본값으로 하는 search_option과 
-	// 사용자가 입력할 검색어를 받는(기본값이 공란이라 ""임) keyword를 매개변수로 전달받은 후
-	// hash메소드를 통해 map이라는 변수에 담고 model객체를 통해 searchFind메소드를 호출한다.
-	@RequestMapping("/searchFind.do")
-	public void searchFind(HttpServletRequest request, 
+	@RequestMapping("/searchBoho.do")
+	public void searchBoho(HttpServletRequest request, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "search_option", defaultValue = "title") String search_option, 
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
@@ -123,7 +118,7 @@ public class FindController {
 		num_map.put("keyword", keyword);
 		num_map.put("search_option", search_option);
 		
-		paging.searchRecord = dao.getSearchRecordFind(num_map);
+		paging.searchRecord = dao.getSearchRecordBoho(num_map);
 		paging.searchPage = paging.getSearchPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
@@ -143,7 +138,7 @@ public class FindController {
 		
 		paging_pic.pageSize = 27;
 		
-		paging_pic.totalRecord = dao.getTotalRecordFind() * 3;
+		paging_pic.totalRecord = dao.getTotalRecordBoho() * 3;
 		
 		paging_pic.totalPage = paging_pic.getTotalPage();
 		paging_pic.start = paging_pic.getStart(pageNum);
@@ -162,8 +157,8 @@ public class FindController {
 		map_pic.put("keyword", keyword);
 		map_pic.put("search_option", search_option);
 		
-		model.addAttribute("list",dao.searchFind(map));
-		model.addAttribute("p",dao.searchFindPicture(map_pic));
+		model.addAttribute("list",dao.searchBoho(map));
+		model.addAttribute("p",dao.searchBohoPicture(map_pic));
 		model.addAttribute("searchPage", paging.searchPage);
 		model.addAttribute("searchRecord", paging.searchRecord/3);
 		model.addAttribute("pageNum", paging.pageNum);
@@ -174,31 +169,29 @@ public class FindController {
 	}
 	
 	
-	// 찾아요게시판 상세보기 컨트롤러
-	@RequestMapping("/detailFind.do")
+	@RequestMapping("/detailBoho.do")
 	public void detail(HttpServletRequest request, Model model, HttpSession session, int board_num) {
-		dao.updateViewsFind(board_num);
+		dao.updateViewsBoho(board_num);
 		int member_num = 0;
 		if(((MemberVo)session.getAttribute("loginM")) != null) {
 			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
 		}
-		model.addAttribute("f", dao.getFind(board_num));
-		model.addAttribute("p", dao.getFindPicture(board_num));
+		model.addAttribute("bh", dao.getBoho(board_num));
+		model.addAttribute("p", dao.getBohoPicture(board_num));
 		model.addAttribute("member_num", member_num);
 	}
 	
 	
-	// 찾아요게시판 글작성 컨트롤러
-		@RequestMapping(value = "/member/insertFind.do", method = RequestMethod.GET)
+		@RequestMapping(value = "/member/insertBoho.do", method = RequestMethod.GET)
 		public void form(HttpServletRequest request, HttpSession session) {
 			
 		}
 		
-		@RequestMapping(value = "/member/insertFind.do" , method = RequestMethod.POST)
-		public ModelAndView submit(HttpServletRequest request, HttpSession session, FindVo f) {
-			ModelAndView mav = new ModelAndView("redirect:/find.do");
+		@RequestMapping(value = "/member/insertBoho.do" , method = RequestMethod.POST)
+		public ModelAndView submit(HttpServletRequest request, HttpSession session, BohoVo bh) {
+			ModelAndView mav = new ModelAndView("redirect:/boho.do");
 			int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
-			f.setMember_num(member_num);
+			bh.setMember_num(member_num);
 			String picture_fname1 = null;
 			String picture_fname2 = null;
 			String picture_fname3 = null;
@@ -206,9 +199,9 @@ public class FindController {
 			int fsize2 = 0;
 			int fsize3 = 0;
 			
-			MultipartFile picture_file1 = f.getPicture_file1();
-			MultipartFile picture_file2 = f.getPicture_file2();
-			MultipartFile picture_file3 = f.getPicture_file3();
+			MultipartFile picture_file1 = bh.getPicture_file1();
+			MultipartFile picture_file2 = bh.getPicture_file2();
+			MultipartFile picture_file3 = bh.getPicture_file3();
 			picture_fname1 = picture_file1.getOriginalFilename();
 			picture_fname2 = picture_file2.getOriginalFilename();
 			picture_fname3 = picture_file3.getOriginalFilename();
@@ -226,7 +219,7 @@ public class FindController {
 					picture_fname1 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname1;
 					byte[] data1 = picture_file1.getBytes();
 					fsize1 = data1.length;
-					f.setPicture_fname1(picture_fname1);
+					bh.setPicture_fname1(picture_fname1);
 					FileOutputStream fos1 = new FileOutputStream(path+"/"+picture_fname1);
 					fos1.write(data1);
 					fos1.close();
@@ -241,7 +234,7 @@ public class FindController {
 							picture_fname2 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname2;
 							byte[] data2 = picture_file2.getBytes();
 							fsize2 = data2.length;
-							f.setPicture_fname2(picture_fname2);
+							bh.setPicture_fname2(picture_fname2);
 							FileOutputStream fos2 = new FileOutputStream(path+"/"+picture_fname2);
 							fos2.write(data2);
 							fos2.close();
@@ -256,7 +249,7 @@ public class FindController {
 									picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 									byte[] data3 = picture_file3.getBytes();
 									fsize3 = data3.length;
-									f.setPicture_fname3(picture_fname3);
+									bh.setPicture_fname3(picture_fname3);
 									FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 									fos3.write(data3);
 									fos3.close();
@@ -271,7 +264,7 @@ public class FindController {
 									byte[] data3 = picture_file3.getBytes();
 									picture_fname3 = "default.jpg";
 									fsize3 = data3.length;
-									f.setPicture_fname3(picture_fname3);
+									bh.setPicture_fname3(picture_fname3);
 									System.out.println(path);
 									pic_re3 = 1;
 								} catch (Exception e) {
@@ -287,7 +280,7 @@ public class FindController {
 							byte[] data2 = picture_file2.getBytes();
 							picture_fname2 = "default.jpg";
 							fsize2 = data2.length;
-							f.setPicture_fname2(picture_fname2);
+							bh.setPicture_fname2(picture_fname2);
 							System.out.println(path);
 							pic_re2 = 1;
 							
@@ -299,7 +292,7 @@ public class FindController {
 									picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 									byte[] data3 = picture_file3.getBytes();
 									fsize3 = data3.length;
-									f.setPicture_fname3(picture_fname3);
+									bh.setPicture_fname3(picture_fname3);
 									FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 									fos3.write(data3);
 									fos3.close();
@@ -314,7 +307,7 @@ public class FindController {
 									byte[] data3 = picture_file3.getBytes();
 									picture_fname3 = "default.jpg";
 									fsize3 = data3.length;
-									f.setPicture_fname3(picture_fname3);
+									bh.setPicture_fname3(picture_fname3);
 									System.out.println(path);
 									pic_re3 = 1;
 								} catch (Exception e) {
@@ -334,7 +327,7 @@ public class FindController {
 					byte[] data1 = picture_file1.getBytes();
 					picture_fname1 = "default.jpg";
 					fsize1 = data1.length;
-					f.setPicture_fname1(picture_fname1);
+					bh.setPicture_fname1(picture_fname1);
 					System.out.println(path);
 					pic_re1 = 1;
 					
@@ -346,7 +339,7 @@ public class FindController {
 							picture_fname2 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname2;
 							byte[] data2 = picture_file2.getBytes();
 							fsize2 = data2.length;
-							f.setPicture_fname2(picture_fname2);
+							bh.setPicture_fname2(picture_fname2);
 							FileOutputStream fos2 = new FileOutputStream(path+"/"+picture_fname2);
 							fos2.write(data2);
 							fos2.close();
@@ -366,7 +359,7 @@ public class FindController {
 								picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 								byte[] data3 = picture_file3.getBytes();
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 								fos3.write(data3);
 								fos3.close();
@@ -381,7 +374,7 @@ public class FindController {
 								byte[] data3 = picture_file3.getBytes();
 								picture_fname3 = "default.jpg";
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								System.out.println(path);
 								pic_re3 = 1;
 							} catch (Exception e) {
@@ -394,7 +387,7 @@ public class FindController {
 							byte[] data2 = picture_file2.getBytes();
 							picture_fname2 = "default.jpg";
 							fsize2 = data2.length;
-							f.setPicture_fname2(picture_fname2);
+							bh.setPicture_fname2(picture_fname2);
 							System.out.println(path);
 							pic_re2 = 1;
 						} catch (Exception e) {
@@ -409,7 +402,7 @@ public class FindController {
 								picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 								byte[] data3 = picture_file3.getBytes();
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 								fos3.write(data3);
 								fos3.close();
@@ -424,7 +417,7 @@ public class FindController {
 								byte[] data3 = picture_file3.getBytes();
 								picture_fname3 = "default.jpg";
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								System.out.println(path);
 								pic_re3 = 1;
 							} catch (Exception e) {
@@ -439,35 +432,35 @@ public class FindController {
 			}
 			
 			if(pic_re1 == 1 && pic_re2 == 1 && pic_re3 == 1) {
-				int re = dao.insertFind(f);
+				int re = dao.insertBoho(bh);
 				
 				if(re != 1) {
 					mav.addObject("msg","게시물 등록에 실패하였습니다.");
-					mav.setViewName("redirect:/find.do");
+					mav.setViewName("redirect:/boho.do");
 				}
 			}
 			return mav;
 		}
 	
-	// 찾아요게시판 수정 컨트롤러
-	@RequestMapping(value = "/member/updateFind.do", method = RequestMethod.GET)
-	public void findUpdateForm(HttpServletRequest request, Model model, int board_num) {
-		model.addAttribute("f", dao.getFind(board_num));
-		model.addAttribute("p", dao.getFindPicture(board_num));
+
+	@RequestMapping(value = "/member/updateBoho.do", method = RequestMethod.GET)
+	public void bohoUpdateForm(HttpServletRequest request, Model model, int board_num) {
+		model.addAttribute("bh", dao.getBoho(board_num));
+		model.addAttribute("p", dao.getBohoPicture(board_num));
 	}
 	
-	@RequestMapping(value = "/member/updateFind.do", method = RequestMethod.POST)
-	public ModelAndView findUpdateSubmit(HttpServletRequest request, FindVo f) {
-		ModelAndView mav = new ModelAndView("redirect:/detailFind.do?board_num="+f.getBoard_num());
+	@RequestMapping(value = "/member/updateBoho.do", method = RequestMethod.POST)
+	public ModelAndView bohoUpdateSubmit(HttpServletRequest request, BohoVo bh) {
+		ModelAndView mav = new ModelAndView("redirect:/detailBoho.do?board_num="+bh.getBoard_num());
 		
 		int pic_re1 = -1;
 		int pic_re2 = -1;
 		int pic_re3 = -1;
 		
 		String path = request.getRealPath("/resources/img");
-		String oldFname1 = f.getPicture_fname1();
-		String oldFname2 = f.getPicture_fname2();
-		String oldFname3 = f.getPicture_fname3();
+		String oldFname1 = bh.getPicture_fname1();
+		String oldFname2 = bh.getPicture_fname2();
+		String oldFname3 = bh.getPicture_fname3();
 		
 		String picture_fname1 = null;
 		String picture_fname2 = null;
@@ -476,9 +469,9 @@ public class FindController {
 		int fsize2 = 0;
 		int fsize3 = 0;
 		
-		MultipartFile picture_file1 = f.getPicture_file1();
-		MultipartFile picture_file2 = f.getPicture_file2();
-		MultipartFile picture_file3 = f.getPicture_file3();
+		MultipartFile picture_file1 = bh.getPicture_file1();
+		MultipartFile picture_file2 = bh.getPicture_file2();
+		MultipartFile picture_file3 = bh.getPicture_file3();
 		picture_fname1 = picture_file1.getOriginalFilename();
 		picture_fname2 = picture_file2.getOriginalFilename();
 		picture_fname3 = picture_file3.getOriginalFilename();
@@ -490,7 +483,7 @@ public class FindController {
 				picture_fname1 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname1;
 				byte[] data1 = picture_file1.getBytes();
 				fsize1 = data1.length;
-				f.setPicture_fname1(picture_fname1);
+				bh.setPicture_fname1(picture_fname1);
 				FileOutputStream fos1 = new FileOutputStream(path+"/"+picture_fname1);
 				fos1.write(data1);
 				fos1.close();
@@ -505,7 +498,7 @@ public class FindController {
 						picture_fname2 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname2;
 						byte[] data2 = picture_file2.getBytes();
 						fsize2 = data2.length;
-						f.setPicture_fname2(picture_fname2);
+						bh.setPicture_fname2(picture_fname2);
 						FileOutputStream fos2 = new FileOutputStream(path+"/"+picture_fname2);
 						fos2.write(data2);
 						fos2.close();
@@ -520,7 +513,7 @@ public class FindController {
 								picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 								byte[] data3 = picture_file3.getBytes();
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 								fos3.write(data3);
 								fos3.close();
@@ -535,7 +528,7 @@ public class FindController {
 								byte[] data3 = picture_file3.getBytes();
 								picture_fname3 = oldFname3;
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								System.out.println(path);
 								pic_re3 = 1;
 							} catch (Exception e) {
@@ -551,7 +544,7 @@ public class FindController {
 						byte[] data2 = picture_file2.getBytes();
 						picture_fname2 = oldFname2;
 						fsize2 = data2.length;
-						f.setPicture_fname2(picture_fname2);
+						bh.setPicture_fname2(picture_fname2);
 						System.out.println(path);
 						pic_re2 = 1;
 						
@@ -563,7 +556,7 @@ public class FindController {
 								picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 								byte[] data3 = picture_file3.getBytes();
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 								fos3.write(data3);
 								fos3.close();
@@ -578,7 +571,7 @@ public class FindController {
 								byte[] data3 = picture_file3.getBytes();
 								picture_fname3 = oldFname3;
 								fsize3 = data3.length;
-								f.setPicture_fname3(picture_fname3);
+								bh.setPicture_fname3(picture_fname3);
 								System.out.println(path);
 								pic_re3 = 1;
 							} catch (Exception e) {
@@ -598,7 +591,7 @@ public class FindController {
 				byte[] data1 = picture_file1.getBytes();
 				picture_fname1 = oldFname1;
 				fsize1 = data1.length;
-				f.setPicture_fname1(picture_fname1);
+				bh.setPicture_fname1(picture_fname1);
 				System.out.println(path);
 				pic_re1 = 1;
 				
@@ -610,7 +603,7 @@ public class FindController {
 						picture_fname2 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname2;
 						byte[] data2 = picture_file2.getBytes();
 						fsize2 = data2.length;
-						f.setPicture_fname2(picture_fname2);
+						bh.setPicture_fname2(picture_fname2);
 						FileOutputStream fos2 = new FileOutputStream(path+"/"+picture_fname2);
 						fos2.write(data2);
 						fos2.close();
@@ -630,7 +623,7 @@ public class FindController {
 							picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 							byte[] data3 = picture_file3.getBytes();
 							fsize3 = data3.length;
-							f.setPicture_fname3(picture_fname3);
+							bh.setPicture_fname3(picture_fname3);
 							FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 							fos3.write(data3);
 							fos3.close();
@@ -645,7 +638,7 @@ public class FindController {
 							byte[] data3 = picture_file3.getBytes();
 							picture_fname3 = oldFname3;
 							fsize3 = data3.length;
-							f.setPicture_fname3(picture_fname3);
+							bh.setPicture_fname3(picture_fname3);
 							System.out.println(path);
 							pic_re3 = 1;
 						} catch (Exception e) {
@@ -658,7 +651,7 @@ public class FindController {
 						byte[] data2 = picture_file2.getBytes();
 						picture_fname2 = oldFname2;
 						fsize2 = data2.length;
-						f.setPicture_fname2(picture_fname2);
+						bh.setPicture_fname2(picture_fname2);
 						System.out.println(path);
 						pic_re2 = 1;
 					} catch (Exception e) {
@@ -673,7 +666,7 @@ public class FindController {
 							picture_fname3 = (new SimpleDateFormat("yyyyMMdd-HHmmss").format(date))+"_"+picture_fname3;
 							byte[] data3 = picture_file3.getBytes();
 							fsize3 = data3.length;
-							f.setPicture_fname3(picture_fname3);
+							bh.setPicture_fname3(picture_fname3);
 							FileOutputStream fos3 = new FileOutputStream(path+"/"+picture_fname3);
 							fos3.write(data3);
 							fos3.close();
@@ -688,7 +681,7 @@ public class FindController {
 							byte[] data3 = picture_file3.getBytes();
 							picture_fname3 = oldFname3;
 							fsize3 = data3.length;
-							f.setPicture_fname3(picture_fname3);
+							bh.setPicture_fname3(picture_fname3);
 							System.out.println(path);
 							pic_re3 = 1;
 						} catch (Exception e) {
@@ -704,11 +697,11 @@ public class FindController {
 		
 		
 		if(pic_re1 == 1 && pic_re2 == 1 && pic_re3 == 1) {
-			int re = dao.updateFind(f);
+			int re = dao.updateBoho(bh);
 			
 			if(re != 1) {
 				mav.addObject("msg", "게시물 수정에 실패하였습니다.");
-				mav.setViewName("/find.do");
+				mav.setViewName("/boho.do");
 				
 			}else {
 				if(fsize1 != 0 && fsize2 != 0 && fsize3 != 0)	{
@@ -723,30 +716,19 @@ public class FindController {
 		}
 		return mav;
 	}
-	
-	/*
-	
-	@RequestMapping(value = "/deleteDeal.do", method = RequestMethod.GET)
-	public void dealDeleteForm(HttpServletRequest request, Model model, int board_num) {
-		System.out.println("deleteDeal 동작함");
-		model.addAttribute("board_num",board_num);
-	}
-	*/
-	
-	// 찾아요게시판 삭제 컨트롤러
-	@RequestMapping("/deleteFind.do")
-	public ModelAndView findDeleteSubmit(HttpServletRequest request, int board_num) {
+
+	@RequestMapping("/deleteBoho.do")
+	public ModelAndView bohoDeleteSubmit(HttpServletRequest request, int board_num) {
 		String path = request.getRealPath("/resources/img");
-		ModelAndView mav = new ModelAndView("redirect:/find.do");
-		String picture_fname1 = dao.getFind(board_num).getPicture_fname1();
-		String picture_fname2 = dao.getFind(board_num).getPicture_fname2();
-		String picture_fname3 = dao.getFind(board_num).getPicture_fname3();
+		ModelAndView mav = new ModelAndView("redirect:/boho.do");
+		String picture_fname1 = dao.getBoho(board_num).getPicture_fname1();
+		String picture_fname2 = dao.getBoho(board_num).getPicture_fname2();
+		String picture_fname3 = dao.getBoho(board_num).getPicture_fname3();
 		System.out.println(picture_fname1);
 		System.out.println(picture_fname2);
 		System.out.println(picture_fname3);
 		
-		
-		int re = dao.deleteFind(board_num);
+		int re = dao.deleteBoho(board_num);
 		System.out.println(re);
 		if(re == 1) {
 			File file1 = new File(path + "/" + picture_fname1);
@@ -757,7 +739,7 @@ public class FindController {
 			file3.delete();
 		}else {
 			mav.addObject("msg","게시물 삭제에 실패하였습니다.");
-			mav.setViewName("find.do");
+			mav.setViewName("boho.do");
 		}
 		return mav;
 	}
