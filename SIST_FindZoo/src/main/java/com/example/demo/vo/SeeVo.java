@@ -8,7 +8,7 @@ public class SeeVo {
 	private int see_num;
 	private String see_pet;
 	private String see_find_loc;
-	private Date see_find_date;
+	private String see_find_date;
 	private int board_num;
 	private String title;
 	private String content;
@@ -17,6 +17,7 @@ public class SeeVo {
 	private int board_type_num;
 	private int member_num;
 	private String member_name;
+	private String member_nick;
 	private MultipartFile picture_file;
 	private String picture_fname;
 	public int getSee_num() {
@@ -37,10 +38,10 @@ public class SeeVo {
 	public void setSee_find_loc(String see_find_loc) {
 		this.see_find_loc = see_find_loc;
 	}
-	public Date getSee_find_date() {
+	public String getSee_find_date() {
 		return see_find_date;
 	}
-	public void setSee_find_date(Date see_find_date) {
+	public void setSee_find_date(String see_find_date) {
 		this.see_find_date = see_find_date;
 	}
 	public int getBoard_num() {
@@ -91,6 +92,12 @@ public class SeeVo {
 	public void setMember_name(String member_name) {
 		this.member_name = member_name;
 	}
+	public String getMember_nick() {
+		return member_nick;
+	}
+	public void setMember_nick(String member_nick) {
+		this.member_nick = member_nick;
+	}
 	public MultipartFile getPicture_file() {
 		return picture_file;
 	}
@@ -103,9 +110,9 @@ public class SeeVo {
 	public void setPicture_fname(String picture_fname) {
 		this.picture_fname = picture_fname;
 	}
-	public SeeVo(int see_num, String see_pet, String see_find_loc, Date see_find_date, int board_num, String title,
+	public SeeVo(int see_num, String see_pet, String see_find_loc, String see_find_date, int board_num, String title,
 			String content, Date bdate, int views, int board_type_num, int member_num, String member_name,
-			MultipartFile picture_file, String picture_fname) {
+			String member_nick, MultipartFile picture_file, String picture_fname) {
 		super();
 		this.see_num = see_num;
 		this.see_pet = see_pet;
@@ -119,6 +126,7 @@ public class SeeVo {
 		this.board_type_num = board_type_num;
 		this.member_num = member_num;
 		this.member_name = member_name;
+		this.member_nick = member_nick;
 		this.picture_file = picture_file;
 		this.picture_fname = picture_fname;
 	}
@@ -126,6 +134,15 @@ public class SeeVo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	@Override
+	public String toString() {
+		return "SeeVo [see_num=" + see_num + ", see_pet=" + see_pet + ", see_find_loc=" + see_find_loc
+				+ ", see_find_date=" + see_find_date + ", board_num=" + board_num + ", title=" + title + ", content="
+				+ content + ", bdate=" + bdate + ", views=" + views + ", board_type_num=" + board_type_num
+				+ ", member_num=" + member_num + ", member_name=" + member_name + ", member_nick=" + member_nick
+				+ ", picture_file=" + picture_file + ", picture_fname=" + picture_fname + "]";
+	}
+	
 	
 	
 	

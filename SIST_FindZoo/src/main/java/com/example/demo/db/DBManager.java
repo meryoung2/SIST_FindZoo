@@ -18,6 +18,8 @@ import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.NoteVo;
 import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
+import com.example.demo.vo.SeeVo;
+import com.example.demo.vo.VolunteerVo;
 import com.example.demo.vo.BohoVo;
 import com.example.demo.vo.DealVo;
 import com.example.demo.vo.FindVo;
@@ -569,6 +571,207 @@ public class DBManager {
 		session.close();
 		return n;
 	}
+	
+	// 목격했어요 게시판 목록 조회
+	public static List<SeeVo> see(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<SeeVo> list = session.selectList("see.findAll", map);
+		session.close();
+		return list;
+	}
+
+	// 목격했어요 게시판 검색 후 목록 조회
+	public static List<SeeVo> searchSee(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<SeeVo> list = session.selectList("see.search", map);
+		session.close();
+		return list;
+	}
+
+	// 목격했어요 게시판 글쓰기
+	public static int insertSee(SeeVo s) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int board_re = session.insert("see.insertBoard", s);
+		int see_re = session.insert("see.insertSee", s);
+		int pic_re = session.insert("see.insertSeePicture", s);
+		if (board_re == 1 && see_re == 1 && pic_re == 1) {
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+
+	// 목격했어요 게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
+	public static SeeVo getSee(int board_num) {
+		SqlSession session = factory.openSession();
+		SeeVo s = session.selectOne("see.getBoard", board_num);
+		session.close();
+		return s;
+	}
+
+	// 목격했어요 게시판 글, 사진 수정
+	public static int updateSee(SeeVo s) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int see_re = session.update("see.updateSee", s);
+		int board_re = session.update("see.updateBoard", s);
+		int pic_re = session.update("see.updateSeePicture", s);
+
+		if (pic_re == 1 && see_re == 1 && board_re == 1) {
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+
+	// 목격했어요 게시판 삭제
+	public static int deleteSee(int board_num) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int see_re = session.delete("see.deleteSee", board_num);
+		int pic_re = session.delete("see.deleteSeePicture", board_num);
+		int board_re = session.delete("see.deleteBoard", board_num);
+
+		if (see_re == 1 && board_re == 1 && pic_re == 1) {
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+
+	// 목격했어요 게시판 조회수 증가
+	public static void updateViewsSee(int board_num) {
+		SqlSession session = factory.openSession(true);
+		session.update("see.updateHit", board_num);
+		session.close();
+	}
+
+	// 목격했어요 게시판 전체 글 갯수
+	public static int getTotalRecordSee() {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("see.totalRecord");
+		session.close();
+		return n;
+	}
+
+	// 목격했어요 게시판 검색 글 갯수
+	public static int getSearchRecordSee(HashMap num_map) {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("see.searchRecord", num_map);
+		session.close();
+		return n;
+	}
+
+	// 자원봉사 게시판 목록 조회
+	public static List<VolunteerVo> vol(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<VolunteerVo> list = session.selectList("vol.findAll", map);
+		session.close();
+		return list;
+	}
+
+	// 자원봉사 게시판 검색 후 목록 조회
+	public static List<VolunteerVo> searchVol(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<VolunteerVo> list = session.selectList("vol.search", map);
+		session.close();
+		return list;
+	}
+
+	// 자원봉사 게시판 글쓰기
+	public static int insertVol(VolunteerVo v) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int board_re = session.insert("vol.insertBoard", v);
+		int vol_re = session.insert("vol.insertVol", v);
+		int pic_re = session.insert("vol.insertVolPicture", v);
+		if (board_re == 1 && vol_re == 1 && pic_re == 1) {
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+
+	// 자원봉사 게시판 특정 게시글 상세 내용을 위한 넘버링갖고오는 메소드
+	public static VolunteerVo getVol(int board_num) {
+		SqlSession session = factory.openSession();
+		VolunteerVo v = session.selectOne("vol.getBoard", board_num);
+		session.close();
+		return v;
+	}
+
+	// 자원봉사 게시판 글, 사진 수정
+	public static int updateVol(VolunteerVo v) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int vol_re = session.update("vol.updateVol", v);
+		int board_re = session.update("vol.updateBoard", v);
+		int pic_re = session.update("vol.updateVolPicture", v);
+
+		if (pic_re == 1 && vol_re == 1 && board_re == 1) {
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+
+	// 자원봉사 게시판 삭제
+	public static int deleteVol(int board_num) {
+		SqlSession session = factory.openSession(false);
+		int re = -1;
+		int vol_re = session.delete("vol.deleteVol", board_num);
+		int pic_re = session.delete("vol.deleteVolPicture", board_num);
+		int board_re = session.delete("vol.deleteBoard", board_num);
+
+		if (vol_re == 1 && board_re == 1 && pic_re == 1) {
+			session.commit();
+			re = 1;
+		} else {
+			session.rollback();
+		}
+		session.close();
+		return re;
+	}
+
+	// 자원봉사 게시판 조회수 증가
+	public static void updateViewsVol(int board_num) {
+		SqlSession session = factory.openSession(true);
+		session.update("vol.updateHit", board_num);
+		session.close();
+	}
+
+	// 자원봉사 게시판 전체 글 갯수
+	public static int getTotalRecordVol() {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("vol.totalRecord");
+		session.close();
+		return n;
+	}
+
+	// 자원봉사 게시판 검색 글 갯수
+	public static int getSearchRecordVol(HashMap num_map) {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("vol.searchRecord", num_map);
+		session.close();
+		return n;
+	}
+	
 
 	// 특정 회원의 닉네임 출력
 	public static String getNick(int member_num) {
