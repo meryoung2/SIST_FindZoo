@@ -59,16 +59,10 @@ function goFindId(){
 			<a href="join.do"><input type="button" class="btn btn-primary" value="회원가입"></a>
 			<a href="find_id.do"><input type="button" class="btn btn-primary" value="아이디 찾기"></a>
 			<a href="find_pwd.do"><input type="button" class="btn btn-primary" value="비밀번호 찾기"></a>
-			
-			<!--  
-			<input type="button" id="find-id" onclick="goFindId();" value="아이디 찾기">
-			<button type="button" id="find-id" onclick="location=windows.open('find_pwd.jsp')">비밀번호 찾기</button>
-			-->
-			
 		</div>
 		</fieldset>
 	</div>
 	</div>
-	<jsp:include page="findZoo_Footer.jsp"/>
+<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

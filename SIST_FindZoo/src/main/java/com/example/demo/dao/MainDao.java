@@ -13,11 +13,12 @@ import com.example.demo.vo.FindVo;
 @Repository
 public class MainDao {
 
+	
 	public List<FindVo> mainFind(){
 		return DBManager.mainFind();
 	}
 	
-	public List<BohoVo> mainBoho(){
-		return DBManager.mainBoho();
+	public List<String> mainFindPicture(){
+		return DBManager.mainFindPicture();
 	}
 }

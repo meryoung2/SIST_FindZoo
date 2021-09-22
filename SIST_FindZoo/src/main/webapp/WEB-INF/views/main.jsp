@@ -33,6 +33,18 @@
 				<a class="navbar-brand" href="#">찾아요 (최근글)</a>
 		</div>
 	</nav>
+	
+	
+	<div>
+			<c:forEach items="${ p }" var="pic" begin="0" end="8" step="3">
+				<c:if test="${ pic ne 'default.jpg'}">
+					<li><img src="${pageContext.request.contextPath}/resources/img/${ pic }" width="150px"></li>
+				</c:if>
+				<c:if test="${ pic eq 'default.jpg'}">
+					<li><img src="${pageContext.request.contextPath}/resources/systems/${ pic }" width="150px"></li>
+				</c:if>
+			</c:forEach>
+		</div>
 
 	<div>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">

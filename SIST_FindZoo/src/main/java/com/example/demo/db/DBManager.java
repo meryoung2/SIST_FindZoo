@@ -507,22 +507,6 @@ public class DBManager {
 		return m;
 	}
 
-	// 메인페이지에서 찾아요 게시판 최근글 리스트에 담기
-	public static List<FindVo> mainFind() {
-		SqlSession session = factory.openSession();
-		List<FindVo> list = session.selectList("main.mainFind");
-		session.close();
-		return list;
-	}
-
-	// 메인페이지에서 보호중 게시판 최근글 리스트에 담기
-	public static List<BohoVo> mainBoho() {
-		SqlSession session = factory.openSession();
-		List<BohoVo> list = session.selectList("main.mainBoho");
-		session.close();
-		return list;
-	}
-
 	// 회원가입 시, 아이디 중복체크
 	public static int idChk(String member_id) {
 		int re = 0;
@@ -576,13 +560,41 @@ public class DBManager {
 		return map;
 	}
 	
-	// 비밀번호 찾기 / 비밀번호 재설정
-		public static int findPwd(MemberVo mb) {
+	//비밀번호 찾기할 때, 멤버넘 조회해서 1이면 ok 0이면 false
+	public static int selectPwd(MemberVo mb) {
+		SqlSession session = factory.openSession();
+		int re = session.selectOne("member.selectPwd", mb);
+		session.close();
+		return re;
+	}
+	
+	
+	//비밀번호 찾기 / 비밀번호 재설정
+		public static int newPwd(MemberVo mb) {
 			SqlSession session = factory.openSession(true);
-			int re = session.update("member.findPwd", mb);
+			int re = session.update("member.newPwd", mb);
 			session.close();
 			return re;
 		}
+		
+		
+		// 메인에서 찾아요게시판 조회
+		public static List<FindVo> mainFind() {
+			SqlSession session = factory.openSession();
+			List<FindVo> list = session.selectList("main.mainFind");
+			session.close();
+			return list;
+		}
+		
+		// 메인에서 찾아요게시판 목록 사진 불러오기
+		public static List<String> mainFindPicture() {
+			SqlSession session = factory.openSession();
+			List<String> p = session.selectList("main.mainFindPicture");
+			System.out.println(p.size());
+			session.close();
+			return p;
+		}
+		
 
 	//////////////////////////////////////// 진솔 끝 ////////////////////////////////////////
 

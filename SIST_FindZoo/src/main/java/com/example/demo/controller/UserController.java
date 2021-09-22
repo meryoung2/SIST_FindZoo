@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,14 +36,15 @@ public class UserController {
 	
 	@RequestMapping(value = "/join.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String submit(MemberVo m) {
-		//ModelAndView mav = new ModelAndView("redirect:/main.do");  //main.do 아직 안만듬
+	public ModelAndView submit(MemberVo m) {
+		ModelAndView mav = new ModelAndView(); 
 		int re = dao.insert(m);
-		String msg = "회원가입에 성공했습니다.";
+		mav.setViewName("redirect:/login.do");
+		
 		if(re != 1) {
-			msg = "회원가입에 실패하였습니다.";
+			mav.setViewName("redirect:/join.do");
 		}
-		return msg;
+		return mav;
 	}
 	
 	
@@ -140,5 +142,39 @@ public class UserController {
 	public void find_pwd_form() {
 		System.out.println("find_pwd.do 작동함");
 	}
+	
+	@RequestMapping
+	public void selectPwd() {
+		
+	}
+	
+	
+	
+	@RequestMapping(value = "/user/selectPwd", method = RequestMethod.GET)
+	@ResponseBody
+	public int selectPwd(@RequestParam("member_id") String member_id,
+							@RequestParam("member_name") String member_name,
+							@RequestParam("member_phone") String member_phone) {
 
+		MemberVo m = new MemberVo();
+		m.setMember_id(member_id);
+		m.setMember_name(member_name);
+		m.setMember_phone(member_phone);
+		return dao.selectPwd(m);
+	}
+	
+	
+	@RequestMapping(value="/newPwd.do", method=RequestMethod.POST)
+	public ModelAndView newPwdSubmit(MemberVo mb) {
+		int member_num = mb.getMember_num();
+		ModelAndView mav = new ModelAndView("redirect:/login.do");
+		int re = dao.newPwd(mb);
+		if(re != 1) {
+			mav.addObject("msg", "비밀번호 변경에 실패하였습니다.");
+			mav.setViewName("error");
+		}
+		return mav;
+	}
+	
+	
 }

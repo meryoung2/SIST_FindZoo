@@ -40,15 +40,16 @@
 	  	select member_id from member where member_name=#{member_name} and member_phone=#{member_phone}
 	  </select>
 	  
+	  <!-- 비밀번호 찾기 할 때, 아이디/이름/연락처가 유효한지 확인 (result값 int로 할꺼고 1이면 ok 0이면 리턴폴스)-->
+	  <select id="selectPwd" resultType="int">
+	  	select count(member_num) from member where member_id=#{member_id} and member_name=#{member_name} and member_phone=#{member_phone}
+	  </select>
+	  
+	  
 	  <!-- 비밀번호 재설정 -->
-	  <update id="findPwd" parameterType="memberVo">
+	  <update id="newPwd" parameterType="memberVo">
 	  	update member set member_pwd = #{member_pwd} where member_name = #{member_name} and member_id=#{member_id} and member_phone = #{member_phone}
 	  </update>
-
-	
-
-
-
 
 	<!-- 내 정보 상세 조회 -->
  	<select id="getMember" parameterType="int" resultType="memberVo">

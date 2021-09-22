@@ -93,7 +93,6 @@
 						<div class="dropdown-menu">
 				            <a class="dropdown-item" style="font-size: 20px;" href="#">자원봉사</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="#">펫도우미</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">목격했어요</a>
 			        	</div>
 					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					
