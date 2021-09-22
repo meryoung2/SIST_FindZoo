@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.dao.PetDao;
 import com.example.demo.vo.MemberVo;
+
+import kr.co.youiwe.webservice.BitSms;
 
 @Controller
 public class MyInfoController {
@@ -87,6 +91,41 @@ public class MyInfoController {
 	@RequestMapping("/checkNickProcess.do")
 	public ModelAndView checkNickProcess() {
 		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	
+	// 연락처 수정시 인증코드 발송
+	@RequestMapping("/sendCode.do")
+	@ResponseBody
+	public String sendCode(String to) {
+		String code = "";
+		String from = "01025598279";
+		Random r = new Random();
+		int a = r.nextInt(10);
+		int b = r.nextInt(10);
+		int c = r.nextInt(10);
+		int d = r.nextInt(10);
+		int e = r.nextInt(10);
+		int f = r.nextInt(10);
+		code = a+""+b+""+c+""+d+""+e+""+f;
+		BitSms sms = new BitSms();
+		sms.sendMsg(from, to, code);
+		return code;
+	}
+	
+	// 회원 탈퇴(해당 회원의 정보나 게시물을 실제로 삭제하지 않고 일부 정보만 수정하여 접근을 제한)
+	@RequestMapping(value="/deleteChangeInfo.do", method=RequestMethod.GET)
+	public void deleteChangeInfoForm(int member_num, Model model) {
+		model.addAttribute("mb", dao.getMember(member_num));		
+	}
+	@RequestMapping(value="/deleteChangeInfo.do", method=RequestMethod.POST)
+	public ModelAndView deleteChangeInfoSubmit(MemberVo mb) {
+		ModelAndView mav = new ModelAndView("redirect:/main.do");
+		int re = dao.deleteChangeInfo(mb);
+		if(re != 1) {
+			mav.addObject("msg", "회원 탈퇴에 실패하였습니다.");
+			mav.setViewName("error");
+		}
 		return mav;
 	}
 	

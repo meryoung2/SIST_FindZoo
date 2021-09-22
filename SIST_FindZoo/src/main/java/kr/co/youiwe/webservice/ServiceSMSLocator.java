@@ -10,8 +10,8 @@ package kr.co.youiwe.webservice;
 public class ServiceSMSLocator extends org.apache.axis.client.Service implements kr.co.youiwe.webservice.ServiceSMS {
 
     public ServiceSMSLocator() {
-    } 
-
+    }
+    
 
     public ServiceSMSLocator(org.apache.axis.EngineConfiguration config) {
         super(config);

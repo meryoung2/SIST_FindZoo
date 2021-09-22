@@ -27,7 +27,6 @@
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>2.2.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
@@ -57,9 +56,12 @@
 			<groupId>com.oracle.ojdbc</groupId>
 			<artifactId>orai18n</artifactId>
 		</dependency> -->
-		
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20180130</version>
+		</dependency>
 		<!-- 연락처 변경 시 SMS 인증코드 발송 -->
 		<dependency>
 		    <groupId>commons-discovery</groupId>
@@ -83,15 +85,9 @@
 		<dependency>
 			<groupId>org.apache.axis</groupId>
 			<artifactId>axis</artifactId>
-			<version>1.4</version>
+			<version>1.4</version>	
 		</dependency>
-	<dependency>
-	    <groupId>org.json</groupId>
-	    <artifactId>json</artifactId>
-	    <version>20180130</version>
-	</dependency>
-	
-	<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
     		<groupId>commons-io</groupId>
    			 <artifactId>commons-io</artifactId>

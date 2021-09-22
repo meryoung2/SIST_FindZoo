@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import kr.co.youiwe.webservice.ServiceSMSSoapProxy;
 
 public class BitSms {
-//01025598279
 	public void sendMsg(String from, String to, String msg) {
 		
 		String smsID= "rola";	

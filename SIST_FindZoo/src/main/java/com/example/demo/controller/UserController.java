@@ -141,23 +141,4 @@ public class UserController {
 		System.out.println("find_pwd.do 작동함");
 	}
 
-	
-	// 비밀번호 수정시 인증코드 발송
-		@RequestMapping("/sendCode.do")
-		@ResponseBody
-		public String sendCode(String to) {
-			String code = "";
-			String from = "01025598279";
-			Random r = new Random();
-			int a = r.nextInt(10);
-			int b = r.nextInt(10);
-			int c = r.nextInt(10);
-			int d = r.nextInt(10);
-			int e = r.nextInt(10);
-			int f = r.nextInt(10);
-			code = a+""+b+""+c+""+d+""+e+""+f;
-			BitSms sms = new BitSms();
-			sms.sendMsg(from, to, code);
-			return code;
-		}
 }

@@ -41,22 +41,26 @@ $(document).ready(function () {
     	
 	   var member_id = $("#member_id").val();
        var member_name = $("member_name").val();
-       var member_phone = $("member_phone").val();
        var member_nick = $("#member_nick").val(); 
-       var member_pwd  = $("#member_pwd").val();
-       var member_pwd_check = $("#member_pwd_check").val();
        
        var email_1 = $("#email_1").val();
        var email_2 = $("#email_2 option:selected").val();
        var member_email = email_1.concat(email_2);
-       $("#member_email").val(member_email);
        
+       $("#member_email").val(member_email);
+       console.log(email_1);
+       console.log(email_2);
+	   console.log(member_email);
        
        var member_addr1 = $("#member_addr1").val();
        var member_addr2 = $("#member_addr2").val();
        var member_addr = member_addr1.concat(member_addr2);
+       
        $("#member_addr").val(member_addr);
-
+       console.log(member_addr);
+       
+       var member_pwd  = $("#member_pwd"   ).val();
+       var member_pwd_check  = $("#member_pwd_check" ).val();
 
           var idReg =  /^[a-z]+[a-z0-9]{5,19}$/g;
           if( !idReg.test( $("#member_id").val() ) ) {
@@ -64,23 +68,8 @@ $(document).ready(function () {
               $("#member_id").focus()
               return false;
           }
-          
-          var nameReg = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
-          if(!nameReg.test($("#member_name").val())){
-        	  alert("한글 이름을 입력해 주세요.");
-        	  $("#member_name").focus();
-              return false;
-          }
-          
-          
-          if(!check_phone(member_phone)){
-        	  alert("올바른 휴대폰 번호를 입력해 주세요.");
-        	  $("#member_phone").val("");
-        	  $("#member_phone").focus();
-              return false;
-          }
-          
 
+       
           if (member_pwd != member_pwd_check) {
               alert("비밀번호가 일치하지 않습니다. 다시 입력해 주세요.");
               $("#member_pwd, #member_pwd_check").val("");
@@ -102,26 +91,53 @@ $(document).ready(function () {
               return false;
           }
           
-          /*if(!$('input[name="agree"]').attr('checked')){
-        	  alert("약관에 동의해주세요.");
-        	  $('input[name="agree"]').focus();
-        	  retrun false;
-          }*/
-         
+          if(!check_phone(member_phone)){
+        	  alert("올바른 휴대폰 번호를 입력해 주세요.");
+        	  $("#member_phone").val("");
+        	  $("#member_phone").focus();
+              return false;
+          }
+          
+          if(!check_name(member_name)){
+        	  alert("한글 이름을 입력해 주세요.");
+        	  $("#member_phone").val("");
+        	  $("#member_phone").focus();
+              return false;
+          }
+          
+          var agree = $("#agree").val();
+          console.log(agree);
+          if(agree.equals("on")){
+        	  return true;
+          }else{
+        	  alert("약관에 동의해주시기 바랍니다.");
+        	  return false;
+          }
+          
+
     });
 
  });
-		
-		
-		function check_phone(phone){
-			var regExp = /[^0-9]/g;
-				
-			if( !regExp.test(phone)){
-				return false;
-			}
-			return true;
-		}
+ 
+ 		fuction check_name(name){
+ 			var regExp = /^[가-힣]+$/;
+ 			
+ 			if(!regExp.test(name)){
+ 				return false;
+ 			}
+ 			return true;
+ 		}
+ 
+ 		function check_phone(phone){
+ 			var regExp = /^[0-9]{1,10}$/g;
+ 			
+ 			if( !regExp.test(phone)){
+ 				return false;
+ 			}
+ 			return true;
+ 		}
 
+ 
 		 function check_pw(pw) {
 		    var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
 		    //
@@ -311,7 +327,7 @@ $(document).ready(function () {
 		<input type="hidden" name="social_num" value="1">
 		
 		
-	<div style="text-align: center"> 개인정보취급방침 </div> <br>
+		<div style="text-align: center"> 개인정보취급방침 </div> <br>
 	 <form onsubmit="return send(this)"> 
 	 <table border="0" cellspacing="0" cellpadding="2" align="center"> 
 	 	<tr align="center" height="10"> 
@@ -421,7 +437,7 @@ $(document).ready(function () {
  	 </table> 
  	 
  	 <div style="text-align: center"> 
- 	 	 <input class="form-check-input" type="checkbox" name="agree" id="agree" checked="checked"> 
+ 	 	 <input class="form-check-input" type="checkbox" name="agree" id="agree"> 
  	  		위 개인정보취급방침에 동의합니다 
  	 </div> 
  	 </form> 
@@ -433,8 +449,8 @@ $(document).ready(function () {
 		</fieldset>
 	</form>
 	</div>
-</div>
-
+	</div>
+	</div>
 <jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

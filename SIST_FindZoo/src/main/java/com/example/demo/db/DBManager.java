@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.example.demo.vo.FreeVo;
 import com.example.demo.vo.MemberBoardVo;
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.NoteVo;
 import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
 import com.example.demo.vo.BohoVo;
@@ -33,7 +34,7 @@ public class DBManager {
 		}
 	}
 
-//////////////////////////////////////// 게시판 시작 ////////////////////////////////////////
+	//////////////////////////////////////// 게시판 시작 ////////////////////////////////////////
 
 	// 자유게시판 목록
 	public static List<FreeVo> free(HashMap map) {
@@ -301,13 +302,22 @@ public class DBManager {
 		SqlSession session = factory.openSession();
 		FindVo f = session.selectOne("find.getBoard", board_num);
 		List<String> p = getFindPicture(board_num);
+		List<String> n = getFindPictureNum(board_num);
 		String p1 = p.get(0);
 		String p2 = p.get(1);
 		String p3 = p.get(2);
 		
+		String n1 = n.get(0);
+		String n2 = n.get(1);
+		String n3 = n.get(2);
+		
 		f.setPicture_fname1(p1);
 		f.setPicture_fname2(p2);
 		f.setPicture_fname3(p3);
+		
+		f.setPicture_file_num1(n1);
+		f.setPicture_file_num2(n2);
+		f.setPicture_file_num3(n3);
 		
 		session.close();
 		return f;
@@ -320,6 +330,14 @@ public class DBManager {
 		session.close();
 		return p;
 	}
+	
+	// 찾아요게시판 특정 게시글 의 사진번호 불러오기 메소드
+	public static List<String> getFindPictureNum(int board_num) {
+		SqlSession session = factory.openSession();
+		List<String> n = session.selectList("find.getPictureNum", board_num);
+		session.close();
+		return n;
+	}
 
 	// 찾아요게시판 글, 사진 수정
 	public static int updateFind(FindVo f) {
@@ -327,14 +345,17 @@ public class DBManager {
 		int re = -1;
 		int find_re = session.update("find.updateFind", f);
 		int board_re = session.update("find.updateBoard", f);
-		int pic_re = session.update("find.updateFindPicture", f);
-
-		if (pic_re == 1 && find_re == 1 && board_re == 1) {
+		
+		if(board_re == 1 && find_re == 1) {
+			int pic_re1 = session.update("find.updateFindPicture1", f);
+			int pic_re2 = session.update("find.updateFindPicture2", f);
+			int pic_re3 = session.update("find.updateFindPicture3", f);
 			session.commit();
 			re = 1;
 		} else {
 			session.rollback();
 		}
+		
 		session.close();
 		return re;
 	}
@@ -344,10 +365,14 @@ public class DBManager {
 		SqlSession session = factory.openSession(false);
 		int re = -1;
 		int find_re = session.delete("find.deleteFind", board_num);
+		System.out.println(find_re);
 		int pic_re = session.delete("find.deleteFindPicture", board_num);
+		System.out.println(pic_re);
 		int board_re = session.delete("find.deleteBoard", board_num);
+		System.out.println(board_re);
 
-		if (find_re == 1 && board_re == 1 && pic_re == 1) {
+
+		if (find_re == 1 && board_re == 1 && pic_re == 3) {
 			session.commit();
 			re = 1;
 		} else {
@@ -380,6 +405,14 @@ public class DBManager {
 		return n;
 	}
 
+	// 특정 회원의 닉네임 출력
+	public static String getNick(int member_num) {
+		SqlSession session = factory.openSession();
+		String mn = session.selectOne("memberBoard.getNick", member_num);
+		session.close();
+		return mn;
+	}
+	
 	// 특정 회원이 작성한 목록 출력
 	public static List<MemberBoardVo> memberBoard(HashMap map) {
 		SqlSession session = factory.openSession();
@@ -593,6 +626,14 @@ public class DBManager {
 		return flag;
 	}
 
+	// 회원 탈퇴(해당 회원의 정보나 게시물을 실제로 삭제하지 않고 일부 정보만 수정하여 접근을 제한)
+	public static int deleteChangeInfo(MemberVo mb) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("member.deleteChangeInfo", mb);
+		session.close();
+		return re;
+	}
+	
 	// 내 정보에 반려동물(들) 이름 출력
 	public static List<PetVo> listPet(int member_num) {
 		SqlSession session = factory.openSession();
@@ -625,5 +666,85 @@ public class DBManager {
 		return re;
 	}
 	
-//////////////////////////////////////// 마이페이지 끝 ////////////////////////////////////////
+	// 보낸 쪽지함
+	public static List<NoteVo> sendNoteList(int note_sender_num) {
+		SqlSession session = factory.openSession();
+		List<NoteVo> list = session.selectList("note.sendNoteList", note_sender_num);
+		session.close();
+		return list;
+	}
+	
+	// 보낸 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd
+	public static NoteVo getSenderInfo(int note_sender_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.getSenderInfo", note_sender_num);
+		session.close();
+		return nt;
+	}
+	
+	// 받은 쪽지함
+	public static List<NoteVo> receiveNoteList(int note_receiver_num) {
+		SqlSession session = factory.openSession();
+		List<NoteVo> list = session.selectList("note.receiveNoteList", note_receiver_num);
+		session.close();
+		return list;
+	}
+	
+	// 받은 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd
+	public static NoteVo getReceiverInfo(int note_receiver_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.getReceiverInfo", note_receiver_num);
+		session.close();
+		return nt;
+	}
+
+	// 보낸 쪽지 내용 상세 조회 + 해당 쪽지를 받는 사람의 정보
+	public static NoteVo detailSendNote(int note_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.detailSendNote", note_num);
+		session.close();
+		return nt;
+	}
+	
+	// 받은 쪽지 내용 상세 조회 + 해당 쪽지를 보낸(답장시 쪽지를 받을) 사람의 정보
+	public static NoteVo detailReceiveNote(int note_num) {
+		SqlSession session = factory.openSession();
+		NoteVo nt = session.selectOne("note.detailReceiveNote", note_num);
+		session.close();
+		return nt;
+	}
+	
+	// 쪽지 답장
+	public static int sendReplyNote(NoteVo nt) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("note.sendReplyNote", nt);
+		session.close();
+		return re;
+	}
+
+	/* 해당 쪽지 삭제
+	public static int deleteNote(int note_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.delete("note.deleteNote", note_num);
+		session.close();
+		return re;
+	} */
+	
+	// 보낸 쪽지함에서 쪽지 선택 삭제시, 보낸 사람의 회원번호를 관리자 번호인 -1로 변경하여 보낸 쪽지함 목록에서 제외
+	public static int deleteChangeSenderNum(int note_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("note.deleteChangeSenderNum", note_num);
+		session.close();
+		return re;
+	}
+	
+	// 받은 쪽지함에서 쪽지 선택 삭제시, 받은 사람의 회원번호를 관리자 번호인 -1로 변경하여 받은 쪽지함 목록에서 제외
+	public static int deleteChangeReceiverNum(int note_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("note.deleteChangeReceiverNum", note_num);
+		session.close();
+		return re;
+	}
+
+	//////////////////////////////////////// 마이페이지 끝 ////////////////////////////////////////
 }
