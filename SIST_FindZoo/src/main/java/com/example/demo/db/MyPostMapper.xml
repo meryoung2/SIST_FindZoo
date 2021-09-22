@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="memberBoard">
+<mapper namespace="myPost">
 	<select id="findAll" resultType="freeVo">
 		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
@@ -16,8 +16,4 @@
 	<select id="totalRecord" resultType="int">
   		select count(*) from board where member_num = #{member_num}
 	</select>
-	
-	<select id="getNick" parameterType="int" resultType="String">
- 		select member_nick from member where member_num = #{member_num}
- 	</select>
 </mapper>

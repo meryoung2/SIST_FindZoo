@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>내 정보 수정</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	a {
 		color: black;
@@ -169,7 +169,7 @@
 	function checkNick() {
 		var popupX = (document.body.offsetWidth/2)-(450/2);
 		var popupY= (window.screen.height/2)-(300/2);
-		window.open("checkNick.do", "_blank", "width=450, height=300, left="+popupX+", top="+popupY);
+		window.open("/member/checkNick.do", "닉네임 변경", "width=450, height=300, left="+popupX+", top="+popupY);
 	}
 	
 	var x;
@@ -209,9 +209,9 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="myInfo.do?member_num=${mb.member_num}"> - 내 정보</a><br>
-							<a href="updateInfo.do?member_num=${mb.member_num}"> - 내 정보 수정</a><br>
-							<a href="deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}"> - 회원 탈퇴</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
 				</div>
@@ -222,8 +222,8 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="sendNoteList.do?note_sender_num=${mb.member_num}"> - 보낸 쪽지함</a><br>
-							<a href="receiveNoteList.do?note_receiver_num=${mb.member_num}"> - 받은 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
 				</div>
@@ -234,8 +234,8 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}"> - 내가 쓴 게시글</a><br>
-							<a href="#"> - 내가 쓴 댓글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
 				</div>
@@ -244,7 +244,7 @@
 		<article id="input-container">
 			<h2>내 정보 수정</h2>
 			<hr>
-			<form action="updateInfo.do" id="updateInfoForm" method="post">
+			<form action="/member/updateInfo.do" id="updateInfoForm" method="post">
 				* 확인 후 hidden 값으로 변경<br>
 				관리자 여부 <input type="text" name="member_admin" value="${mb.member_admin }" readonly><br>
 				회원 번호 <input type="text" name="member_num" value="${mb.member_num }" readonly><br>

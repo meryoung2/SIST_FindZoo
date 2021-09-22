@@ -6,8 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>보낸 쪽지함</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	a {
 		color: black;
@@ -32,7 +32,7 @@
 	}
 	
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
-	#receiveNoteList-container {
+	#sendNoteList-container {
 		display: flex;
 		position: absolute;
 		width: 70%;
@@ -43,13 +43,13 @@
 		z-index: -1;
 	}
 	
-	#receiveNoteList-container #sidebar{
+	#sendNoteList-container #sidebar{
 		width: 20%;
 		margin: 10px;
 		border: 1px solid black;
 	}
 	
-	#receiveNoteList-container #input-container {
+	#sendNoteList-container #input-container {
 		float: right;
 		margin: 10px;
 		padding: 20px;
@@ -109,7 +109,7 @@
 		// 선택 삭제
 		$("#delete-selected-btn").click(function(){
 			if(confirm("선택한 쪽지를 삭제하시겠습니까?")) {
-				var note_receiver_num = ${list[0].note_receiver_num};
+				var note_sender_num = ${list[0].note_sender_num};
 				var arr = new Array();
 				$("input[name='checkOne']:checked").each(function(){
 					// 선택된 <td>들을 arr에 담는다.
@@ -117,14 +117,14 @@
 					console.log(arr);
 				});				    
 				$.ajax({
-					url : "/deleteChangeReceiverNum.do",
+					url : "/hideSendNoteArray.do",
 					type : "post",
 					// 여기서 'checkedArr'은 ajax를 통해 컨트롤러의 value(="checkedArr[]")에 전달되는 배열 값이다.(대소문자 구분)
 					data : {checkedArr : arr},
 					success : function(re){
 						if(re == 1) {
 							// 성공적으로 삭제 되었다면 새로고침
-							location.href = "/sendNoteList.do?note_receiver_num="+note_receiver_num;
+							location.href = "/member/sendNoteList.do";
 						}else {
 							alert("쪽지 삭제에 실패하였습니다.");
 						}
@@ -135,15 +135,15 @@
 	})
 	
 	// 쪽지 상세보기 팝업창을 화면 가운데에 위치시킨다.
-	function detailReceiveNote(note_num) {
+	function detailSendNote(note_num) {
 		var popupX = (document.body.offsetWidth/2)-(420/2);
 		var popupY = (window.screen.height/2)-(370/2);
-		window.open("detailReceiveNote.do?note_num="+note_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
+		window.open("/member/detailSendNote.do?note_num="+note_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
 	}
 </script>
 </head>
 <body>
-	<div id="receiveNoteList-container">
+	<div id="sendNoteList-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
 				<div class="accordion-item">
@@ -153,9 +153,9 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="myInfo.do?member_num=${n.member_num}"> - 내 정보</a><br>
-							<a href="updateInfo.do?member_num=${n.member_num}"> - 내 정보 수정</a><br>
-							<a href="deleteChangeInfo.do?member_num=${n.member_num}&member_pwd=${n.member_pwd}"> - 회원 탈퇴</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
 				</div>
@@ -166,8 +166,8 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="sendNoteList.do?note_sender_num=${n.member_num}"> - 보낸 쪽지함</a><br>
-							<a href="receiveNoteList.do?note_receiver_num=${n.member_num}"> - 받은 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
 				</div>
@@ -178,31 +178,29 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="memberBoard.do?pageNum=1&member_num=${n.member_num}"> - 내가 쓴 게시글</a><br>
-							<a href="#"> - 내가 쓴 댓글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
 				</div>
 			</div>
 		</aside> 
 		<article id="input-container">
-			<h2>받은 쪽지함</h2>
+			<h2>보낸 쪽지함</h2>
 			<hr><br>
 			<table id="note-list-table">
 				<tr>
 					<th width="30"><input type="checkbox" id="checkAll"></th>
 					<th width="80">쪽지 번호</th>
-					<th width="80">보낸 사람</th>
 					<th>쪽지 내용</th>
-					<th>받은 날짜</th>
+					<th>보낸 날짜</th>
 				</tr>
 				<c:forEach var="nt" items="${list }">
 					<tr>
 						<%-- 선택 삭제시 해당 note_num을 보다 쉽게 전달하기 위해, 각 <td>의 체크박스에 커스텀 속성인 'data-[사용자 문자]'를 추가한다. --%>
 						<td id="td-center"><input type="checkbox" name="checkOne" data-note-num="${nt.note_num}"></td>
 						<td id="td-center">${nt.note_num }</td>
-						<td id="td-center">${nt.member_nick }</td>
-						<td id="td-left"><a href="javascript:void(0);" onclick="detailReceiveNote(${nt.note_num }); return false;">${nt.note_content }</a></td>
+						<td id="th-left"><a href="javascript:void(0);" onclick="detailSendNote(${nt.note_num }); return false;">${nt.note_content }</a></td>
 						<td id="td-center">
 							<fmt:parseDate var="strToDate" value="${nt.note_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 							<fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy.MM.dd"/>

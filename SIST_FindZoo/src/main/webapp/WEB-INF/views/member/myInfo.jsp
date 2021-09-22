@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>내 정보</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	a {
 		color: black;
@@ -157,9 +157,9 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="myInfo.do?member_num=${mb.member_num}"> - 내 정보</a><br>
-							<a href="updateInfo.do?member_num=${mb.member_num}"> - 내 정보 수정</a><br>
-							<a href="deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}"> - 회원 탈퇴</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
 				</div>
@@ -170,8 +170,8 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="sendNoteList.do?note_sender_num=${mb.member_num}"> - 보낸 쪽지함</a><br>
-							<a href="receiveNoteList.do?note_receiver_num=${mb.member_num}"> - 받은 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
 				</div>
@@ -182,8 +182,8 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}"> - 내가 쓴 게시글</a><br>
-							<a href="#"> - 내가 쓴 댓글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
 				</div>
@@ -207,8 +207,8 @@
 				<c:if test="${mb.social_num == '1'}">로그인 방식: 네이버 로그인<br></c:if>
 				<c:if test="${mb.social_num == '2'}">로그인 방식: 카카오 로그인<br></c:if>
 			반려동물 정보: 
-				<c:forEach var="pet" items="${listPet }"><a href="detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach>
-				<input type="button" value="반려동물 추가" onclick="location.href='insertPet.do?member_num=${mb.member_num}'"><br>
+				<c:forEach var="pet" items="${listPet }"><a href="/member/detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach>
+				<input type="button" value="반려동물 추가" onclick="location.href='/member/insertPet.do'"><br>
 		</article>
 	</div> 
 	<div class="modal">
@@ -221,7 +221,7 @@
 					</button>
 	      		</div>
 				<div class="modal-body">
-					<form action="updatePwd.do" id="updatePwd-modal-content" method="post">
+					<form action="/member/updatePwd.do" id="updatePwd-modal-content" method="post">
 						* 확인 후 hidden 값으로 변경<br>
 						회원 번호: <input type="text" name="member_num" value="${mb.member_num }"><br>
 						DB 비번: <input type="text" name="db_pwd" id="db_pwd" value="${mb.member_pwd }"><br><br>

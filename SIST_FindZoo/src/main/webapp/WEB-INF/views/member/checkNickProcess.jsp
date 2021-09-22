@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>닉네임 변경</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	/* 폰트 적용 */
 	@font-face {

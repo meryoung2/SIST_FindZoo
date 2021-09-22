@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>닉네임 변경</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	/* 폰트 적용 */
 	@font-face {
@@ -51,7 +51,7 @@
 	<div id="checkNick-form">
 		<h4>닉네임 중복 확인</h4>
 		<hr>
-		<form method="post" action="checkNickProcess.do" onsubmit="return check_regExp(this)">				 
+		<form method="post" action="/member/checkNickProcess.do" onsubmit="return check_regExp(this)">				 
 			<input type="text" id="new_nick" name="new_nick" maxlength="10" autofocus>
 			<input type="submit" value="중복 확인"><br>
 			<span style = "font-size: 6px;">*공백 및 특수문자는 사용할 수 없습니다.</span><br>

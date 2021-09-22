@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>반려동물 등록</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	a {
 		color: black;
@@ -32,7 +31,7 @@
 	}
 	
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
-	#detailPet-container {
+	#insertPet-container {
 		display: flex;
 		position: absolute;
 		width: 70%;
@@ -42,13 +41,13 @@
 		border: 1px solid black;
 	}
 	
-	#detailPet-container #sidebar{
+	#insertPet-container #sidebar{
 		width: 20%;
 		margin: 10px;
 		border: 1px solid black;
 	}
 	
-	#detailPet-container #input-container {
+	#insertPet-container #input-container {
 		float: right;
 		margin: 10px;
 		padding: 20px;
@@ -56,17 +55,9 @@
 	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-	// 반려동물 삭제 확인
-	function confirmDeletePet(pet_num){
-		if(confirm("반려동물 정보를 삭제하시겠습니까?")==true){
-			location.href = "deletePet.do?pet_num="+pet_num;
-		}
-	}
-</script>
 </head>
 <body>
-	<div id="detailPet-container">
+	<div id="insertPet-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
 				<div class="accordion-item">
@@ -76,9 +67,9 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="myInfo.do?member_num=${pet.member_num}"> - 내 정보</a><br>
-							<a href="updateInfo.do?member_num=${pet.member_num}"> - 내 정보 수정</a><br>
-							<a href="deleteChangeInfo.do?member_num=${pet.member_num}&member_pwd=${mb.member_pwd}"> - 회원 탈퇴</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
 				</div>
@@ -89,8 +80,8 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="sendNoteList.do?note_sender_num=${pet.member_num}"> - 보낸 쪽지함</a><br>
-							<a href="receiveNoteList.do?note_receiver_num=${pet.member_num}"> - 받은 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
 				</div>
@@ -101,27 +92,30 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="memberBoard.do?pageNum=1&member_num=${pet.member_num}"> - 내가 쓴 게시글</a><br>
-							<a href="#"> - 내가 쓴 댓글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
 				</div>
 			</div>
 		</aside>
 		<article id="input-container">
-			<h2>반려동물(${pet.pet_name }) 정보</h2>
+			<h2>반려동물 등록</h2>
 			<hr>
-			회원번호: ${pet.member_num }<br>
-			반려동물번호: ${pet.pet_num }<br>
-			반려동물이름: ${pet.pet_name }<br>
-			반려동물성별: ${pet.pet_sex }<br>
-			반려동물타입: ${pet.pet_type }<br>
-			동물등록번호: ${pet.pet_regist_num }<br> 
-			<fmt:parseDate var="strToDate" value="${pet.pet_birth }" pattern="yyyy-MM-dd HH:mm:ss"/>
-			<fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy년 MM월 dd일생"/>
-			반려동물생일: <c:out value="${dateToStr }"/><br>
-			<br>
-			<input type="button" value="반려동물 삭제" onclick="confirmDeletePet(${pet.pet_num })">
+			<form action="/member/insertPet.do" id="insert-pet-form" method="post">
+				<input type="hidden" name="member_num" value="${mb.member_num }"><br>
+				반려동물이름: <input type="text" name="pet_name"><br>
+				반려동물성별: <input type="radio" name="pet_sex" value="암컷" checked="checked">암컷
+							<input type="radio" name="pet_sex" value="수컷">수컷<br>
+				반려동물타입: <input type="radio" name="pet_type" value="강아지" checked="checked">강아지
+							<input type="radio" name="pet_type" value="고양이">고양이
+							<input type="radio" name="pet_type" value="기타">기타<br>
+				동물등록번호: <input type="text" name="pet_regist_num"><br>
+				반려동물생일: <input type="date" name="pet_birth" id="pet_birth" max="9999-12-31"><br>
+				<br>
+				<input type="submit" value="등록">
+				<input type="button" value="취소" onclick="history.back(-1);">
+			</form>
 		</article>
 	</div>
 </body>

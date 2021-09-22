@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,17 +11,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.dao.MemberBoardDao;
+import com.example.demo.dao.MyReplyDao;
 import com.example.demo.util.Paging;
+import com.example.demo.vo.MemberVo;
 
 
 @Controller
-public class MemberBoardController {
+public class MyReplyController {
 	
 	@Autowired
-	private MemberBoardDao dao;
+	private MyReplyDao dao;
 
-	public void setDao(MemberBoardDao dao) {
+	public void setDao(MyReplyDao dao) {
 		this.dao = dao;
 	}
 
@@ -32,14 +34,14 @@ public class MemberBoardController {
 	}
 	
 	// 회원이 작성한 게시글 목록
-	@RequestMapping("/memberBoard.do")
-	public void deal(HttpServletRequest request, 
-			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, 
-			@RequestParam(value = "member_num", defaultValue = "1") int member_num, 
-			@RequestParam(value = "member_nick", defaultValue = "회원") String member_nick,
-			Model model) {
+	@RequestMapping("/member/myReply.do")
+	public void deal(HttpSession session, HttpServletRequest request, 
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 		
-		paging.totalRecord = dao.getTotalRecordMemberBoard(member_num);
+		int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		String member_nick = ((MemberVo)session.getAttribute("loginM")).getMember_nick();
+		
+		paging.totalRecord = dao.getTotalRecordMyReply(member_num);
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
@@ -61,7 +63,7 @@ public class MemberBoardController {
 		model.addAttribute("totalPage", paging.totalPage);
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("member_num", member_num);
-		model.addAttribute("member_nick", dao.getNick(member_num));
+		model.addAttribute("member_nick", member_nick);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
 		

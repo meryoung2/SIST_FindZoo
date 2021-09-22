@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>회원 탈퇴</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	a {
 		color: black;
@@ -58,7 +58,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#deleteChangeInfoForm").submit(function(){
+		$("#submit-btn").click(function(){
 			var member_num = $("#member_num").val();
 			var member_pwd = $("#member_pwd").val();
 			var db_pwd = $("#db_pwd").val();
@@ -67,24 +67,21 @@
 				$("#member_pwd").val("").select();
 				return false;
 			}else {
-				// 만약 회원번호 1번의 id가 'hong', pwd가 '1234', 닉네임이 '길동이'라면 
-				// 순서대로 'deletedMember1', 'deletedMember1', ''으로 변경된다.
-				// SMS 알림서비스는 무조건 '비동의'로 하여 탈퇴 후에도 문자가 전송되는 일이 없게끔 한다.
-				$("#member_id").val("deletedMember"+$("#member_num").val());
-				$("#member_pwd").val("deletedMember"+$("#member_num").val());
-				$("#member_nick").val("");
-				$("#member_sms").val("비동의");
-				confirmDeleteChangeInfo(member_num, member_pwd);
+				if(!confirm("정말 탈퇴하시겠습니까?")) { 
+					return false;
+				}else { 
+					// 만약 회원번호 1번의 id가 'hong', pwd가 '1234', 닉네임이 '길동이'라면 
+					// 순서대로 'deletedMember1', 'deletedMember1', ''으로 변경된다.
+					// SMS 알림서비스는 무조건 '비동의'로 하여 탈퇴 후에도 문자가 전송되는 일이 없게끔 한다.
+					$("#member_id").val("deletedMember"+$("#member_num").val());
+					$("#member_pwd").val("deletedMember"+$("#member_num").val());
+					$("#member_nick").val("");
+					$("#member_sms").val("비동의");
+					$("#deleteChangeInfoForm").submit();
+				}
 			}
 		})
-	})
-	
-	// 회원 탈퇴 확인
-	function confirmDeleteChangeInfo(member_num, member_pwd){
-		if(confirm("정말 탈퇴하시겠습니까?")) {		
-			location.href = "deleteChangeInfo.do?member_num="+member_num+"&member_pwd"+member_pwd;
-		}
-	} 
+	})	
 </script>
 </head>
 <body>
@@ -98,9 +95,9 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="myInfo.do?member_num=${mb.member_num}"> - 내 정보</a><br>
-							<a href="updateInfo.do?member_num=${mb.member_num}"> - 내 정보 수정</a><br>
-							<a href="deleteChangeInfo.do?member_num=${mb.member_num}&member_pwd=${mb.member_pwd}"> - 회원 탈퇴</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
 				</div>
@@ -111,8 +108,8 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="sendNoteList.do?note_sender_num=${mb.member_num}"> - 보낸 쪽지함</a><br>
-							<a href="receiveNoteList.do?note_receiver_num=${mb.member_num}"> - 받은 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
 				</div>
@@ -123,8 +120,8 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="memberBoard.do?pageNum=1&member_num=${mb.member_num}"> - 내가 쓴 게시글</a><br>
-							<a href="#"> - 내가 쓴 댓글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
 				</div>
@@ -139,17 +136,17 @@
 			탈퇴 후에는 회원정보가 삭제되어 본인 여부를 확인할 수 있는 방법이 없으므로 <br>
 			게시글 및 댓글을 임의로 삭제해드릴 수 없습니다. <br>
 			</p>
-			<form action="deleteChangeInfo.do" id="deleteChangeInfoForm" method="post">
+			<form action="/member/deleteChangeInfo.do" id="deleteChangeInfoForm" method="post">
 				* 확인 후 hidden 값으로 변경<br>
 				회원번호 <input type="text" id="member_num" name="member_num" value="${mb.member_num }" readonly><br>
 				아이디 <input type="text" id="member_id" name="member_id" value="${mb.member_id }" readonly><br>
 				DB비번 <input type="text" id="db_pwd" name="db_pwd" value="${mb.member_pwd }" readonly><br>
 				닉네임 <input type="text" id="member_nick" name="member_nick" value="${mb.member_nick }" readonly><br>
-				로그인 방식 <input type="text" id="member_sms" name="member_sms" value="${mb.member_sms }" readonly><br>
+				로그인 방식 <input type="text" id="member_sms" name="member_sms" value="${mb.member_sms }" readonly><br><br>
 				비밀번호: <input type="password" id="member_pwd" name="member_pwd"><br>
 				<br>
-				<input type="submit" value="회원 탈퇴">
-				<input type="button" value="취소" onclick="location.href='myInfo.do?member_num=${mb.member_num }'"><br><br>
+				<input type="button" id="submit-btn" value="회원 탈퇴">
+				<input type="button" value="취소" onclick="location.href='/member/myInfo.do'"><br>
 			</form>
 		</article>
 	</div>

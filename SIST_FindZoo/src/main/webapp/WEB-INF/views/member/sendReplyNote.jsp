@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>쪽지 답장</title>
+<link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	/* 폰트 적용 */
 	@font-face {
@@ -39,7 +39,7 @@
 	<div id="sendReplyNote-container">
 		<h4>쪽지 답장</h4>
 		<hr>
-		<form method="post" name="sendReplyNoteForm" action="sendReplyNote.do">
+		<form method="post" name="sendReplyNoteForm" action="/member/sendReplyNote.do">
 			* 확인 후 hidden으로 변경<br>
 			<%-- 받은 쪽지 상세 조회에서 '보낸 사람'이 답장 시에는 '받는 사람'이 된다 --%>
 			보내는 사람(<input type="text" name="note_sender_num" value="${nt.note_receiver_num }" size="3" readonly>)&nbsp;

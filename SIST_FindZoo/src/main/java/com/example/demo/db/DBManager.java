@@ -12,7 +12,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.example.demo.vo.FreeVo;
-import com.example.demo.vo.MemberBoardVo;
+import com.example.demo.vo.MyPostVo;
+import com.example.demo.vo.MyReplyVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.NoteVo;
 import com.example.demo.vo.PetVo;
@@ -404,27 +405,35 @@ public class DBManager {
 		session.close();
 		return n;
 	}
-
-	// 특정 회원의 닉네임 출력
-	public static String getNick(int member_num) {
-		SqlSession session = factory.openSession();
-		String mn = session.selectOne("memberBoard.getNick", member_num);
-		session.close();
-		return mn;
-	}
 	
-	// 특정 회원이 작성한 목록 출력
-	public static List<MemberBoardVo> memberBoard(HashMap map) {
+	// 내가 작성한 게시글 목록 출력
+	public static List<MyPostVo> myPost(HashMap map) {
 		SqlSession session = factory.openSession();
-		List<MemberBoardVo> list = session.selectList("memberBoard.findAll", map);
+		List<MyPostVo> list = session.selectList("myPost.findAll", map);
 		session.close();
 		return list;
 	}
 
-	// 특정 회원이 작성한 전체 글 갯수
-	public static int getTotalRecordMemberBoard(int member_num) {
+	// 내가 작성한 전체 게시글 갯수
+	public static int getTotalRecordMyPost(int member_num) {
 		SqlSession session = factory.openSession();
-		int n = session.selectOne("memberBoard.totalRecord", member_num);
+		int n = session.selectOne("myPost.totalRecord", member_num);
+		session.close();
+		return n;
+	}
+	
+	// 내가 작성한 댓글 목록 출력
+	public static List<MyReplyVo> myReply(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<MyReplyVo> list = session.selectList("myReply.findAll", map);
+		session.close();
+		return list;
+	}
+	
+	// 내가 작성한 전체 댓글 갯수
+	public static int getTotalRecordMyReply(int member_num) {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("myReply.totalRecord", member_num);
 		session.close();
 		return n;
 	}
@@ -643,9 +652,9 @@ public class DBManager {
 	}
 
 	// 반려동물 정보 상세 조회
-	public static PetVo detailPet(int pet_num) {
+	public static PetVo detailPet(HashMap map) {
 		SqlSession session = factory.openSession();
-		PetVo pet = session.selectOne("pet.detailPet", pet_num);
+		PetVo pet = session.selectOne("pet.detailPet", map);
 		session.close();
 		return pet;
 	}
@@ -659,9 +668,9 @@ public class DBManager {
 	}
 
 	// 반려동물 삭제
-	public static int deletePet(int pet_num) {
+	public static int deletePet(HashMap map) {
 		SqlSession session = factory.openSession(true);
-		int re = session.delete("pet.deletePet", pet_num);
+		int re = session.delete("pet.deletePet", map);
 		session.close();
 		return re;
 	}
@@ -673,13 +682,21 @@ public class DBManager {
 		session.close();
 		return list;
 	}
-	
-	// 보낸 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd
-	public static NoteVo getSenderInfo(int note_sender_num) {
+		
+	// 보낸 쪽지 내용 상세 조회 + 해당 쪽지를 받는 사람의 닉네임
+	public static NoteVo detailSendNote(int note_num) {
 		SqlSession session = factory.openSession();
-		NoteVo nt = session.selectOne("note.getSenderInfo", note_sender_num);
+		NoteVo nt = session.selectOne("note.detailSendNote", note_num);
 		session.close();
 		return nt;
+	}
+
+	// 보낸 쪽지함에서 쪽지 선택 삭제시, 해당 쪽지의 note_send_visibility를 0으로 변경하여 보낸 쪽지함 목록에서 제외
+	public static int hideSendNoteArray(int note_num) {
+		SqlSession session = factory.openSession(true);
+		int re = session.update("note.hideSendNoteArray", note_num);
+		session.close();
+		return re;
 	}
 	
 	// 받은 쪽지함
@@ -689,23 +706,7 @@ public class DBManager {
 		session.close();
 		return list;
 	}
-	
-	// 받은 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd
-	public static NoteVo getReceiverInfo(int note_receiver_num) {
-		SqlSession session = factory.openSession();
-		NoteVo nt = session.selectOne("note.getReceiverInfo", note_receiver_num);
-		session.close();
-		return nt;
-	}
 
-	// 보낸 쪽지 내용 상세 조회 + 해당 쪽지를 받는 사람의 정보
-	public static NoteVo detailSendNote(int note_num) {
-		SqlSession session = factory.openSession();
-		NoteVo nt = session.selectOne("note.detailSendNote", note_num);
-		session.close();
-		return nt;
-	}
-	
 	// 받은 쪽지 내용 상세 조회 + 해당 쪽지를 보낸(답장시 쪽지를 받을) 사람의 정보
 	public static NoteVo detailReceiveNote(int note_num) {
 		SqlSession session = factory.openSession();
@@ -714,34 +715,18 @@ public class DBManager {
 		return nt;
 	}
 	
-	// 쪽지 답장
+	// 받은 쪽지 답장
 	public static int sendReplyNote(NoteVo nt) {
 		SqlSession session = factory.openSession(true);
 		int re = session.insert("note.sendReplyNote", nt);
 		session.close();
 		return re;
 	}
-
-	/* 해당 쪽지 삭제
-	public static int deleteNote(int note_num) {
-		SqlSession session = factory.openSession(true);
-		int re = session.delete("note.deleteNote", note_num);
-		session.close();
-		return re;
-	} */
-	
-	// 보낸 쪽지함에서 쪽지 선택 삭제시, 보낸 사람의 회원번호를 관리자 번호인 -1로 변경하여 보낸 쪽지함 목록에서 제외
-	public static int deleteChangeSenderNum(int note_num) {
-		SqlSession session = factory.openSession(true);
-		int re = session.update("note.deleteChangeSenderNum", note_num);
-		session.close();
-		return re;
-	}
 	
 	// 받은 쪽지함에서 쪽지 선택 삭제시, 받은 사람의 회원번호를 관리자 번호인 -1로 변경하여 받은 쪽지함 목록에서 제외
-	public static int deleteChangeReceiverNum(int note_num) {
+	public static int hideReceiveNoteArray(int note_num) {
 		SqlSession session = factory.openSession(true);
-		int re = session.update("note.deleteChangeReceiverNum", note_num);
+		int re = session.update("note.hideReceiveNoteArray", note_num);
 		session.close();
 		return re;
 	}

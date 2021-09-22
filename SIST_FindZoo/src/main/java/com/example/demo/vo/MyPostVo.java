@@ -2,7 +2,7 @@ package com.example.demo.vo;
 
 import java.util.Date;
 
-public class MemberBoardVo {
+public class MyPostVo {
 	private int board_num;
 	private String title;
 	private String content;
@@ -12,11 +12,11 @@ public class MemberBoardVo {
 	private int member_num;
 	private String member_nick;
 	
-	public MemberBoardVo() {
+	public MyPostVo() {
 		super();
 	}
 	
-	public MemberBoardVo(int board_num, String title, String content, Date bdate, int views, int board_type_num,
+	public MyPostVo(int board_num, String title, String content, Date bdate, int views, int board_type_num,
 			int member_num, String member_nick) {
 		super();
 		this.board_num = board_num;
