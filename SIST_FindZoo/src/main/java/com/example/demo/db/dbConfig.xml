@@ -37,6 +37,7 @@
 	<mapper resource="com/example/demo/db/FindMapper.xml"/>
 	<mapper resource="com/example/demo/db/MyPostMapper.xml"/>
 	<mapper resource="com/example/demo/db/MyReplyMapper.xml"/>
+	<mapper resource="com/example/demo/db/BohoMapper.xml"/>
 	<mapper resource="com/example/demo/db/NoteMapper.xml"/>
   </mappers>
 </configuration>

@@ -49,7 +49,7 @@
 		width: 100%;
 	}
 	
-	#find-container{
+	#boho-container{
 		display: flex;
 		justify-content: center;
 	}
@@ -86,10 +86,10 @@
 	var myCarousel = document.querySelector('#myCarousel');
 	var carousel = new bootstrap.Carousel(myCarousel);
 
-	function confirmFindDelete(board_num){
+	function confirmBohoDelete(board_num){
 		var re = confirm("정말 삭제하시겠습니까?");
 		if(re){
-			location.href="deleteFind.do?board_num="+board_num;
+			location.href="deleteBoho.do?board_num="+board_num;
 		}
 	}
 	
@@ -138,20 +138,20 @@
 </head>
 <body>
 <jsp:include page="findZoo_Header.jsp"/>
-	<div id="find-container">
+	<div id="boho-container">
 		<div id="content">
-			<h4>${ f.title }</h4>
+			<h4>${ bh.title }</h4>
 			<hr>
 			<c:if test="${ member_num eq 0 }">
-				<a href="#">${ f.member_nick }</a>&nbsp;|&nbsp;
+				<a href="#">${ bh.member_nick }</a>&nbsp;|&nbsp;
 			</c:if>
 			<c:if test="${ member_num ne 0 }">
-				<a class="member_nick" href="#a" member_num=${ f.member_num }>${ f.member_nick }</a>&nbsp;|&nbsp;
+				<a class="member_nick" href="#a" member_num=${ bh.member_num }>${ bh.member_nick }</a>&nbsp;|&nbsp;
 			</c:if>
 			<h6 style="display: inline-block;">
-				<fmt:formatDate value="${ f.bdate }" pattern="yyyy-MM-dd hh:mm:ss" />
+				<fmt:formatDate value="${ bh.bdate }" pattern="yyyy-MM-dd hh:mm:ss" />
 			</h6>
-			<h6 style="float: right;">조회수 : ${ f.views }</h6>
+			<h6 style="float: right;">조회수 : ${ bh.views }</h6>
 			<hr>
 			<div id="slide_and_map">
 				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="width: 50%; border: 1px dashed #D3D3D3; margin-right: 5%;">
@@ -162,27 +162,27 @@
 					</div>
 					<div class="carousel-inner" style="background-color: #D3D3D3;">
 					    <div class="carousel-item active">
-						    <c:if test="${ f.picture_fname1 ne 'default.jpg'}">
-								<img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname1 }">
+						    <c:if test="${ bh.picture_fname1 ne 'default.jpg'}">
+								<img src="${pageContext.request.contextPath}/resources/img/${ bh.picture_fname1 }">
 							</c:if>
-							<c:if test="${ f.picture_fname1 eq 'default.jpg'}">
-								<img src="${pageContext.request.contextPath}/resources/systems/${ f.picture_fname1 }">
-							</c:if>
-					    </div>
-					    <div class="carousel-item">
-							<c:if test="${ f.picture_fname2 ne 'default.jpg'}">
-								<img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname2 }">
-							</c:if>
-							<c:if test="${ f.picture_fname2 eq 'default.jpg'}">
-								<img src="${pageContext.request.contextPath}/resources/systems/${ f.picture_fname2 }">
+							<c:if test="${ bh.picture_fname1 eq 'default.jpg'}">
+								<img src="${pageContext.request.contextPath}/resources/systems/${ bh.picture_fname1 }">
 							</c:if>
 					    </div>
 					    <div class="carousel-item">
-						    <c:if test="${ f.picture_fname3 ne 'default.jpg'}">
-								<img src="${pageContext.request.contextPath}/resources/img/${ f.picture_fname3 }">
+							<c:if test="${ bh.picture_fname2 ne 'default.jpg'}">
+								<img src="${pageContext.request.contextPath}/resources/img/${ bh.picture_fname2 }">
 							</c:if>
-							<c:if test="${ f.picture_fname3 eq 'default.jpg'}">
-								<img src="${pageContext.request.contextPath}/resources/systems/${ f.picture_fname3 }">
+							<c:if test="${ bh.picture_fname2 eq 'default.jpg'}">
+								<img src="${pageContext.request.contextPath}/resources/systems/${ bh.picture_fname2 }">
+							</c:if>
+					    </div>
+					    <div class="carousel-item">
+						    <c:if test="${ bh.picture_fname3 ne 'default.jpg'}">
+								<img src="${pageContext.request.contextPath}/resources/img/${ bh.picture_fname3 }">
+							</c:if>
+							<c:if test="${ bh.picture_fname3 eq 'default.jpg'}">
+								<img src="${pageContext.request.contextPath}/resources/systems/${ bh.picture_fname3 }">
 							</c:if>
 					    </div>
 					</div>
@@ -201,7 +201,7 @@
 					</em>
 				</p>
 				<div id="map" style="width: 40%; height: 350px; border: 1px dashed #D3D3D3;"></div>
-				<input type="hidden" id="find_lost_loc" name="find_lost_loc" value="${f.find_lost_loc}">
+				<input type="hidden" id="boho_find_loc" name="boho_find_loc" value="${bh.boho_find_loc}">
 				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
 				<script>
 					var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -217,10 +217,10 @@
 					var geocoder = new kakao.maps.services.Geocoder();
 					
 					var input_addr = "";
-					var find_lost_loc = "${f.find_lost_loc}";
-					console.log(find_lost_loc);
-					input_addr = find_lost_loc;
-					document.getElementById("find_lost_loc").value = input_addr;
+					var boho_find_loc = "${bh.boho_find_loc}";
+					console.log(boho_find_loc);
+					input_addr = boho_find_loc;
+					document.getElementById("boho_find_loc").value = input_addr;
 					// 주소로 좌표를 검색합니다
 					geocoder.addressSearch(input_addr, function(result, status) {
 					
@@ -252,31 +252,29 @@
 				<tbody>
 					<tr>
 						<td>동물종</td>
-						<td>${f.find_pet }</td>
+						<td>${bh.boho_pet }</td>
 					</tr>
 					<tr>
-						<td>실종날짜</td>
-						<td><fmt:parseDate var="strToDate" value="${f.find_lost_date }" pattern="yyyy-MM-dd HH:mm:ss"/><fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy년 MM월 dd일"/><c:out value="${dateToStr }"/><br></td>
+						<td>발견날짜</td>
+						<td><fmt:parseDate var="strToDate" value="${bh.boho_find_date }" pattern="yyyy-MM-dd HH:mm:ss"/><fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy년 MM월 dd일"/><c:out value="${dateToStr }"/><br></td>
 					</tr>
 					<tr>
-						<td>실종장소</td>
-						<td>${f.find_lost_loc}</td>
-					</tr>
-					<tr>
-						<td>사례금</td>
-						<td><fmt:formatNumber value="${ f.find_reward }" pattern="#,###,###"/>원</td>
+						<td>발견장소</td>
+						<td>${bh.boho_find_loc}</td>
 					</tr>
 				</tbody>
 			</table>
 			<hr>
-			<textarea id="ta" readonly="readonly" style="width: 100%; outline: none; border: none;">${ f.content }</textarea><br>
+			<textarea id="ta" readonly="readonly" style="width: 100%; outline: none; border: none;">${ bh.content }</textarea><br>
 			<hr>
 			<br>
-			<button class="btn btn-primary" onclick="location.href='find.do'"style="float: left;">목록</button>
-			<c:if test="${ member_num ne 0 and member_num eq f.member_num }">
-				<button class="btn btn-primary" onclick="location.href='/member/updateFind.do?board_num=${ f.board_num }'"style="float: right;">수정</button>
-				<button class="btn btn-primary" onclick="confirmFindDelete(${ f.board_num })" style="float: right;">삭제</button>
+			<button class="btn btn-primary" onclick="location.href='boho.do'"style="float: left;">목록</button>
+			<c:if test="${ member_num ne 0 and member_num eq bh.member_num }">
+				<button class="btn btn-primary" onclick="location.href='/member/updateBoho.do?board_num=${ bh.board_num }'"style="float: right;">수정</button>
+				<button class="btn btn-primary" onclick="confirmBohoDelete(${ bh.board_num })" style="float: right;">삭제</button>
 			</c:if>
+		</div>
+	</div>
 			
 		<div class="modal" id="member_modal">
 		<table class="table table-hover" id="member_act">
