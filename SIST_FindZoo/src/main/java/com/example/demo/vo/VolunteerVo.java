@@ -9,8 +9,8 @@ public class VolunteerVo {
 	private String volunteer_cname;
 	private String volunteer_loc;
 	private String volunteer_tel;
-	private Date volunteer_s_date;
-	private Date volunteer_e_date;
+	private String volunteer_s_date;
+	private String volunteer_e_date;
 	private int board_num;
 	private String title;
 	private String content;
@@ -19,6 +19,7 @@ public class VolunteerVo {
 	private int board_type_num;
 	private int member_num;
 	private String member_name;
+	private String member_nick;
 	private MultipartFile picture_file;
 	private String picture_fname;
 	public int getVolunteer_num() {
@@ -45,16 +46,16 @@ public class VolunteerVo {
 	public void setVolunteer_tel(String volunteer_tel) {
 		this.volunteer_tel = volunteer_tel;
 	}
-	public Date getVolunteer_s_date() {
+	public String getVolunteer_s_date() {
 		return volunteer_s_date;
 	}
-	public void setVolunteer_s_date(Date volunteer_s_date) {
+	public void setVolunteer_s_date(String volunteer_s_date) {
 		this.volunteer_s_date = volunteer_s_date;
 	}
-	public Date getVolunteer_e_date() {
+	public String getVolunteer_e_date() {
 		return volunteer_e_date;
 	}
-	public void setVolunteer_e_date(Date volunteer_e_date) {
+	public void setVolunteer_e_date(String volunteer_e_date) {
 		this.volunteer_e_date = volunteer_e_date;
 	}
 	public int getBoard_num() {
@@ -105,6 +106,12 @@ public class VolunteerVo {
 	public void setMember_name(String member_name) {
 		this.member_name = member_name;
 	}
+	public String getMember_nick() {
+		return member_nick;
+	}
+	public void setMember_nick(String member_nick) {
+		this.member_nick = member_nick;
+	}
 	public MultipartFile getPicture_file() {
 		return picture_file;
 	}
@@ -118,9 +125,9 @@ public class VolunteerVo {
 		this.picture_fname = picture_fname;
 	}
 	public VolunteerVo(int volunteer_num, String volunteer_cname, String volunteer_loc, String volunteer_tel,
-			Date volunteer_s_date, Date volunteer_e_date, int board_num, String title, String content, Date bdate,
-			int views, int board_type_num, int member_num, String member_name, MultipartFile picture_file,
-			String picture_fname) {
+			String volunteer_s_date, String volunteer_e_date, int board_num, String title, String content, Date bdate,
+			int views, int board_type_num, int member_num, String member_name, String member_nick,
+			MultipartFile picture_file, String picture_fname) {
 		super();
 		this.volunteer_num = volunteer_num;
 		this.volunteer_cname = volunteer_cname;
@@ -136,6 +143,7 @@ public class VolunteerVo {
 		this.board_type_num = board_type_num;
 		this.member_num = member_num;
 		this.member_name = member_name;
+		this.member_nick = member_nick;
 		this.picture_file = picture_file;
 		this.picture_fname = picture_fname;
 	}
@@ -143,7 +151,15 @@ public class VolunteerVo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+	@Override
+	public String toString() {
+		return "VolunteerVo [volunteer_num=" + volunteer_num + ", volunteer_cname=" + volunteer_cname
+				+ ", volunteer_loc=" + volunteer_loc + ", volunteer_tel=" + volunteer_tel + ", volunteer_s_date="
+				+ volunteer_s_date + ", volunteer_e_date=" + volunteer_e_date + ", board_num=" + board_num + ", title="
+				+ title + ", content=" + content + ", bdate=" + bdate + ", views=" + views + ", board_type_num="
+				+ board_type_num + ", member_num=" + member_num + ", member_name=" + member_name + ", member_nick="
+				+ member_nick + ", picture_file=" + picture_file + ", picture_fname=" + picture_fname + "]";
+	}
 	
 	
 }

@@ -81,8 +81,8 @@
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;">실종동물 게시판</a>
 			
 						<div class="dropdown-menu">
-				            <a class="dropdown-item" style="font-size: 20px;" href="#" >찾아요</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">보호중이에요</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="find.do" >찾아요</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="boho.do">보호중이에요</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="#">목격했어요</a>
 			        	</div>
 					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

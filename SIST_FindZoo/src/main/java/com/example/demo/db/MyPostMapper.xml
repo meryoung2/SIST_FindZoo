@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myPost">
+	<select id="findAll" resultType="freeVo">
+		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
+		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
+		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
+		FROM board, member WHERE member.member_num = #{member_num}
+		AND board.member_num = MEMBER.member_num
+		ORDER BY board_num DESC))
+		WHERE n BETWEEN #{start} AND #{end}
+	</select>
+		
+	<select id="totalRecord" resultType="int">
+  		select count(*) from board where member_num = #{member_num}
+	</select>
+</mapper>

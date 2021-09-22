@@ -19,7 +19,7 @@
   	<select id="loginMember" resultType="memberVo">
   		select * from member where member_id=#{member_id}
   	</select>
-  
+
 	  <!-- 아이디 중복체크 -->
 	  <select id="idChk" resultType="int">
 	  	select count(*) from member where member_id=#{member_id}
@@ -50,6 +50,7 @@
 	  <update id="newPwd" parameterType="memberVo">
 	  	update member set member_pwd = #{member_pwd} where member_name = #{member_name} and member_id=#{member_id} and member_phone = #{member_phone}
 	  </update>
+
 
 	<!-- 내 정보 상세 조회 -->
  	<select id="getMember" parameterType="int" resultType="memberVo">

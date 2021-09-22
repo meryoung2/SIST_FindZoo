@@ -3,34 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="note">
-	<!-- 보낸 쪽지함 최신순 정렬 (받는 사람의 회원번호 말고 닉네임으로 출력) -->
+	<!-- 보낸 쪽지함 최신순 정렬 -->
 	<select id="sendNoteList" parameterType="int" resultType="noteVo">
-		select note_num, note_content, note_date, note_sender_num, note_receiver_num,  
-		(select distinct member_nick from member m, note where m.member_num = note_receiver_num 
-		and note_receiver_num = (select distinct note_receiver_num from note where note_sender_num = #{note_sender_num})) member_nick 
-		from member m, note where m.member_num = note_sender_num and note_sender_num = #{note_sender_num}
+		select note_num, note_content, note_date, note_sender_num, note_receiver_num 
+		from member m, note 
+		where m.member_num = note_sender_num and note_sender_num = #{note_sender_num} and note_send_visibility = 1 
 		order by note_date DESC
-	</select>
-
-	<!-- 보낸 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd -->
-	<select id="getSenderInfo" parameterType="int" resultType="noteVo">
-		select distinct m.member_num, member_pwd from member m, note 
-		where m.member_num = note_sender_num and member_num = #{note_sender_num}
-	</select>
-	
-	<!-- 받은 쪽지함 최신순 정렬 (보낸 사람의 회원번호 말고 닉네임으로 출력) -->
-	<select id="receiveNoteList" parameterType="int" resultType="noteVo">
-		select note_num, note_content, note_date, note_receiver_num, note_sender_num, 
-		(select distinct member_nick from member m, note where m.member_num = note_sender_num 
-		and note_sender_num = (select distinct note_sender_num from note where note_receiver_num = #{note_receiver_num})) member_nick 
-		from member m, note where m.member_num = note_receiver_num and note_receiver_num = #{note_receiver_num}
-		order by note_date DESC
-	</select>
-	
-	<!-- 받은 쪽지함 사이드바 링크 연결을 위한 member_num, member_pwd -->
-	<select id="getReceiverInfo" parameterType="int" resultType="noteVo">
-		select distinct m.member_num, member_pwd from member m, note 
-		where m.member_num = note_receiver_num and member_num = #{note_receiver_num}
 	</select>
 	
 	<!-- 보낸 쪽지 내용 상세 조회 + 해당 쪽지를 받는 사람의 닉네임 -->
@@ -40,10 +18,23 @@
 		and note_receiver_num = (select note_receiver_num from note where note_num = #{note_num})) member_nick 
 		from member m, note where m.member_num = note_sender_num and note_num = #{note_num}
 	</select>
-
+	
+	<!-- 보낸 쪽지함에서 쪽지 선택 삭제시, 해당 쪽지의 note_send_visibility를 0으로 변경하여 보낸 쪽지함 목록에서 제외 -->
+	<update id="hideSendNoteArray" parameterType="int">
+		update note set note_send_visibility = 0 where note_num = #{note_num}
+	</update>
+	
+	<!-- 받은 쪽지함 최신순 정렬 -->
+	<select id="receiveNoteList" parameterType="int" resultType="noteVo">
+		select note_num, note_content, note_date, note_sender_num, note_receiver_num 
+		from member m, note 
+		where m.member_num = note_receiver_num and note_receiver_num = #{note_receiver_num} and note_receive_visibility = 1 
+		order by note_date DESC
+	</select>
+	
 	<!-- 받은 쪽지 내용 상세 조회 + 해당 쪽지를 보낸(답장시 쪽지를 받을) 사람의 닉네임 -->
 	<select id="detailReceiveNote" parameterType="int" resultType="noteVo">
-		select note_num, note_content, note_date, note_receiver_num, note_sender_num, 
+		select note_num, note_content, note_date, note_sender_num, note_receiver_num, 
 		(select distinct member_nick from member m, note where m.member_num = note_sender_num
 		and note_sender_num = (select note_sender_num from note where note_num = #{note_num})) member_nick 
 		from member m, note where m.member_num = note_receiver_num and note_num = #{note_num}
@@ -51,22 +42,12 @@
 	
 	<!-- 받은 쪽지 답장 -->
 	<insert id="sendReplyNote" parameterType="noteVo">
-	  insert into note(note_num, note_content, note_date, note_sender_num, note_receiver_num) 
-	  values((select nvl(max(note_num), 0)+1 from note), #{note_content}, sysdate, #{note_sender_num}, #{note_receiver_num})
+	  insert into note(note_num, note_content, note_date, note_sender_num, note_receiver_num, note_send_visibility, note_receive_visibility) 
+	  values((select nvl(max(note_num), 0)+1 from note), #{note_content}, sysdate+9/24, #{note_sender_num}, #{note_receiver_num}, 1, 1)
 	</insert>
 	
-	<!-- 선택 쪽지 삭제: 보낸 사람이 쪽지를 지우면 받은 사람의 쪽지함에서도 지워지므로 실제로 삭제하지는 않고 해당 회원번호를 -1로 변경? 
-	<delete id="deleteNote">
-		delete from note where note_num = #{note_num} 
-	</delete> -->
-	
-	<!-- 보낸 쪽지함에서 쪽지 선택 삭제시, 보낸 사람의 회원번호를 관리자 번호인 -1로 변경하여 보낸 쪽지함 목록에서 제외 -->
-	<update id="deleteChangeSenderNum">
-		update note set note_sender_num = -1 where note_num = #{note_num}
-	</update>
-	
-	<!-- 받은 쪽지함에서 쪽지 선택 삭제시, 받은 사람의 회원번호를 관리자 번호인 -1로 변경하여 받은 쪽지함 목록에서 제외 -->
-	<update id="deleteChangeReceiverNum">
-		update note set note_receiver_num = -1 where note_num = #{note_num}
+	<!-- 받은 쪽지함에서 쪽지 선택 삭제시, 해당 쪽지의 note_receive_visibility를 0으로 변경하여 보낸 쪽지함 목록에서 제외 -->
+	<update id="hideReceiveNoteArray" parameterType="int">
+		update note set note_receive_visibility = 0 where note_num = #{note_num}
 	</update>
 </mapper>

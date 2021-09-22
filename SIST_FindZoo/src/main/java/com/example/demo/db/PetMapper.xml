@@ -7,8 +7,8 @@
 	  select * from pet where member_num = #{member_num}
 	</select>
 
-	<select id="detailPet" parameterType="int" resultType="petVo">
-	  select * from pet where pet_num = #{pet_num}
+	<select id="detailPet" parameterType="petVo" resultType="petVo">
+	  select * from pet where pet_num = #{pet_num} and member_num = #{member_num}
 	</select>
 	
 	<insert id="insertPet" parameterType="petVo">
@@ -16,7 +16,7 @@
 	  values((select nvl(max(pet_num), 0)+1 from pet), #{pet_name}, #{pet_sex}, #{pet_type}, #{pet_regist_num}, #{pet_birth}, #{member_num})
 	</insert>
 	
-	<delete id="deletePet"> 
-		delete from pet where pet_num = #{pet_num}
+	<delete id="deletePet" parameterType="petVo"> 
+		delete from pet where pet_num = #{pet_num} and member_num = #{member_num}
 	</delete>
 </mapper>

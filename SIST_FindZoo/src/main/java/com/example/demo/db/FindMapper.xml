@@ -53,8 +53,8 @@
 		SELECT picture_fname, board_num
 		FROM (select rownum n, picture_fname, board_num
 		from (SELECT p.picture_fname, b.board_num
-		FROM picture p, board b
-		<include refid="search_ref3"/> and board_type_num = 11 and b.board_num = p.board_num ORDER BY b.board_num desc, picture_file_num))
+		FROM picture p, board b, find f, member m
+		<include refid="search_ref3"/> and board_type_num = 11 and b.board_num = p.board_num and f.board_num = b.board_num and b.member_num = m.member_num ORDER BY b.board_num desc, picture_file_num))
 		where n BETWEEN #{start} AND #{end}
 	</select>
 	
@@ -76,7 +76,7 @@
 	</sql>
 	
 	<insert id="insertBoard" parameterType="findVo">
-		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 11, 1)
+		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate+9/24, 0, 11, ${member_num})
 	</insert>
 	
 	<insert id="insertFind" parameterType="findVo">
@@ -101,11 +101,11 @@
   	</select>
   	
   	<select id="getPicture" resultType="String">
-  		select picture_fname from picture p, board b where p.board_num = b.board_num and b.board_num = #{board_num}
+  		select picture_fname from picture p, board b where p.board_num = b.board_num and b.board_num = #{board_num} order by p.picture_file_num
   	</select>
   	
   	<select id="getPictureNum" resultType="String">
-  		select picture_file_num from picture p, board b where p.board_num = b.board_num and b.board_num = #{board_num}
+  		select picture_file_num from picture p, board b where p.board_num = b.board_num and b.board_num = #{board_num} order by picture_file_num
   	</select>
   
 	<select id="totalRecord" resultType="int">
