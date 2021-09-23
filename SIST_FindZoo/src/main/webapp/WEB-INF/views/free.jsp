@@ -125,7 +125,7 @@
 		// 멤버 닉네임 클릭 시
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
-			$('#member_board').attr("href", "memberBoard.do?member_num="+member_num);
+			$('#member_info').attr("href", "memberInfo.do?member_num="+member_num);
 			
 			var divLeft = e.clientX;
 			var divTop = e.clientY;
@@ -150,6 +150,7 @@
 </script>
 </head>
 <body>
+<jsp:include page="findZoo_Header.jsp"/>
 	<div id="free-container">
 		<div id="content">
 			<h2><a href="free.do">자유게시판</a></h2>
@@ -180,7 +181,7 @@
 					</tbody>
 				</table>
 				
-				<button class="btn btn-primary" onclick="location.href='insertFree.do'" style="float: right;">글쓰기</button>
+				<button class="btn btn-primary" onclick="location.href='/member/insertFree.do'" style="float: right;">글쓰기</button>
 			</div>
 
 			<!-- 페이지 번호 -->
@@ -229,12 +230,13 @@
 	<div class="modal" id="member_modal">
 		<table class="table table-hover" id="member_act">
 			<tr>
-				<td><a id="member_board">회원 정보 보기</a></td>
+				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
 				<td><a>쪽지 보내기</a></td>
 			</tr>
 		</table>
 	</div>
+	<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

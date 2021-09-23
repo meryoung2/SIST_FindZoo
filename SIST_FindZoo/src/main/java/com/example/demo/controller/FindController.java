@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import com.example.demo.dao.FindDao;
 import com.example.demo.util.Paging;
 import com.example.demo.vo.DealVo;
 import com.example.demo.vo.FindVo;
+import com.example.demo.vo.MemberVo;
 
 import ch.qos.logback.core.util.FileSize;
 
@@ -174,20 +176,29 @@ public class FindController {
 	
 	// 찾아요게시판 상세보기 컨트롤러
 	@RequestMapping("/detailFind.do")
-	public void detail(HttpServletRequest request, Model model, int board_num) {
+	public void detail(HttpServletRequest request, Model model, HttpSession session, int board_num) {
 		dao.updateViewsFind(board_num);
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
 		model.addAttribute("f", dao.getFind(board_num));
 		model.addAttribute("p", dao.getFindPicture(board_num));
+		model.addAttribute("member_num", member_num);
 	}
 	
 	
 	// 찾아요게시판 글작성 컨트롤러
-		@RequestMapping(value = "/insertFind.do", method = RequestMethod.GET)
-		public void form(HttpServletRequest request) {}
+		@RequestMapping(value = "/member/insertFind.do", method = RequestMethod.GET)
+		public void form(HttpServletRequest request, HttpSession session) {
+			
+		}
 		
-		@RequestMapping(value = "/insertFind.do" , method = RequestMethod.POST)
-		public ModelAndView submit(HttpServletRequest request, FindVo f) {
-			ModelAndView mav = new ModelAndView("redirect:/find.do");		
+		@RequestMapping(value = "/member/insertFind.do" , method = RequestMethod.POST)
+		public ModelAndView submit(HttpServletRequest request, HttpSession session, FindVo f) {
+			ModelAndView mav = new ModelAndView("redirect:/find.do");
+			int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+			f.setMember_num(member_num);
 			String picture_fname1 = null;
 			String picture_fname2 = null;
 			String picture_fname3 = null;
@@ -439,13 +450,13 @@ public class FindController {
 		}
 	
 	// 찾아요게시판 수정 컨트롤러
-	@RequestMapping(value = "/updateFind.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/updateFind.do", method = RequestMethod.GET)
 	public void findUpdateForm(HttpServletRequest request, Model model, int board_num) {
 		model.addAttribute("f", dao.getFind(board_num));
 		model.addAttribute("p", dao.getFindPicture(board_num));
 	}
 	
-	@RequestMapping(value = "/updateFind.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/updateFind.do", method = RequestMethod.POST)
 	public ModelAndView findUpdateSubmit(HttpServletRequest request, FindVo f) {
 		ModelAndView mav = new ModelAndView("redirect:/detailFind.do?board_num="+f.getBoard_num());
 		
@@ -522,7 +533,7 @@ public class FindController {
 							try {
 								path = request.getRealPath("resources/systems");
 								byte[] data3 = picture_file3.getBytes();
-								picture_fname3 = "default.jpg";
+								picture_fname3 = oldFname3;
 								fsize3 = data3.length;
 								f.setPicture_fname3(picture_fname3);
 								System.out.println(path);
@@ -538,7 +549,7 @@ public class FindController {
 					try {
 						path = request.getRealPath("resources/systems");
 						byte[] data2 = picture_file2.getBytes();
-						picture_fname2 = "default.jpg";
+						picture_fname2 = oldFname2;
 						fsize2 = data2.length;
 						f.setPicture_fname2(picture_fname2);
 						System.out.println(path);
@@ -565,7 +576,7 @@ public class FindController {
 							try {
 								path = request.getRealPath("resources/systems");
 								byte[] data3 = picture_file3.getBytes();
-								picture_fname3 = "default.jpg";
+								picture_fname3 = oldFname3;
 								fsize3 = data3.length;
 								f.setPicture_fname3(picture_fname3);
 								System.out.println(path);
@@ -585,7 +596,7 @@ public class FindController {
 			try {
 				path = request.getRealPath("resources/systems");
 				byte[] data1 = picture_file1.getBytes();
-				picture_fname1 = "default.jpg";
+				picture_fname1 = oldFname1;
 				fsize1 = data1.length;
 				f.setPicture_fname1(picture_fname1);
 				System.out.println(path);
@@ -632,7 +643,7 @@ public class FindController {
 						try {
 							path = request.getRealPath("resources/systems");
 							byte[] data3 = picture_file3.getBytes();
-							picture_fname3 = "default.jpg";
+							picture_fname3 = oldFname3;
 							fsize3 = data3.length;
 							f.setPicture_fname3(picture_fname3);
 							System.out.println(path);
@@ -645,7 +656,7 @@ public class FindController {
 					try {
 						path = request.getRealPath("resources/systems");
 						byte[] data2 = picture_file2.getBytes();
-						picture_fname2 = "default.jpg";
+						picture_fname2 = oldFname2;
 						fsize2 = data2.length;
 						f.setPicture_fname2(picture_fname2);
 						System.out.println(path);
@@ -675,7 +686,7 @@ public class FindController {
 						try {
 							path = request.getRealPath("resources/systems");
 							byte[] data3 = picture_file3.getBytes();
-							picture_fname3 = "default.jpg";
+							picture_fname3 = oldFname3;
 							fsize3 = data3.length;
 							f.setPicture_fname3(picture_fname3);
 							System.out.println(path);

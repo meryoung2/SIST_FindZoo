@@ -12,8 +12,11 @@
 	<typeAlias type="com.example.demo.vo.ReplyVo" alias="replyVo"/>
 	<typeAlias type="com.example.demo.vo.FindVo" alias="findVo"/>
   	<typeAlias type="com.example.demo.vo.BohoVo" alias="bohoVo"/>
-  	<typeAlias type="com.example.demo.vo.MemberBoardVo" alias="memberBoardVo"/>
+  	<typeAlias type="com.example.demo.vo.MyPostVo" alias="myPostVo"/>
+  	<typeAlias type="com.example.demo.vo.MyReplyVo" alias="myReplyVo"/>
   	<typeAlias type="com.example.demo.vo.NoteVo" alias="noteVo"/>
+  	<typeAlias type="com.example.demo.vo.SeeVo" alias="seeVo"/>
+  	<typeAlias type="com.example.demo.vo.VolunteerVo" alias="volVo"/>
   </typeAliases>
   <environments default="development">
     <environment id="development">
@@ -34,7 +37,13 @@
 	<mapper resource="com/example/demo/db/ReplyMapper.xml"/>
 	<mapper resource="com/example/demo/db/MainMapper.xml"/>
 	<mapper resource="com/example/demo/db/FindMapper.xml"/>
-	<mapper resource="com/example/demo/db/MemberBoardMapper.xml"/>
+	<mapper resource="com/example/demo/db/FindReviewMapper.xml"/>
+	<mapper resource="com/example/demo/db/MyPostMapper.xml"/>
+	<mapper resource="com/example/demo/db/MyReplyMapper.xml"/>
+	<mapper resource="com/example/demo/db/BohoMapper.xml"/>
 	<mapper resource="com/example/demo/db/NoteMapper.xml"/>
+	<mapper resource="com/example/demo/db/SeeMapper.xml"/>
+	<mapper resource="com/example/demo/db/VolunteerMapper.xml"/>
+	<mapper resource="com/example/demo/db/InformationMapper.xml"/>
   </mappers>
 </configuration>

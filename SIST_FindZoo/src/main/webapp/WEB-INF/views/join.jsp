@@ -20,7 +20,7 @@
 		font-weight: lighter;
 	}
 	
-	#free-container{
+	#join-container{
 		display: flex;
 		justify-content: center;
 	}
@@ -102,12 +102,17 @@ $(document).ready(function () {
               return false;
           }
           
-          /*if(!$('input[name="agree"]').attr('checked')){
-        	  alert("약관에 동의해주세요.");
-        	  $('input[name="agree"]').focus();
-        	  retrun false;
-          }*/
-         
+          if($("#idChk").val()!= 'Y'){
+        	  
+        	  alert("아이디 중복확인을 해주세요.");
+        	  return false;
+          }
+          
+ 		 if($("#nickChk").val()!= 'Y'){
+        	  
+        	  alert("닉네임 중복확인을 해주세요.");
+        	  return false;
+          }
     });
 
  });
@@ -195,6 +200,7 @@ $(document).ready(function () {
 							 
 						 }else{
 							 alert("사용 가능한 아이디입니다.");
+							 $("#idChk").val('Y');
 						 }
 					}
 			 })
@@ -231,6 +237,7 @@ $(document).ready(function () {
 							 
 						 }else{
 							 alert("사용 가능한 닉네임입니다.");
+							 $("#nickChk").val('Y');
 						 }
 					}
 			 })
@@ -242,7 +249,7 @@ $(document).ready(function () {
 <body>
 <jsp:include page="findZoo_Header.jsp"/>
 	
-	<div id="free-container">
+	<div id="join-container">
 	<div id="content">
 	<form action="join.do" method="post" id="form1">
 	  <fieldset>
@@ -252,6 +259,7 @@ $(document).ready(function () {
 			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" >
 			<label for="id" class="form-label mt-4">아이디</label>
 			<input type="text" id="member_id" name="member_id" required="required" class="form-control">
+			<input type="hidden" id="idChk">
 			<button type="button" onclick="dupCheck();" class="btn btn-secondary">중복확인</button><br>
 			<small id="emailHelp" class="form-text text-muted">*아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.</small>
 		</div>
@@ -272,6 +280,7 @@ $(document).ready(function () {
 		<div class="form-group">
 			<label for="nick" class="form-label mt-4">닉네임</label>
 			<input type="text" class="form-control" id="member_nick" name="member_nick" required="required">
+			<input type="hidden" id="nickChk">
 			<button type="button" onclick="nickdupCheck();" class="btn btn-secondary">중복확인</button><br>
 		</div>
 		
@@ -421,7 +430,7 @@ $(document).ready(function () {
  	 </table> 
  	 
  	 <div style="text-align: center"> 
- 	 	 <input class="form-check-input" type="checkbox" name="agree" id="agree" checked="checked"> 
+ 	 	 <input class="form-check-input" type="checkbox" name="agree" id="agree" checked="checked" required="required"> 
  	  		위 개인정보취급방침에 동의합니다 
  	 </div> 
  	 </form> 

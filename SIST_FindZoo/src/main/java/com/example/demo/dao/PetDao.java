@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -17,8 +18,8 @@ public class PetDao {
 	}
 	
 	// 마이페이지 반려동물 정보 상세 조회 
-	public PetVo detailPet(int pet_num) {
-		return DBManager.detailPet(pet_num);
+	public PetVo detailPet(HashMap map) {
+		return DBManager.detailPet(map);
 	}
 	
 	// 마이페이지 반려동물 추가
@@ -27,8 +28,8 @@ public class PetDao {
 	}
 	
 	// 마이페이지 반려동물 삭제
-	public int deletePet(int pet_num) {
-		return DBManager.deletePet(pet_num);
+	public int deletePet(HashMap map) {
+		return DBManager.deletePet(map);
 	}
 	
 }

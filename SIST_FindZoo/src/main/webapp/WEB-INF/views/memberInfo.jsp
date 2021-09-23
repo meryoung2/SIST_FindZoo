@@ -64,11 +64,11 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(member_num){
-		location.href = "memberBoard.do?pageNum=1&member_num="+member_num;
+		location.href = "memberInfo.do?pageNum=1&member_num="+member_num;
 	}
 	
 	function btn_end(totalPage, member_num){
-		location.href = "memberBoard.do?pageNum="+totalPage+"&member_num="+member_num;
+		location.href = "memberInfo.do?pageNum="+totalPage+"&member_num="+member_num;
 	}
 	
 	function btn_prev(listStart, listEnd, member_num){
@@ -78,7 +78,7 @@
 			listStart = 1;
 		}
 		
-		location.href = "memberBoard.do?pageNum="+listEnd+"&member_num="+member_num;
+		location.href = "memberInfo.do?pageNum="+listEnd+"&member_num="+member_num;
 	}
 	
 	function btn_next(listStart, listEnd, totalPage, member_num){
@@ -86,11 +86,12 @@
 			listStart += 5;
 		}
 		
-		location.href = "memberBoard.do?pageNum="+listStart+"&member_num="+member_num;
+		location.href = "memberInfo.do?pageNum="+listStart+"&member_num="+member_num;
 	}
 </script>
 </head>
 <body>
+<jsp:include page="findZoo_Header.jsp"/>
 <div id="free-container">
 		<div id="content">
 		<c:set var="memberId" value="${mb.member_id}" />
@@ -206,12 +207,13 @@
 			<a href="#" onclick="btn_start(${ member_num })">≪</a>
 			<a href="#" onclick="btn_prev(${ listStart }, ${ listEnd }, ${ member_num })">이전</a>
 			<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
-				<a href="memberBoard.do?pageNum=${ i }&member_num=${ member_num }">${ i }</a>&nbsp;
+				<a href="memberInfo.do?pageNum=${ i }&member_num=${ member_num }">${ i }</a>&nbsp;
 			</c:forEach>
 			<a href="#" onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage }, ${ member_num })">다음</a>
 			<a href="#" onclick="btn_end(${ totalPage }, ${ member_num })">≫</a>
 		</div>
 	</div>
 </div>
+<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

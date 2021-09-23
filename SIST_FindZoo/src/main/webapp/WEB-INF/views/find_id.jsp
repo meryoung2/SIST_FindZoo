@@ -4,8 +4,37 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<title>아이디 찾기</title>
+<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+@font-face {
+	    font-family: 'GmarketSansMedium';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	*{
+		font-family: 'GmarketSansMedium';
+		font-weight: lighter;
+	}
+	#findId-container{
+		display: flex;
+		justify-content: center;
+	}
+	
+	#content{
+		display: inline-block;
+		width: 70%;
+		margin-top: 2%;
+	}
+	.btnSearch{
+		text-align: center;
+	}
+</style>
+
 <script type="text/javascript">
 function id_search() { 
 	
@@ -47,26 +76,32 @@ function id_search() {
 </script>
 </head>
 <body>
-	<h2>아이디 찾기</h2>
-	<hr>
+<jsp:include page="findZoo_Header.jsp"/>
+
+	<div id="findId-container">
+	<div id="content">
 	<form>
+		<fieldset>
+		<legend>아이디 찾기</legend>
 			
-		<section class = "form-search">
-			<div class = "find-name">
-				<label>이름</label>
-				<input type="text" name="member_name" id="member_name" class = "btn-name" placeholder = "등록한 이름" required="required">
+			<div class="form-group row">
+				<label class="form-label mt-4">이름</label>
+				<input type="text" name="member_name" id="member_name" class="form-control" placeholder = "등록한 이름" required="required">
 			<br>
 			</div>
-			<div class = "find-phone">
-				<label>번호</label>
-				<input type="text" name="member_phone" id="member_phone" class = "btn-phone" placeholder = "휴대폰번호를 '-'없이 입력" required="required">
+			<div class="form-group row">
+				<label class="form-label mt-4">연락처</label>
+				<input type="text" name="member_phone" id="member_phone" class="form-control" placeholder = "휴대폰번호를 '-'없이 입력" required="required">
 			</div>
-			<br>
-		</section>
-		<div class ="btnSearch">
-			<input type="button" name="enter" value="찾기"  onClick="id_search()">
-			<a href="login.do"><input type="button" name="cancle" value="돌아가기"></a>
-	 	</div>
 	</form>
+		<div class="modal-footer">
+			<input type="button" name="enter" class="btn btn-primary" value="아이디 찾기"  onClick="id_search()">
+			<a href="find_pwd.do"><input type="button" class="btn btn-primary" name="cancle" value="비밀번호 찾기"></a>
+			<a href="login.do"><input type="button" class="btn btn-primary" name="cancle" value="로그인"></a>
+	 	</div>
+	 	</fieldset>
+	</div>
+	</div>
+<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

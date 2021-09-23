@@ -66,5 +66,15 @@ public class MemberDao {
 		System.out.println(member_name);
 		return DBManager.findId(member_name, member_phone);
 	}
+	
+	//비밀번호 찾기 시, member_num 카운트 조회 1 or 0
+	public int selectPwd(MemberVo m) {
+		return DBManager.selectPwd(m);
+	}
+	
+	//비밀번호 찾기 시, 새로운 비밀번호 설정
+	public int newPwd(MemberVo mb) {
+		return DBManager.newPwd(mb);
+	}
 		
 }

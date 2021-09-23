@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.db.DBManager;
 import com.example.demo.vo.DealVo;
 import com.example.demo.vo.FreeVo;
+import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReplyVo;
 
 @Repository
@@ -26,7 +27,7 @@ public class FreeDao {
 		return DBManager.getFree(board_num);
 	}
 	
-	public void updateViews(int board_num) {
+	public void updateViewsFree(int board_num) {
 		DBManager.updateViews(board_num);
 	}
 
@@ -70,4 +71,9 @@ public class FreeDao {
 	public int insertReReply(ReplyVo r) {
 		return DBManager.insertReReply(r);
 	}
+	
+	public MemberVo getMember(int member_num) {
+		return DBManager.getMember(member_num);
+	}
+	
 }
