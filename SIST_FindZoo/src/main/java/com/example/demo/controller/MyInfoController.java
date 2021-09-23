@@ -70,12 +70,14 @@ public class MyInfoController {
 		model.addAttribute("mb", dao.getMember(member_num));		
 	}
 	@RequestMapping(value="/member/updatePwd.do", method=RequestMethod.POST)
-	public ModelAndView updatePwdSubmit(MemberVo mb) {
-		ModelAndView mav = new ModelAndView("redirect:/member/myInfo.do");
+	public ModelAndView updatePwdSubmit(HttpSession session, MemberVo mb) {
+		ModelAndView mav = new ModelAndView("redirect:/login.do");
 		int re = dao.updatePwd(mb);
 		if(re != 1) {
 			mav.addObject("msg", "비밀번호 변경에 실패하였습니다.");
 			mav.setViewName("error");
+		}else {
+			session.invalidate();
 		}
 		return mav;
 	}

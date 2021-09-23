@@ -33,30 +33,46 @@
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#insertPet-container {
 		display: flex;
-		position: absolute;
 		width: 70%;
 		margin: 15%;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid black;
+		margin-top: 30px;
+		margin-bottom: 5%;
 	}
 	
 	#insertPet-container #sidebar{
-		width: 20%;
-		margin: 10px;
-		border: 1px solid black;
+		margin-right: 20px;
 	}
 	
 	#insertPet-container #input-container {
-		float: right;
-		margin: 10px;
-		padding: 20px;
-		border: 1px solid black;
+		width: 80%;
+		margin-bottom: 10px;
+		padding: 10px;
+	}
+	
+	/* 부트스트랩 세부 조정 */
+	#input-container .form-control {
+    	width: 40%;
+    	display: inline;
+	} 
+	
+	#input-container .col-form-label {
+		width: 105px;
+		font-weight: bold;
+	}
+	
+	#input-container .mt-4 {
+	    margin-top: 0.8rem!important;
+	}
+	
+	#input-container .form-check-input {
+	    vertical-align: middle; 
+	    margin: 5px; 
 	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+	<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="insertPet-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
@@ -67,8 +83,8 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myInfo.do"> - 내 정보</a><br>
-							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br><br>
 							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
@@ -80,7 +96,7 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br><br>
 							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
@@ -92,7 +108,7 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br><br>
 							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
@@ -100,23 +116,34 @@
 			</div>
 		</aside>
 		<article id="input-container">
-			<h2>반려동물 등록</h2>
+			<h2><strong>반려동물 등록</strong></h2>
 			<hr>
 			<form action="/member/insertPet.do" id="insert-pet-form" method="post">
-				<input type="hidden" name="member_num" value="${mb.member_num }"><br>
-				반려동물이름: <input type="text" name="pet_name"><br>
-				반려동물성별: <input type="radio" name="pet_sex" value="암컷" checked="checked">암컷
-							<input type="radio" name="pet_sex" value="수컷">수컷<br>
-				반려동물타입: <input type="radio" name="pet_type" value="강아지" checked="checked">강아지
-							<input type="radio" name="pet_type" value="고양이">고양이
-							<input type="radio" name="pet_type" value="기타">기타<br>
-				동물등록번호: <input type="text" name="pet_regist_num"><br>
-				반려동물생일: <input type="date" name="pet_birth" id="pet_birth" max="9999-12-31"><br>
+				<input type="hidden" name="member_num" value="${mb.member_num }">
+				
+				<label class="col-form-label mt-4" for="inputDefault">반려동물 이름</label>
+				<input type="text" class="form-control" name="pet_name" required><br>
+				
+				<label class="col-form-label mt-4" for="inputDefault">반려동물 성별</label>
+				<input type="radio" class="form-check-input" name="pet_sex" value="암컷" checked="checked">암컷
+				<input type="radio" class="form-check-input" name="pet_sex" value="수컷">수컷<br>
+				
+				<label class="col-form-label mt-4" for="inputDefault">반려동물 타입</label>
+				<input type="radio" class="form-check-input" name="pet_type" value="강아지" checked="checked">강아지
+				<input type="radio" class="form-check-input" name="pet_type" value="고양이">고양이
+				<input type="radio" class="form-check-input" name="pet_type" value="기타">기타<br>
+				
+				<label class="col-form-label mt-4" for="inputDefault">동물 등록번호</label>
+				<input type="text" class="form-control" name="pet_regist_num"><br>
+				
+				<label class="col-form-label mt-4" for="inputDefault">반려동물 생일</label>
+				<input type="date" class="form-control" name="pet_birth" id="pet_birth" max="9999-12-31"><br>
 				<br>
-				<input type="submit" value="등록">
-				<input type="button" value="취소" onclick="history.back(-1);">
+				<input type="submit" class="btn btn-primary" value="등록">
+				<input type="button" class="btn btn-secondary" value="취소" onclick="history.back(-1);">
 			</form>
 		</article>
 	</div>
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>
