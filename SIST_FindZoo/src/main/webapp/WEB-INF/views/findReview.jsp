@@ -146,7 +146,13 @@
 				member_modal.hide();
 			}
 		});
+
+	
+	// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
+	$('.login_pls_alert').click(function(e){
+		alert("회원 정보를 보려면 로그인을 해야 합니다!");
 	});
+});
 </script>
 </head>
 <body>
@@ -169,13 +175,18 @@
 					<tbody>
 						<c:forEach var="f" items="${ list }">
 							<tr>
-								<td width="60%">&nbsp;&nbsp;&nbsp;<a
+								<td width="60%"><a
 									href="detailFindReview.do?board_num=${ f.board_num }">${ f.title }</a>
 								</td>
-								<td width="30%" style="text-align: center;">
-									<a class="member_nick" href="#" member_num=${ f.member_num }>${ f.member_nick }</a>
+								<td width="30%">
+										<c:if test="${ member_num eq 0 }">
+										<a href="#a" class="login_pls_alert">${ f.member_nick }</a>
+									</c:if>
+									<c:if test="${ member_num ne 0 }">
+										<a class="member_nick" href="#a" member_num=${ f.member_num }>${ f.member_nick }</a>
+									</c:if>
 								</td>
-								<td width="10%" style="text-align: center;">${ f.views }</td>
+								<td width="10%">&nbsp;&nbsp;&nbsp;${ f.views }</td>
 							</tr>
 						</c:forEach>
 					</tbody>

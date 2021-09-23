@@ -67,7 +67,7 @@
 		text-align: center;
 	}
 	
-	#member_modal{
+		#member_modal{
 		position: absolute;
 		display: none;
 		width: 8%;
@@ -131,7 +131,7 @@
 		// 멤버 닉네임 클릭 시
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
-			$('#member_board').attr("href", "memberBoard.do?member_num="+member_num);
+			$('#member_info').attr("href", "memberInfo.do?member_num="+member_num);
 			
 			var divLeft = e.clientX;
 			var divTop = e.clientY;
@@ -152,7 +152,14 @@
 				member_modal.hide();
 			}
 		});
+
+	
+		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
+		$('.login_pls_alert').click(function(e){
+			alert("회원 정보를 보려면 로그인을 해야 합니다!");
+		});
 	});
+
 </script>
 </head>
 <body>
@@ -175,13 +182,18 @@
 					<tbody>
 						<c:forEach var="s" items="${ list }">
 							<tr>
-								<td width="60%">&nbsp;&nbsp;&nbsp;<a
+								<td width="60%"><a
 									href="detailSee.do?board_num=${ s.board_num }">${ s.title }</a>
 								</td>
-								<td width="30%" style="text-align: center;">
-									<a class="member_nick" href="#" member_num=${ s.member_num }>${ s.member_nick }</a>
+								<td width="30%">
+										<c:if test="${ member_num eq 0 }">
+										<a href="#a" class="login_pls_alert">${ s.member_nick }</a>
+									</c:if>
+									<c:if test="${ member_num ne 0 }">
+										<a class="member_nick" href="#a" member_num=${ s.member_num }>${ s.member_nick }</a>
+									</c:if>
 								</td>
-								<td width="10%" style="text-align: center;">${ s.views }</td>
+								<td width="10%">&nbsp;&nbsp;&nbsp;${ s.views }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -236,7 +248,7 @@
 	<div class="modal" id="member_modal">
 		<table class="table table-hover" id="member_act">
 			<tr>
-				<td><a id="member_board">회원 정보 보기</a></td>
+				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
 				<td><a>쪽지 보내기</a></td>

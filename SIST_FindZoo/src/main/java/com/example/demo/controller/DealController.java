@@ -51,9 +51,14 @@ public class DealController {
 	
 	// 거래게시판, 댓글 목록 컨트롤러
 	@RequestMapping("/deal.do")
-	public void deal(HttpServletRequest request, 
+	public void deal(HttpServletRequest request, HttpSession session, 
 			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
+		
 		paging.totalRecord = dao.getTotalRecordDeal();
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
@@ -76,12 +81,19 @@ public class DealController {
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
+		model.addAttribute("member_num", member_num);
 	}
 	
 	// 거래게시판 검색 후 목록 출력
 	@RequestMapping(value = "/searchDeal.do")
-	public void searchFree(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	public void searchFree(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "search_option", defaultValue = "title") String search_option, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
+
 		HashMap num_map = new HashMap();
 		num_map.put("keyword", keyword);
 		num_map.put("search_option", search_option);
@@ -111,6 +123,7 @@ public class DealController {
 		model.addAttribute("s_listEnd", paging.s_listEnd);
 		model.addAttribute("search_option", search_option);		
 		model.addAttribute("keyword", keyword);		
+		model.addAttribute("member_num", member_num);
 	}
 	
 	// 거래게시판 상세보기 컨트롤러

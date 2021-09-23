@@ -54,9 +54,14 @@ public class VolunteerController {
 
 	// 자원봉사 게시판, 댓글 목록 컨트롤러
 	@RequestMapping("/vol.do")
-	public void vol(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	public void vol(HttpServletRequest request, HttpSession session,  @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			Model model) {
 
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
+		
 		paging.totalRecord = dao.getTotalRecordVol();
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
@@ -79,13 +84,19 @@ public class VolunteerController {
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
+		model.addAttribute("member_num", member_num);
 	}
 
 	// 자원봉사 게시판 검색 후 목록 출력
 	@RequestMapping(value = "/searchVol.do")
-	public void searchVol(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	public void searchVol(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "search_option", defaultValue = "title") String search_option,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
 		HashMap num_map = new HashMap();
 		num_map.put("keyword", keyword);
 		num_map.put("search_option", search_option);
@@ -115,6 +126,7 @@ public class VolunteerController {
 		model.addAttribute("s_listEnd", paging.s_listEnd);
 		model.addAttribute("search_option", search_option);
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("member_num", member_num);
 	}
 
 	// 자원봉사 게시판 상세보기 컨트롤러

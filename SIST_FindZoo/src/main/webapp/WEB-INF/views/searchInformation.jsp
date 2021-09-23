@@ -1,12 +1,13 @@
+<%@page import="com.example.demo.util.Paging"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
-<head> 
+<head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
 	    font-family: 'GmarketSansMedium';
@@ -40,7 +41,7 @@
 		text-decoration: underline;
 	}
 	
-	#see-container{
+	#free-container{
 		display: flex;
 		justify-content: center;
 	}
@@ -60,7 +61,7 @@
 		text-align: center;
 	}
 	
-		#member_modal{
+	#member_modal{
 		position: absolute;
 		display: none;
 		width: 8%;
@@ -80,11 +81,11 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(search_option, keyword){
-		location.href = "searchSee.do?pageNum=1&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchInformation.do?pageNum=1"+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_end(searchPage, search_option, keyword){
-		location.href = "searchSee.do?pageNum="+searchPage+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchInformation.do?pageNum="+searchPage+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_prev(s_listStart, s_listEnd, search_option, keyword){
@@ -94,14 +95,14 @@
 			s_listStart = 1;
 		}
 		
-		location.href = "searchSee.do?pageNum="+s_listEnd+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchInformation.do?pageNum="+s_listEnd+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_next(s_listStart, s_listEnd, searchPage, search_option, keyword){
 		if(s_listEnd != searchPage){
 			s_listStart += 5;
 			
-			location.href = "searchSee.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
+			location.href = "searchInformation.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
 		}else{
 			location.reload();
 		}
@@ -137,6 +138,7 @@
 				"position": "absolute"
 			}).show();
 		});
+		
 		// 모달 창 바깥 클릭 시
 		$(document).mouseup(function (e){
 			var member_modal = $("#member_modal");
@@ -156,9 +158,9 @@
 </head>
 <body>
 <jsp:include page="findZoo_Header.jsp"/>
-	<div id="see-container">
+	<div id="free-container">
 		<div id="content">
-			<h2><a href="see.do">목격했어요!</a></h2>
+			<h2><a href="information.do">정보공유</a></h2>
 			<h6>(검색 게시글 수 : ${ searchRecord })</h6>
 			<hr>
 			<div id="board">
@@ -172,26 +174,26 @@
 					</thead>
 
 					<tbody>
-						<c:forEach var="s_s" items="${ list }">
+						<c:forEach var="s_f" items="${ list }">
 							<tr>
 								<td width="60%"><a
-									href="detailSee.do?board_num=${ s_s.board_num }">${ s_s.title }</a>
+									href="detailInformation.do?board_num=${ s_f.board_num }">${ s_f.title }</a>
 								</td>
 								<td width="30%">
 										<c:if test="${ member_num eq 0 }">
-										<a href="#a" class="login_pls_alert">${ s_s.member_nick }</a>
+										<a href="#a" class="login_pls_alert">${ s_f.member_nick }</a>
 									</c:if>
 									<c:if test="${ member_num ne 0 }">
-										<a class="member_nick" href="#a" member_num=${ s_s.member_num }>${ s_s.member_nick }</a>
+										<a class="member_nick" href="#a" member_num=${ s_f.member_num }>${ s_f.member_nick }</a>
 									</c:if>
 								</td>
-								<td width="10%">&nbsp;&nbsp;&nbsp;${ s_s.views }</td>
+								<td width="10%">&nbsp;&nbsp;&nbsp;${ s_f.views }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				
-				<button class="btn btn-primary" onclick="location.href='insertSee.do'" style="float: right;">글쓰기</button>
+				<button class="btn btn-primary" onclick="location.href='insertInformation.do'" style="float: right;">글쓰기</button>
 			</div>
 			
 			<!-- 페이지 번호 -->
@@ -201,10 +203,10 @@
 				<c:forEach var="i" begin="${ s_listStart }" end="${ s_listEnd }">
 					<c:choose>
 						<c:when test="${ pageNum eq i }">
-							<a href="searchSee.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }" style="font-weight: bold; color: #325d88; text-decoration: underline;">[${ i }]</a>&nbsp;&nbsp;
+							<a href="searchInformation.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }" style="font-weight: bold; color: #325d88; text-decoration: underline;">[${ i }]</a>&nbsp;&nbsp;
 						</c:when>
 						<c:otherwise>
-							<a href="searchSee.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">[${ i }]</a>&nbsp;&nbsp;
+							<a href="searchInformation.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">[${ i }]</a>&nbsp;&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -214,7 +216,7 @@
 			
 			<!-- 검색창 -->
 			<div id="search">
-				<form name="searchSee" method="get" action="searchSee.do">
+				<form name="searchInformation" method="get" action="searchInformation.do">
 					<input type="hidden" name="pageNum" value="1"> <select
 						class="form-select" name="search_option"
 						style="width: 10%; display: inline-block;">
@@ -245,6 +247,6 @@
 			</tr>
 		</table>
 	</div>
-<jsp:include page="findZoo_Footer.jsp"/>
+	<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

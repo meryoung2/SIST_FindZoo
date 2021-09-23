@@ -45,7 +45,12 @@ public class FindReviewController {
 
 	// 찾은후기 목록
 	@RequestMapping("/findReview.do")
-	public void list(HttpServletRequest request ,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+	public void list(HttpServletRequest request , HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+		
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
 		
 		paging.totalRecord = dao.getTotalRecordFindReview();
 		paging.totalPage = paging.getTotalPage();
@@ -69,12 +74,18 @@ public class FindReviewController {
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
+		model.addAttribute("member_num", member_num);
 	}
 	
 	// 찾은후기 검색 후 목록
 	@RequestMapping(value = "/searchFindReview.do")
-	public void searchFindReview(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	public void searchFindReview(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "search_option", defaultValue = "title") String search_option, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
+		
 		HashMap num_map = new HashMap();
 		num_map.put("keyword", keyword);
 		num_map.put("search_option", search_option);
@@ -104,6 +115,7 @@ public class FindReviewController {
 		model.addAttribute("s_listEnd", paging.s_listEnd);
 		model.addAttribute("search_option", search_option);		
 		model.addAttribute("keyword", keyword);		
+		model.addAttribute("member_num", member_num);
 	}
 	
 	// 찾은후기 글 상세내용

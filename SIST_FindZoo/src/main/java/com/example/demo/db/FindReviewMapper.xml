@@ -78,7 +78,7 @@
 	</sql>
 	
 	<insert id="insert" parameterType="freeVo"> 
-		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 31, #{member_num}) 
+		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate+9/24, 0, 31, #{member_num}) 
 	</insert>
 	
 	<insert id="insertPicture" parameterType="freeVo"> 

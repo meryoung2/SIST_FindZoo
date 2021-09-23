@@ -109,6 +109,7 @@
 			}).show();
 			return false;
 		});
+		
 		// 모달 창 바깥 클릭 시
 		$(document).mouseup(function (e){
 			var member_modal = $("#member_modal");
@@ -116,7 +117,12 @@
 				member_modal.hide();
 			}
 		});
+		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
+		$('.login_pls_alert').click(function(e){
+			alert("회원 정보를 보려면 로그인을 해야 합니다!");
+		});
 	});
+
 	
 	
 	//댓글삭제 스크립트
@@ -136,6 +142,8 @@
 	function reReply(reply_num){
 		$('#reply_number').val(reply_num)
 	}
+	
+
 </script>
 </head>
 <body>
@@ -144,7 +152,12 @@
 		<div id="content">
 			<h4>${ f.title }</h4>
 			<hr>
-			<a class="member_nick" href="#a" member_num=${ f.member_num }>${ f.member_nick }</a>&nbsp;|&nbsp;
+			<c:if test="${ member_num eq 0 }">
+			<a href="#a" class="login_pls_alert">${ f.member_nick }</a>&nbsp;|&nbsp;
+			</c:if>
+			<c:if test="${ member_num ne 0 }">
+				<a class="member_nick" href="#a" member_num=${ f.member_num }>${ f.member_nick }</a>&nbsp;|&nbsp;
+			</c:if>
 			<h6 style="display: inline-block;">
 				<fmt:formatDate value="${ f.bdate }" pattern="yyyy-MM-dd hh:mm:ss" />
 			</h6>
@@ -177,7 +190,12 @@
 							</c:if> 
 							<c:choose>
 								<c:when test="${r.reply_level eq 0}">
-									<a class="member_nick" href="#" member_num=${ r.member_num }>${r.member_nick }</a>
+									<c:if test="${member_num eq 0 }">
+									<a href="#a" class="login_pls_alert">${ r.member_nick }</a>
+									</c:if>
+									<c:if test="${member_num ne 0 }">
+										<a class="member_nick" href="#a" member_num=${ r.member_num }>${ r.member_nick }</a>
+									</c:if>
 									<c:if test="${loginM.member_num ne 0 and loginM.member_num eq r.member_num }">
 									&nbsp;| &nbsp;
 										<button type="button" style=" border: none; outline: none; background: transparent; margin-left:-10px;"
@@ -192,7 +210,12 @@
 									</c:if>
 								</c:when>
 								<c:when test="${r.reply_level > 0}">
-										<a class="member_nick" href="#" member_num=${ r.member_num }>${r.member_nick }</a>
+										<c:if test="${member_num eq 0 }">
+											<a href="#a" class="login_pls_alert">${ r.member_nick }</a>
+										</c:if>
+										<c:if test="${member_num ne 0 }">
+											<a class="member_nick" href="#a" member_num=${ r.member_num }>${ r.member_nick }</a>
+										</c:if>
 										<c:if test="${loginM.member_num ne 0 and loginM.member_num eq r.member_num }">
 										&nbsp;| &nbsp;
 										<button type="button" style=" border: none; outline: none; background: transparent; margin-left:-10px;"
@@ -282,6 +305,10 @@
 	      </div>
 	      <div class="modal-body">
 	      	<div class="form-group">
+	      		<label for="reply_num">댓글번호</label>
+	      		<input class="form-control" id="reply_num" name="reply_num" value="${reply_num }" readonly>
+	      	</div>
+	      	<div class="form-group">
 	      		<label for="member_num">댓글 작성자</label>
 	      		<input class="form-control" id="member_nick" name="member_nick" value="${loginM.member_nick }" readonly>
 				<input type="hidden" name="board_num" value="${f.board_num }"><br>
@@ -310,6 +337,10 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
+	      <div class="form-group">
+	      		<label for="reply_num">참조 댓글번호</label>
+	      		<input class="form-control" id="reply_number" name="reply_num" value="${reply_num }" readonly>
+	      	</div>
 	      	<div class="form-group">
 	      		<label for="member_nick">답글 작성자</label>
 	      		<input class="form-control" id="member_nick" name="member_nick" value="${loginM.member_nick }" readonly>

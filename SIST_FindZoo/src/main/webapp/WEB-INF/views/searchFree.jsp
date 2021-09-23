@@ -61,15 +61,16 @@
 		text-align: center;
 	}
 	
-	#member_modal{
+		#member_modal{
 		position: absolute;
 		display: none;
-		width: 10%;
-		height: 20%;
+		width: 8%;
+		height: 10%;
 		text-align: center;
 		background-color: white;
 		border: 1px black solid;
 		overflow: hidden;
+		font-size : 12px;
 	}
 	
 	#member_act{
@@ -120,12 +121,11 @@
             return false;
         }
     }
-	
 	$(function() {
 		// 멤버 닉네임 클릭 시
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
-			$('#member_board').attr("href", "memberBoard.do?member_num="+member_num);
+			$('#member_info').attr("href", "memberInfo.do?member_num="+member_num);
 			
 			var divLeft = e.clientX;
 			var divTop = e.clientY;
@@ -146,10 +146,18 @@
 				member_modal.hide();
 			}
 		});
+	
+		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
+		$('.login_pls_alert').click(function(e){
+			alert("회원 정보를 보려면 로그인을 해야 합니다!");
+		});
 	});
+	
 </script>
 </head>
 <body>
+<jsp:include page="findZoo_Header.jsp"/>
+
 	<div id="free-container">
 		<div id="content">
 			<h2><a href="free.do">자유게시판</a></h2>
@@ -168,13 +176,18 @@
 					<tbody>
 						<c:forEach var="s_f" items="${ list }">
 							<tr>
-								<td width="60%">&nbsp;&nbsp;&nbsp;<a
+								<td width="60%"><a
 									href="detailFree.do?board_num=${ s_f.board_num }">${ s_f.title }</a>
 								</td>
-								<td width="30%" style="text-align: center;">
-									<a class="member_nick" href="#" member_num=${ s_f.member_num }>${ s_f.member_nick }</a>
+								<td width="30%">
+										<c:if test="${ member_num eq 0 }">
+										<a href="#a" class="login_pls_alert">${ s_f.member_nick }</a>
+									</c:if>
+									<c:if test="${ member_num ne 0 }">
+										<a class="member_nick" href="#a" member_num=${ s_f.member_num }>${ s_f.member_nick }</a>
+									</c:if>
 								</td>
-								<td width="10%" style="text-align: center;">${ s_f.views }</td>
+								<td width="10%">&nbsp;&nbsp;&nbsp;${ s_f.views }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -227,15 +240,13 @@
 	<div class="modal" id="member_modal">
 		<table class="table table-hover" id="member_act">
 			<tr>
-				<td><a>회원 정보 보기</a></td>
-			</tr>
-			<tr>
-				<td><a id="member_board">작성 글 보기</a></td>
+				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
 				<td><a>쪽지 보내기</a></td>
 			</tr>
 		</table>
 	</div>
+<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

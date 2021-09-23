@@ -23,13 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.example.demo.dao.DealDao;
 import com.example.demo.dao.SeeDao;
 import com.example.demo.util.Paging;
-import com.example.demo.vo.DealVo;
 import com.example.demo.vo.MemberVo;
-import com.example.demo.vo.PetVo;
 import com.example.demo.vo.ReplyVo;
 import com.example.demo.vo.SeeVo;
 
@@ -52,9 +48,14 @@ public class SeeController {
 
 	// 목격했어요 게시판, 댓글 목록 컨트롤러
 	@RequestMapping("/see.do")
-	public void see(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	public void see(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			Model model) {
 
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
+		
 		paging.totalRecord = dao.getTotalRecordSee();
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
@@ -77,13 +78,19 @@ public class SeeController {
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
+		model.addAttribute("member_num", member_num);
 	}
 
 	// 목격했어요 게시판 검색 후 목록 출력
 	@RequestMapping(value = "/searchSee.do")
-	public void searchSee(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	public void searchSee(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "search_option", defaultValue = "title") String search_option,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
 		HashMap num_map = new HashMap();
 		num_map.put("keyword", keyword);
 		num_map.put("search_option", search_option);
@@ -113,6 +120,7 @@ public class SeeController {
 		model.addAttribute("s_listEnd", paging.s_listEnd);
 		model.addAttribute("search_option", search_option);
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("member_num", member_num);
 	}
 
 	// 목격했어요 게시판 상세보기 컨트롤러
@@ -258,9 +266,9 @@ public class SeeController {
 	}
 
 	//목격했어요 게시판 댓글삭제 컨트롤러
-	@RequestMapping(value = "/dealDeleteReply.do")
+	@RequestMapping(value = "/seeDeleteReply.do")
 	public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num=" + board_num);
+		ModelAndView mav = new ModelAndView("redirect:/detailSee.do?board_num=" + board_num);
 		int re = dao.deleteReply(reply_num);
 		if (re != 1) {
 			mav.addObject("msg", "댓글 삭제에 실패하였습니다..");
@@ -270,14 +278,14 @@ public class SeeController {
 	}
 
 	// 목격했어요 게시판 댓글 수정
-	@RequestMapping(value = "/member/dealUpdateReply.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/seeUpdateReply.do", method = RequestMethod.GET)
 	public void formReplyUpdate(HttpServletRequest request, HttpSession session) {
 
 	}
 
-	@RequestMapping(value = "/member/dealUpdateReply.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/seeUpdateReply.do", method = RequestMethod.POST)
 	public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num=" + board_num);
+		ModelAndView mav = new ModelAndView("redirect:/detailSee.do?board_num=" + board_num);
 		int re = dao.updateReply(r);
 		if (re != 1) {
 			mav.addObject("msg", "내 댓글 수정에 실패하였습니다.");
@@ -287,14 +295,14 @@ public class SeeController {
 	}
 
 	// 목격했어요 게시판 대댓글쓰기
-	@RequestMapping(value = "/member/dealReReply.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/seeReReply.do", method = RequestMethod.GET)
 	public void formReReply(HttpServletRequest request, HttpSession session) {
 
 	}
 
-	@RequestMapping(value = "/member/dealReReply.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/seeReReply.do", method = RequestMethod.POST)
 	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num=" + board_num);
+		ModelAndView mav = new ModelAndView("redirect:/detailSee.do?board_num=" + board_num);
 
 		int re = dao.insertReReply(r);
 

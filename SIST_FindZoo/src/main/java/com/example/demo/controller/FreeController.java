@@ -45,7 +45,12 @@ public class FreeController {
 
 	// 자유게시판 목록
 	@RequestMapping("/free.do")
-	public void list(HttpServletRequest request ,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+	public void list(HttpServletRequest request ,HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+		
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
 		
 		paging.totalRecord = dao.getTotalRecordFree();
 		paging.totalPage = paging.getTotalPage();
@@ -69,12 +74,18 @@ public class FreeController {
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("listStart", paging.listStart);
 		model.addAttribute("listEnd", paging.listEnd);
+		model.addAttribute("member_num", member_num);
 	}
 	
 	// 자유게시판 검색 후 목록
 	@RequestMapping(value = "/searchFree.do")
-	public void searchFree(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	public void searchFree(HttpServletRequest request,HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "search_option", defaultValue = "title") String search_option, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
+		
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
 		HashMap num_map = new HashMap();
 		num_map.put("keyword", keyword);
 		num_map.put("search_option", search_option);
@@ -104,6 +115,7 @@ public class FreeController {
 		model.addAttribute("s_listEnd", paging.s_listEnd);
 		model.addAttribute("search_option", search_option);		
 		model.addAttribute("keyword", keyword);		
+		model.addAttribute("member_num", member_num);
 	}
 	
 	// 자유게시판 글 상세내용
@@ -116,8 +128,7 @@ public class FreeController {
 		}
 		model.addAttribute("f", dao.getFree(board_num));
 		model.addAttribute("list", dao.findAll(board_num));
-		model.addAttribute("memeber_num", member_num);
-		model.addAttribute("mb", member_num);
+		model.addAttribute("member_num", member_num);
 		System.out.println("로그인한 회원번호: "+member_num);
 	}
 	
