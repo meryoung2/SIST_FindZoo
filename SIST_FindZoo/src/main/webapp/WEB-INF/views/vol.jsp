@@ -149,6 +149,7 @@
 </script>
 </head>
 <body>
+<jsp:include page="findZoo_Header.jsp"/>
 	<div id="vol-container">
 		<div id="content">
 			<h2><a href="vol.do">자원봉사 게시판</a></h2>
@@ -179,7 +180,7 @@
 					</tbody>
 				</table>
 				
-				<button class="btn btn-primary" onclick="location.href='insertVol.do'" style="float: right;">글쓰기</button>
+				<button class="btn btn-primary" onclick="location.href='/member/insertVol.do'" style="float: right;">글쓰기</button>
 			</div>
 
 			<!-- 페이지 번호 -->
@@ -235,5 +236,6 @@
 			</tr>
 		</table>
 	</div>
+<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

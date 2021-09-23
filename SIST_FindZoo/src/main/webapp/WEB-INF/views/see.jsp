@@ -31,6 +31,13 @@
 		text-decoration: underline;
 	}
 	
+	img{
+		border: 1px dashed #D3D3D3;
+		width: 90%;
+		height: 250px;
+		margin-top: 5%;
+	}
+	
 	table{
 		border-right: none;
 		border-left: none;
@@ -149,6 +156,7 @@
 </script>
 </head>
 <body>
+<jsp:include page="findZoo_Header.jsp"/>
 	<div id="see-container">
 		<div id="content">
 			<h2><a href="see.do">목격했어요!</a></h2>
@@ -179,7 +187,7 @@
 					</tbody>
 				</table>
 				
-				<button class="btn btn-primary" onclick="location.href='insertSee.do'" style="float: right;">글쓰기</button>
+				<button class="btn btn-primary" onclick="location.href='/member/insertSee.do'" style="float: right;">글쓰기</button>
 			</div>
 
 			<!-- 페이지 번호 -->
@@ -235,5 +243,6 @@
 			</tr>
 		</table>
 	</div>
+<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

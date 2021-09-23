@@ -5,7 +5,7 @@
 <head> 
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
 	    font-family: 'GmarketSansMedium';
@@ -48,6 +48,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="../findZoo_Header.jsp"/>
 	<div id="deal-container">
 		<div id="content">
 			<h4>거래게시판 글 작성</h4>
@@ -68,5 +69,6 @@
 			</form>
 		</div>
 	</div>
+<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

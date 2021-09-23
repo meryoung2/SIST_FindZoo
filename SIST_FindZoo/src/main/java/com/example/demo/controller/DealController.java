@@ -115,19 +115,26 @@ public class DealController {
 	
 	// 거래게시판 상세보기 컨트롤러
 	@RequestMapping("/detailDeal.do")
-	public void detail(HttpServletRequest request, Model model, int board_num) {
+	public void detail(HttpServletRequest request, Model model, int board_num, HttpSession session) {
 		dao.updateViewsDeal(board_num);
+		int member_num = 0;
+		if(((MemberVo)session.getAttribute("loginM")) != null) {
+			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		}
 		model.addAttribute("d", dao.getDeal(board_num));
 		model.addAttribute("list", dao.findAll(board_num));
+		model.addAttribute("member_num",member_num);
 	}
 	
 	// 거래게시판 글작성 컨트롤러
-	@RequestMapping(value = "/insertDeal.do", method = RequestMethod.GET)
-	public void form(HttpServletRequest request) {}
+	@RequestMapping(value = "/member/insertDeal.do", method = RequestMethod.GET)
+	public void form(HttpServletRequest request, HttpSession session) {}
 	
-	@RequestMapping(value = "/insertDeal.do" , method = RequestMethod.POST)
-	public ModelAndView submit(HttpServletRequest request, DealVo d) {
+	@RequestMapping(value = "/member/insertDeal.do" , method = RequestMethod.POST)
+	public ModelAndView submit(HttpServletRequest request, HttpSession session ,DealVo d) {
 		ModelAndView mav = new ModelAndView("redirect:/deal.do");
+		int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		d.setMember_num(member_num);
 		String path = request.getRealPath("resources/img");		
 		String picture_fname = null;
 		int fsize = 0;
@@ -162,12 +169,12 @@ public class DealController {
 	}
 	
 	// 거래게시판 수정 컨트롤러
-	@RequestMapping(value = "/updateDeal.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/updateDeal.do", method = RequestMethod.GET)
 	public void dealUpdateForm(HttpServletRequest request, Model model, int board_num) {
 		model.addAttribute("d", dao.getDeal(board_num));
 	}
 	
-	@RequestMapping(value = "/updateDeal.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/updateDeal.do", method = RequestMethod.POST)
 	public ModelAndView dealUpdateSubmit(HttpServletRequest request, DealVo d) {
 		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+d.getBoard_num());
 		String path = request.getRealPath("/resources/img");
@@ -228,58 +235,72 @@ public class DealController {
 	}	
 	
 	
-	//거래게시판 댓글쓰기 컨트롤러
-	@RequestMapping(value="/dealInsertReply.do", method=RequestMethod.POST)
-	public ModelAndView insertReplySubmit(ReplyVo r, int board_num) {
-		
-		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
-	
-		int re = dao.insertReply(r);
-		if(re != 1) {
-			mav.addObject("msg", "게시물 등록에 실패하였습니다.");
-			mav.setViewName("error");
+		//거래게시판 댓글쓰기 컨트롤러
+		@RequestMapping(value = "/member/dealInsertReply.do", method = RequestMethod.GET)
+		public void formReply(HttpServletRequest request, HttpSession session) {	
+			
+		}
+				
+		@RequestMapping(value="/member/dealInsertReply.do", method=RequestMethod.POST)
+		public ModelAndView insertReplySubmit(ReplyVo r, int board_num) {
+				
+				ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+			
+				int re = dao.insertReply(r);
+				if(re != 1) {
+					mav.addObject("msg", "게시물 등록에 실패하였습니다.");
+					mav.setViewName("error");
+				}
+				
+				return mav;
+			}
+			
+		//거래게시판 댓글삭제 컨트롤러	
+		@RequestMapping(value="/dealDeleteReply.do")
+		public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
+			ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+			int re = dao.deleteReply(reply_num);
+			if(re != 1) {
+				mav.addObject("msg", "댓글 삭제에 실패하였습니다..");
+				mav.setViewName("error");
+			}
+			return mav;		
+			}
+			
+				
+		//거래게시판 댓글 수정
+		@RequestMapping(value = "/member/dealUpdateReply.do", method = RequestMethod.GET)
+		public void formReplyUpdate(HttpServletRequest request, HttpSession session) {	
+			
 		}
 		
-		return mav;
-	}
-	
-	//거래게시판 댓글삭제 컨트롤러	
-	@RequestMapping(value="/dealDeleteReply.do")
-	public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
-		int re = dao.deleteReply(reply_num);
-		if(re != 1) {
-			mav.addObject("msg", "댓글 삭제에 실패하였습니다..");
-			mav.setViewName("error");
+		@RequestMapping(value="/member/dealUpdateReply.do", method=RequestMethod.POST)
+		public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
+			ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+			int re = dao.updateReply(r);
+			if(re != 1) {
+				mav.addObject("msg", "내 댓글 수정에 실패하였습니다.");
+				mav.setViewName("error");
+			}
+			return mav;
 		}
-		return mav;
-	}
-	
-		
-	//댓글 수정
-	@RequestMapping(value="/dealUpdateReply.do", method=RequestMethod.POST)
-	public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
-		int re = dao.updateReply(r);
-		if(re != 1) {
-			mav.addObject("msg", "내 댓글 수정에 실패하였습니다.");
-			mav.setViewName("error");
+			
+		//거래게시판 대댓글쓰기		
+		@RequestMapping(value = "/member/dealReReply.do", method = RequestMethod.GET)
+		public void formReReply(HttpServletRequest request, HttpSession session) {	
+			
 		}
-		return mav;
-	}
-	
-	//거래게시판 대댓글쓰기
-	@RequestMapping(value="/dealReReply.do", method=RequestMethod.POST)
-	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
-		
-		int re = dao.insertReReply(r);
-		
-		if(re != 1) {
-			mav.addObject("msg", "게시물 등록에 실패하였습니다.");
-			mav.setViewName("error");
+		@RequestMapping(value="/member/dealReReply.do", method=RequestMethod.POST)
+		public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
+			ModelAndView mav = new ModelAndView("redirect:/detailDeal.do?board_num="+board_num);
+			
+			int re = dao.insertReReply(r);
+			
+			if(re != 1) {
+				mav.addObject("msg", "게시물 등록에 실패하였습니다.");
+				mav.setViewName("error");
+			}
+			
+			return mav;
 		}
-		
-		return mav;
-	}
 }

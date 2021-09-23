@@ -40,7 +40,7 @@
 		text-decoration: underline;
 	}
 	
-	#deal-container{
+	#see-container{
 		display: flex;
 		justify-content: center;
 	}
@@ -79,11 +79,11 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(search_option, keyword){
-		location.href = "searchDeal.do?pageNum=1&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchSee.do?pageNum=1&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_end(searchPage, search_option, keyword){
-		location.href = "searchDeal.do?pageNum="+searchPage+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchSee.do?pageNum="+searchPage+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_prev(s_listStart, s_listEnd, search_option, keyword){
@@ -93,14 +93,14 @@
 			s_listStart = 1;
 		}
 		
-		location.href = "searchDeal.do?pageNum="+s_listEnd+"&search_option="+search_option+"&keyword="+keyword;
+		location.href = "searchSee.do?pageNum="+s_listEnd+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
 	function btn_next(s_listStart, s_listEnd, searchPage, search_option, keyword){
 		if(s_listEnd != searchPage){
 			s_listStart += 5;
 			
-			location.href = "searchDeal.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
+			location.href = "searchSee.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
 		}else{
 			location.reload();
 		}
@@ -150,9 +150,9 @@
 </head>
 <body>
 <jsp:include page="findZoo_Header.jsp"/>
-	<div id="deal-container">
+	<div id="see-container">
 		<div id="content">
-			<h2><a href="deal.do">거래게시판</a></h2>
+			<h2><a href="see.do">목격했어요!</a></h2>
 			<h6>(검색 게시글 수 : ${ searchRecord })</h6>
 			<hr>
 			<div id="board">
@@ -166,21 +166,21 @@
 					</thead>
 
 					<tbody>
-						<c:forEach var="s_d" items="${ list }">
+						<c:forEach var="s_s" items="${ list }">
 							<tr>
 								<td width="60%">&nbsp;&nbsp;&nbsp;<a
-									href="detailDeal.do?board_num=${ s_d.board_num }">${ s_d.title }</a>
+									href="detailSee.do?board_num=${ s_s.board_num }">${ s_s.title }</a>
 								</td>
 								<td width="30%" style="text-align: center;">
-									<a class="member_nick" href="#" member_num=${ s_d.member_num }>${ s_d.member_nick }</a>
+									<a class="member_nick" href="#" member_num=${ s_s.member_num }>${ s_s.member_nick }</a>
 								</td>
-								<td width="10%" style="text-align: center;">${ s_d.views }</td>
+								<td width="10%" style="text-align: center;">${ s_s.views }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				
-				<button class="btn btn-primary" onclick="location.href='insertDeal.do'" style="float: right;">글쓰기</button>
+				<button class="btn btn-primary" onclick="location.href='insertSee.do'" style="float: right;">글쓰기</button>
 			</div>
 			
 			<!-- 페이지 번호 -->
@@ -190,10 +190,10 @@
 				<c:forEach var="i" begin="${ s_listStart }" end="${ s_listEnd }">
 					<c:choose>
 						<c:when test="${ pageNum eq i }">
-							<a href="searchDeal.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }" style="font-weight: bold; color: #325d88; text-decoration: underline;">[${ i }]</a>&nbsp;&nbsp;
+							<a href="searchSee.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }" style="font-weight: bold; color: #325d88; text-decoration: underline;">[${ i }]</a>&nbsp;&nbsp;
 						</c:when>
 						<c:otherwise>
-							<a href="searchDeal.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">[${ i }]</a>&nbsp;&nbsp;
+							<a href="searchSee.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">[${ i }]</a>&nbsp;&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -203,7 +203,7 @@
 			
 			<!-- 검색창 -->
 			<div id="search">
-				<form name="searchDeal" method="get" action="searchDeal.do">
+				<form name="searchSee" method="get" action="searchSee.do">
 					<input type="hidden" name="pageNum" value="1"> <select
 						class="form-select" name="search_option"
 						style="width: 10%; display: inline-block;">
