@@ -33,25 +33,23 @@
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#myPost-container {
 		display: flex;
-		position: absolute;
 		width: 70%;
 		margin: 15%;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid black;
+		margin-top: 30px;
+		margin-bottom: 5%;
 	}
 	
 	#myPost-container #sidebar{
-		width: 20%;
-		margin: 10px;
-		border: 1px solid black;
+		margin-right: 20px;
 	}
 	
 	#myPost-container #table-container {
-		float: right;
-		margin: 10px;
-		padding: 20px;
-		border: 1px solid black;
+		width: 80%;
+		padding: 10px;
+	}
+	
+	#myPost-container #table-container .table {
+		margin-top: 18px;
 	}
 	
 	/* 페이지 이동 관련 버튼들을 가운데에 정렬 */
@@ -90,6 +88,7 @@
 </script>
 </head>
 <body>
+	<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="myPost-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
@@ -100,8 +99,8 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myInfo.do"> - 내 정보</a><br>
-							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br><br>
 							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
@@ -113,7 +112,7 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br><br>
 							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
@@ -125,7 +124,7 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br><br>
 							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
@@ -134,20 +133,19 @@
 		</aside>
 		<article id="table-container">
 			<c:if test="${list[0] == null }">
-				<h2>${member_nick }님의 게시글</h2>
+				<h2><strong>${member_nick }님의 게시글</strong></h2>
 				<hr>
-				작성하신 게시글이 없습니다.
+				작성하신 게시글이 없습니다. <br>
 				<br>
-				<input type="button" value="내 정보" onclick="location.href='/member/myInfo.do'">
+				<input type="button" class="btn btn-primary" value="내 정보" onclick="location.href='/member/myInfo.do'">
 			</c:if>
 			<c:if test="${list[0] != null }">
-				<h2>${member_nick }님의 게시글<br>(전체 게시글 수 : ${ totalRecord } / 현재 페이지 : ${ pageNum })</h2>
-				<hr><br>
-				<table border="1" width="100%">
+				<h2><strong>${member_nick }님의 게시글</strong></h2>
+				<table class="table table-hover" width="100%">
 					<tr>
-						<th>게시판</th>
-						<th>글제목</th>
-						<th>조회수</th>
+						<th class="table-active">게시판</th>
+						<th class="table-active">글제목</th>
+						<th class="table-active">조회수</th>
 					</tr>
 					<c:forEach items="${ list }" var="m">
 						<tr>
@@ -236,5 +234,6 @@
 			</c:if>
 		</article>
 	</div>
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

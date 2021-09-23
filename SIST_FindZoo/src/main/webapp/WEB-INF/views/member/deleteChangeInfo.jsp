@@ -33,26 +33,40 @@
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#deleteChangeInfo-container {
 		display: flex;
-		position: absolute;
 		width: 70%;
 		margin: 15%;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid black;
+		margin-top: 30px;
+		margin-bottom: 5%;
 		z-index: -1;
 	}
 	
 	#deleteChangeInfo-container #sidebar{
-		width: 20%;
-		margin: 10px;
-		border: 1px solid black;
+		margin-right: 20px;
 	}
 	
 	#deleteChangeInfo-container #input-container {
-		float: right;
-		margin: 10px;
-		padding: 20px;
-		border: 1px solid black;
+		width: 80%;
+		margin-bottom: 10px;
+		padding: 10px;
+	}
+	
+	#deleteChangeInfo-container #input-container p{
+		text-align: left;
+	}
+	
+	/* 부트스트랩 세부 조정 */
+	#input-container .form-control {
+    	width: 40%;
+    	display: inline;
+	} 
+	
+	#input-container .col-form-label {
+		width: 85px;
+		font-weight: bold;
+	}
+	
+	#input-container .mt-4 {
+	    margin-top: 0.8rem!important;
 	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -85,6 +99,7 @@
 </script>
 </head>
 <body>
+	<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="deleteChangeInfo-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
@@ -95,8 +110,8 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myInfo.do"> - 내 정보</a><br>
-							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br><br>
 							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
@@ -108,7 +123,7 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br><br>
 							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
@@ -120,7 +135,7 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br><br>
 							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
@@ -128,8 +143,8 @@
 			</div>
 		</aside>
 		<article id="input-container">
-			<h2>회원 탈퇴</h2>
-			<hr>
+			<h2><strong>회원 탈퇴</strong></h2>
+			<hr><br>
 			<p>
 			탈퇴 후에도 각 게시판에 올린 게시글 및 댓글은 자동으로 삭제되지 않습니다. <br>
 			삭제를 원하는 게시글이나 댓글이 있다면 반드시 탈퇴 전 삭제하시기 바랍니다. <br>
@@ -137,18 +152,20 @@
 			게시글 및 댓글을 임의로 삭제해드릴 수 없습니다. <br>
 			</p>
 			<form action="/member/deleteChangeInfo.do" id="deleteChangeInfoForm" method="post">
-				* 확인 후 hidden 값으로 변경<br>
-				회원번호 <input type="text" id="member_num" name="member_num" value="${mb.member_num }" readonly><br>
-				아이디 <input type="text" id="member_id" name="member_id" value="${mb.member_id }" readonly><br>
-				DB비번 <input type="text" id="db_pwd" name="db_pwd" value="${mb.member_pwd }" readonly><br>
-				닉네임 <input type="text" id="member_nick" name="member_nick" value="${mb.member_nick }" readonly><br>
-				로그인 방식 <input type="text" id="member_sms" name="member_sms" value="${mb.member_sms }" readonly><br><br>
-				비밀번호: <input type="password" id="member_pwd" name="member_pwd"><br>
+				<input type="hidden" id="member_num" name="member_num" value="${mb.member_num }" readonly>
+				<input type="hidden" id="member_id" name="member_id" value="${mb.member_id }" readonly>
+				<input type="hidden" id="db_pwd" name="db_pwd" value="${mb.member_pwd }" readonly>
+				<input type="hidden" id="member_nick" name="member_nick" value="${mb.member_nick }" readonly>
+				<input type="hidden" id="member_sms" name="member_sms" value="${mb.member_sms }" readonly>
+				
+				<label class="col-form-label mt-4" for="inputDefault">비밀번호</label>
+				<input type="password" class="form-control" id="member_pwd" name="member_pwd" placeholder="Password"><br>
 				<br>
-				<input type="button" id="submit-btn" value="회원 탈퇴">
-				<input type="button" value="취소" onclick="location.href='/member/myInfo.do'"><br>
+				<input type="button" class="btn btn-primary" id="submit-btn" value="회원 탈퇴">
+				<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='/member/myInfo.do'"><br>
 			</form>
 		</article>
 	</div>
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

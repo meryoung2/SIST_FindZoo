@@ -33,26 +33,21 @@
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#myInfo-container {
 		display: flex;
-		position: absolute;
 		width: 70%;
 		margin: 15%;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid black;
+		margin-top: 30px;
+		margin-bottom: 5%;
 		z-index: -1;
 	}
 	
 	#myInfo-container #sidebar{
-		width: 20%;
-		margin: 10px;
-		border: 1px solid black;
+		margin-right: 20px;
 	}
 	
 	#myInfo-container #input-container {
-		float: right;
-		margin: 10px;
-		padding: 20px;
-		border: 1px solid black;
+		width: 80%;
+		margin-bottom: 10px;
+		padding: 10px;
 	}
 	
 	#myInfo-container #input-container a {
@@ -60,21 +55,25 @@
 	}
 	
 	/* 비밀번호 변경을 위한 모달창 */
-	.modal {
+	#myInfo-container .modal {
 		display: none; /* 처음엔 모달창이 보이지 않도록 숨긴다. */
-		position : absolute;
-	    width: 400px;
+		position: fixed;
+		top: 260px;
+	    width: 520px;
 	    height: 450px;
-	    top: 10%;
 	    left: 35%;
 		z-index: 2; /* 우선순위: 모달창 -> bgLayer -> myInfo-container순 */
 	}
 	
-	.modal #close-updatePwd-modal {
+	#myInfo-container .modal-content {
+		padding: 10px;
+	}
+	
+	#myInfo-container .modal #close-updatePwd-modal {
 		display: inline-block;
 	}
 	
-	.updatePwd-modal-bgLayer {
+	#myInfo-container .updatePwd-modal-bgLayer {
 		display: none; /* 처음엔 bgLayer이 보이지 않도록 숨긴다. */
 		position: fixed;
 		top: 0;
@@ -83,6 +82,31 @@
 		height: 100%;
 		background: rgba(0, 0, 0, 0.5); /* 모달 창 뒷 배경을 어둡게 설정한다. (검은색에 투명도 50%) */
 		z-index: 1; 
+	}
+	
+	/* 부트스트랩 세부 조정 */
+	#input-container .form-control {
+    	width: 35%;
+    	display: inline;
+	} 
+	
+	#input-container .col-form-label {
+		width: 90px;
+		font-weight: bold;
+	}
+	
+	.mt-4 {
+	    margin-top: 0.8rem!important;
+	}
+	
+	.modal .form-control {
+    	width: 50%;
+    	display: inline;
+	} 
+	
+	.modal .col-form-label {
+		width: 105px;
+		font-weight: bold;
 	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -142,11 +166,13 @@
 				$("#member_pwd_check").val("").select();
 				return false;
 			}
+			alert("비밀번호 변경이 완료되었습니다.\n로그인 화면으로 이동합니다.");
 		})
 	})
 </script>
 </head>
 <body>
+	<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="myInfo-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
@@ -157,8 +183,8 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myInfo.do"> - 내 정보</a><br>
-							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br><br>
 							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
@@ -170,7 +196,7 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br><br>
 							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
@@ -182,7 +208,7 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br><br>
 							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
@@ -190,56 +216,72 @@
 			</div>
 		</aside> 
 		<article id="input-container">
-			<h2>내 정보</h2>
+			<h2><strong>내 정보</strong></h2>
 			<hr>
-			회원번호: ${mb.member_num }<br>
-			아이디: ${mb.member_id }<br>	
-			비밀번호: ${mb.member_pwd }&nbsp;&nbsp;<input type="button" id="open-updatePwd-modal" value="비밀번호 변경"><br>
-			이름: ${mb.member_name }<br>
-			닉네임: ${mb.member_nick }<br>
-			전화번호: ${mb.member_phone }<br>
-			이메일: ${mb.member_email }<br>
-			주소: ${mb.member_addr }<br>
-			포인트: ${mb.member_point }point<br>
-			알림 서비스: ${mb.member_sms }<br>
-			관리자 여부: ${mb.member_admin }<br>
-				<c:if test="${mb.social_num == '0'}">로그인 방식: 웹 로그인<br></c:if>
-				<c:if test="${mb.social_num == '1'}">로그인 방식: 네이버 로그인<br></c:if>
-				<c:if test="${mb.social_num == '2'}">로그인 방식: 카카오 로그인<br></c:if>
-			반려동물 정보: 
-				<c:forEach var="pet" items="${listPet }"><a href="/member/detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach>
-				<input type="button" value="반려동물 추가" onclick="location.href='/member/insertPet.do'"><br>
+			<label class="col-form-label mt-4" for="inputDefault">아이디</label>
+			|&nbsp;&nbsp;&nbsp;${mb.member_id }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">비밀번호</label>
+			|&nbsp;&nbsp;&nbsp;<input type="button" class="btn btn-outline-primary" id="open-updatePwd-modal" value="비밀번호 변경"><br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">이름</label>
+			|&nbsp;&nbsp;&nbsp;${mb.member_name }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">닉네임</label>
+			|&nbsp;&nbsp;&nbsp;${mb.member_nick }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">연락처</label>
+			|&nbsp;&nbsp;&nbsp;${mb.member_phone }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">이메일</label>
+			|&nbsp;&nbsp;&nbsp;${mb.member_email }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">포인트</label>
+			|&nbsp;&nbsp;&nbsp;${mb.member_point }point<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">알림 서비스</label>
+			|&nbsp;&nbsp;&nbsp;${mb.member_sms }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">반려동물</label>
+			|&nbsp;&nbsp;&nbsp;
+			<c:forEach var="pet" items="${listPet }"><a href="/member/detailPet.do?pet_num=${pet.pet_num }">${pet.pet_name }</a>&nbsp;</c:forEach>
+			<input type="button" class="btn btn-outline-primary" value="반려동물 추가" onclick="location.href='/member/insertPet.do'"><br>
+			<label class="col-form-label mt-4" for="inputDefault"></label>
+			<span style="font-size: 15px;">*이름을 누르시면 해당 반려동물정보 페이지로 이동합니다.</span><br>
 		</article>
-	</div> 
-	<div class="modal">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">비밀번호 변경</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true"></span>
-					</button>
-	      		</div>
-				<div class="modal-body">
-					<form action="/member/updatePwd.do" id="updatePwd-modal-content" method="post">
-						* 확인 후 hidden 값으로 변경<br>
-						회원 번호: <input type="text" name="member_num" value="${mb.member_num }"><br>
-						DB 비번: <input type="text" name="db_pwd" id="db_pwd" value="${mb.member_pwd }"><br><br>
-						<label>기존 비밀번호</label>
-						<input type="text" name="old_pwd" id="old_pwd" required><br>
-						<label>새 비밀번호</label> 
-						<input type="text" name="member_pwd" id="member_pwd" required><br>
-						<label>비밀번호 확인</label>
-						<input type="text" name="member_pwd_check" id="member_pwd_check" required><br>
-						<span style = "font-size: 6px;">*영문, 숫자, 특수문자 조합의 8~20자 이내로 입력해 주세요.</span><br>
-						<br>
-						<input type="submit" class="btn btn-primary" value="수정">
-						<input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="취소" id="close-updatePwd-modal">					
-					</form>
+		<div class="modal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"><strong>비밀번호 변경</strong></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true"></span>
+						</button>
+		      		</div>
+					<div class="modal-body">
+						<form action="/member/updatePwd.do" id="updatePwd-modal-content" method="post">
+							<input type="hidden" name="member_num" value="${mb.member_num }">
+							<input type="hidden" name="db_pwd" id="db_pwd" value="${mb.member_pwd }">
+							
+							<label class="col-form-label mt-4" for="inputDefault">기존 비밀번호</label>
+							<input type="text" class="form-control" name="old_pwd" id="old_pwd" required><br>
+							
+							<label class="col-form-label mt-4" for="inputDefault">새 비밀번호</label> 
+							<input type="text" class="form-control" name="member_pwd" id="member_pwd" required><br>
+							
+							<label class="col-form-label mt-4" for="inputDefault">비밀번호 확인</label>
+							<input type="text" class="form-control" name="member_pwd_check" id="member_pwd_check" required><br>
+							<span style = "font-size: 15px;">*영문, 숫자, 특수문자 조합의 8~20자 이내로 입력해 주세요.</span><br>
+							<br>
+							<input type="submit" class="btn btn-primary" value="수정">
+							<input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="취소" id="close-updatePwd-modal">					
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="updatePwd-modal-bgLayer"></div>
+		<div class="updatePwd-modal-bgLayer"></div>
+	</div> 
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

@@ -21,22 +21,39 @@
 		font-weight: lighter;
 	}
 	
-	/* 메인 컨테이너 */
+	/* div */
 	#detailSendNote-container {
-		margin: 15px;
+		margin: 30px;
+	}
+	
+	/* 부트스트랩 세부 조정 */	
+	#detailSendNote-container .col-form-label {
+		width: 85px;
+		font-weight: bold;
+	}
+	
+	#detailSendNote-container .mt-4 {
+	    margin-top: 0.8rem!important;
 	}
 </style>
 </head>
 <body>
 	<div id="detailSendNote-container">
-		<h4>보낸 쪽지</h4>
+		<h4><strong>보낸 쪽지</strong></h4>
 		<hr>
-		받는 사람 ${nt.member_nick }<br>
+		<label class="col-form-label mt-4" for="inputDefault">받는 사람</label>
+		|&nbsp;&nbsp;&nbsp;${nt.member_nick }<br>
+		
 		<fmt:parseDate var="strToDate" value="${nt.note_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 		<fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy.MM.dd HH:mm"/>
-		보낸 날짜 <c:out value="${dateToStr }"/><br>
+		<label class="col-form-label mt-4" for="inputDefault">보낸 날짜</label>
+		|&nbsp;&nbsp;&nbsp;<c:out value="${dateToStr }"/><br>
+		
 		<br>
-		<textarea rows="6" cols="40" readonly="readonly">${nt.note_content }</textarea><br>
+		
+		<textarea rows="6" cols="40" readonly="readonly">${nt.note_content }</textarea><br><br>
+		
+		<input type="button" class="btn btn-primary" value="창 닫기" onclick="window.close()">
 	</div>
 </body>
 </html>

@@ -21,7 +21,22 @@
 	
 	/* div */
 	#sendReplyNote-container {
-		margin: 15px;
+		margin: 30px;
+	}
+	
+	/* 부트스트랩 세부 조정 */	
+	#sendReplyNote-container .form-control {
+		width: 20%;
+    	display: inline;
+	}
+	
+	#sendReplyNote-container .col-form-label {
+		width: 85px;
+		font-weight: bold;
+	}
+	
+	#sendReplyNote-container .mt-4 {
+	    margin-top: 0.8rem!important;
 	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -37,20 +52,22 @@
 </head>
 <body>
 	<div id="sendReplyNote-container">
-		<h4>쪽지 답장</h4>
+		<h4><strong>쪽지 답장</strong></h4>
 		<hr>
 		<form method="post" name="sendReplyNoteForm" action="/member/sendReplyNote.do">
-			* 확인 후 hidden으로 변경<br>
 			<%-- 받은 쪽지 상세 조회에서 '보낸 사람'이 답장 시에는 '받는 사람'이 된다 --%>
-			보내는 사람(<input type="text" name="note_sender_num" value="${nt.note_receiver_num }" size="3" readonly>)&nbsp;
-			받는 사람(<input type="text" name="note_receiver_num" value="${nt.note_sender_num }" size="3" readonly>)<br>
+			<input type="hidden" name="note_sender_num" value="${nt.note_receiver_num }" size="3" readonly>
+			<input type="hidden" name="note_receiver_num" value="${nt.note_sender_num }" size="3" readonly>
 			
-			받는 사람 <input type="text" name="member_nick" value="${nt.member_nick }" readonly><br>
+			<label class="col-form-label mt-4" for="inputDefault">받는 사람</label>
+			<input type="text" class="form-control" id="readOnlyInput" name="member_nick" value="${nt.member_nick }" readonly><br>
+			
 			<br>
-			<textarea rows="6" cols="40" name="note_content"></textarea><br>
-			<br>
-			<input type="button" value="전송" onclick="javascript:selfCloseSubmit();">
-			<input type="button" value="취소" onclick="javascript:window.close()"><br>
+			
+			<textarea rows="6" cols="40" name="note_content"></textarea><br><br>
+			
+			<input type="button" class="btn btn-primary" value="전송" onclick="javascript:selfCloseSubmit();">
+			<input type="button" class="btn btn-secondary" value="취소" onclick="javascript:window.close()"><br>
 		</form>
 	</div>
 </body>

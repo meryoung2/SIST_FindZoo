@@ -22,7 +22,7 @@
 	
 	/* div */
 	#checkNickProcess-form {
-		margin: 15px;
+		margin: 30px;
 	}
 </style>
 <script type="text/javascript">
@@ -36,8 +36,8 @@
 </head>
 <body>
 	<div id="checkNickProcess-form">
-		<h4>닉네임 중복 확인</h4>
-		<hr>
+		<h4><strong>닉네임 중복 확인</strong></h4>
+		<hr><br>
 	<%
 		String member_nick = request.getParameter("new_nick");
 		System.out.println("변경 할 닉네임: " + member_nick);
@@ -49,13 +49,13 @@
 		'<%=member_nick %>'
 	<%	
 		if(checkNick == true){
-			out.println("은(는) 이미 존재하는 닉네임입니다.<br>다른 닉네임을 입력해주세요.<p>");
+			out.println("은(는) 이미 존재하는 닉네임입니다.<br>다른 닉네임을 입력해주세요.<p><br>");
 		}else{
-			out.println("은(는) 사용 가능한 닉네임입니다.<p>");
-			out.println("<input type='button' value='적용' onclick='javascript:apply(\""+member_nick+"\")'>");
+			out.println("은(는) 사용 가능한 닉네임입니다.<p><br>");
+			out.println("<input type='button' class='btn btn-primary' value='적용' onclick='javascript:apply(\""+member_nick+"\")'>");
 		}
 	%>	
-		<input type="button" value="다시 검색" onclick="javascript:history.back()">
+		<input type="button" class="btn btn-secondary" value="다시 검색" onclick="javascript:history.back()">
 	</div>
 </body>
 </html>

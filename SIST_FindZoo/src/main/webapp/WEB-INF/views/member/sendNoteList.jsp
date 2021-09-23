@@ -34,26 +34,20 @@
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#sendNoteList-container {
 		display: flex;
-		position: absolute;
 		width: 70%;
 		margin: 15%;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid black;
-		z-index: -1;
+		margin-top: 30px;
+		margin-bottom: 5%;
 	}
 	
 	#sendNoteList-container #sidebar{
-		width: 20%;
-		margin: 10px;
-		border: 1px solid black;
+		margin-right: 20px;
 	}
 	
 	#sendNoteList-container #input-container {
-		float: right;
-		margin: 10px;
-		padding: 20px;
-		border: 1px solid black;
+		width: 80%;
+		margin-bottom: 10px;
+		padding: 10px;
 	}
  
 	#input-container #check-all-btn { 
@@ -65,8 +59,7 @@
 	}
 	
 	#input-container #note-list-table {
-		margin-top: 5px; 
-		margin-bottom: 5px; 
+		margin-top: 18px; 
 	}
 
 	#note-list-table #td-center, #note-list-table th {
@@ -136,13 +129,14 @@
 	
 	// 쪽지 상세보기 팝업창을 화면 가운데에 위치시킨다.
 	function detailSendNote(note_num) {
-		var popupX = (document.body.offsetWidth/2)-(420/2);
+		var popupX = (document.body.offsetWidth/2)-(800/2);
 		var popupY = (window.screen.height/2)-(370/2);
 		window.open("/member/detailSendNote.do?note_num="+note_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
 	}
 </script>
 </head>
 <body>
+	<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="sendNoteList-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
@@ -153,8 +147,8 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myInfo.do"> - 내 정보</a><br>
-							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br><br>
 							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
@@ -166,7 +160,7 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br><br>
 							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
@@ -178,7 +172,7 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br><br>
 							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
@@ -186,14 +180,13 @@
 			</div>
 		</aside> 
 		<article id="input-container">
-			<h2>보낸 쪽지함</h2>
-			<hr><br>
-			<table id="note-list-table">
+			<h2><strong>보낸 쪽지함</strong></h2>
+			<table class="table table-hover" id="note-list-table">
 				<tr>
-					<th width="30"><input type="checkbox" id="checkAll"></th>
-					<th width="80">쪽지 번호</th>
-					<th>쪽지 내용</th>
-					<th>보낸 날짜</th>
+					<th class="table-active" width="30"><input type="checkbox" id="checkAll"></th>
+					<th class="table-active" width="80">쪽지 번호</th>
+					<th class="table-active">쪽지 내용</th>
+					<th class="table-active">보낸 날짜</th>
 				</tr>
 				<c:forEach var="nt" items="${list }">
 					<tr>
@@ -209,8 +202,9 @@
 					</tr>
 				</c:forEach>
 			</table>
-			<input type="button" id="delete-selected-btn" value="선택 삭제"><br>
+			<input type="button" class="btn btn-primary" id="delete-selected-btn" value="선택 삭제"><br>
 		</article>
 	</div>
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>
