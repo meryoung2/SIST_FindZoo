@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,57 @@ public class NoteController {
 		}
 		return mav;
 	} 
+	
+	// 새로운 쪽지 보내기
+	@RequestMapping(value = "/member/sendNewNote.do", method = RequestMethod.GET)
+	public void sendNewNoteForm(HttpSession session, int member_num, Model model) {
+		int note_sender_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		int note_receiver_num = member_num;
+		// 쪽지를 받는 사람의 멤버 닉네임을 가져옴
+		String member_nick = dao.getMemberNick(member_num);
+		NoteVo nt = new NoteVo();
+		
+		nt.setMember_nick(member_nick);
+		nt.setMember_num(member_num);
+		nt.setNote_receiver_num(note_receiver_num);
+		nt.setNote_sender_num(note_sender_num);
+		
+		model.addAttribute("nt", nt);
+	}
+	@RequestMapping(value = "/member/sendNewNote.do", method = RequestMethod.POST)
+	@ResponseBody public HashMap<String, String> sendNewNoteSubmit(Locale locale, Model model, HttpServletRequest request) {
+HashMap<String, String> result = new HashMap <String,String>();
+		
+		int nsn = Integer.parseInt(request.getParameter("nsn"));
+		int nrn = Integer.parseInt(request.getParameter("nrn"));
+		String noteText = request.getParameter("noteText");
+		
+		NoteVo nt = new NoteVo();
+		
+		nt.setNote_receiver_num(nrn);
+		nt.setNote_sender_num(nsn);
+		nt.setNote_content(noteText);
+
+		int re = dao.sendNewNote(nt);
+		
+		if ( re > 0) {
+			String Msg = "성공";
+			String Code = "1";
+			
+			result.put("Msg", Msg);
+			result.put("Code", Code);
+			
+			return result;
+		} else {
+			String Msg = "실패";
+			String Code = "0";
+			
+			result.put("Msg", Msg);
+			result.put("Code", Code);
+			
+			return result;
+		}
+	}
 	
 	// 보낸 쪽지함에서 쪽지 선택 삭제시, 해당 쪽지의 note_send_visibility를 0으로 변경하여 보낸 쪽지함 목록에서 제외
 	@RequestMapping(value = "/hideSendNoteArray.do", method = RequestMethod.POST)

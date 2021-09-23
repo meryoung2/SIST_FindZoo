@@ -1110,6 +1110,24 @@ public class DBManager {
 		return re;
 	}
 	
+	// 새로운 쪽지 보내기
+	public static int sendNewNote(NoteVo nt) {
+		SqlSession session = factory.openSession(true);
+		int re = session.insert("note.sendNewNote", nt);
+		session.close();
+		return re;
+	}
+	
+	// 멤버 번호를 통해 멤버 닉네임 조회
+	public static String getMemberNick(int member_num) {
+		SqlSession session = factory.openSession(true);
+		String member_nick = session.selectOne("note.getMemberNick", member_num);
+		session.close();
+		return member_nick;
+	}
+	
+	
+	
 	// 받은 쪽지함에서 쪽지 선택 삭제시, 받은 사람의 회원번호를 관리자 번호인 -1로 변경하여 받은 쪽지함 목록에서 제외
 	public static int hideReceiveNoteArray(int note_num) {
 		SqlSession session = factory.openSession(true);

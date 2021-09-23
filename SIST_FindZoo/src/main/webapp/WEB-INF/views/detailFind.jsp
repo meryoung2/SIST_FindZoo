@@ -99,6 +99,13 @@
 		  obj.style.height = (12+obj.scrollHeight)+"px";
 	}
 	
+	// 쪽지 보내기 팝업창을 띄운다.
+	function sendNewNote(member_num) {
+		var popupX = (document.body.offsetWidth/2)-(800/2);
+		var popupY = (window.screen.height/2)-(370/2);
+		window.open("/member/sendNewNote.do?member_num="+member_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
+	}
+	
 	$(function() {
 		
 		// 글 내용의 길이에 따라 스크롤을 사용하지 않고 내용 출력
@@ -113,6 +120,7 @@
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
 			$('#member_board').attr("href", "memberBoard.do?member_num="+member_num);
+			$('#send_new_note').attr("href", "window.open('/member/sendNewNote.do?member_num='+member_num, '_blank', 'width=420, height=370, left='+popupX+', top='+popupY)");
 			
 			var divLeft = e.pageX;
 			var divTop = e.pageY;
@@ -284,7 +292,7 @@
 				<td><a id="member_board">회원 정보 보기</a></td>
 			</tr>
 			<tr>
-				<td><a>쪽지 보내기</a></td>
+				<td><a href="#" onclick="sendNewNote(${f.member_num})">쪽지 보내기</a></td>
 			</tr>
 		</table>
 	</div>

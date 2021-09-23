@@ -46,6 +46,17 @@
 	  values((select nvl(max(note_num), 0)+1 from note), #{note_content}, sysdate+9/24, #{note_sender_num}, #{note_receiver_num}, 1, 1)
 	</insert>
 	
+	<!-- 닉네임 클릭해서 새로운 쪽지 보내기 -->
+	<insert id="sendNewNote" parameterType="noteVo">
+	  insert into note(note_num, note_content, note_date, note_sender_num, note_receiver_num, note_send_visibility, note_receive_visibility) 
+	  values((select nvl(max(note_num), 0)+1 from note), #{note_content}, sysdate+9/24, #{note_sender_num}, #{note_receiver_num}, 1, 1)
+	</insert>
+	
+	<!-- 멤버 번호를 통해 해당 회원의 닉네임 조회 -->
+	<select id="getMemberNick" parameterType="int" resultType="String">
+		select member_nick from member where member_num = #{member_num}
+	</select>
+	
 	<!-- 받은 쪽지함에서 쪽지 선택 삭제시, 해당 쪽지의 note_receive_visibility를 0으로 변경하여 보낸 쪽지함 목록에서 제외 -->
 	<update id="hideReceiveNoteArray" parameterType="int">
 		update note set note_receive_visibility = 0 where note_num = #{note_num}
