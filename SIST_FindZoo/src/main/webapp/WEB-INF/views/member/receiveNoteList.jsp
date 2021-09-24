@@ -129,9 +129,9 @@
 	
 	// 쪽지 상세보기 팝업창을 화면 가운데에 위치시킨다.
 	function detailReceiveNote(note_num) {
-		var popupX = (document.body.offsetWidth/2)-(800/2);
-		var popupY = (window.screen.height/2)-(370/2);
-		window.open("/member/detailReceiveNote.do?note_num="+note_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
+		var popupX = (document.body.offsetWidth/2)-200;
+		var popupY = (window.screen.height/2)-180;
+		window.open("/member/detailReceiveNote.do?note_num="+note_num, "_blank", "width=500, height=470, left="+popupX+", top="+popupY);
 	}
 </script>
 </head>
