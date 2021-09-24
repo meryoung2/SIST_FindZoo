@@ -154,10 +154,10 @@
 									<c:when test="${ m.board_type_num eq 11}">
 										<a href="../find.do">찾아요</a>
 									</c:when>
-									<c:when test="${ m.board_type_num eq 12}">
+									<c:when test="${ m.board_type_num eq 13}">
 										<a href="../see.do">목격했어요</a>
 									</c:when>
-									<c:when test="${ m.board_type_num eq 13}">
+									<c:when test="${ m.board_type_num eq 12}">
 										<a href="../boho.do">보호중이에요</a>
 									</c:when>
 									<c:when test="${ m.board_type_num eq 21}">
