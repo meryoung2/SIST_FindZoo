@@ -56,7 +56,7 @@ $(document).ready(function () {
        
        
        var member_addr1 = $("#member_addr1").val();
-       var member_addr2 = $("#member_addr2").val();
+       var member_addr2 = ", "+$("#member_addr2").val();
        var member_addr = member_addr1.concat(member_addr2);
        $("#member_addr").val(member_addr);
 
