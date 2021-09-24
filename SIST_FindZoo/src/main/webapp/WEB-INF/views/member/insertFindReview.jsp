@@ -50,9 +50,9 @@
 <body>
 	<div id="free-container">
 		<div id="content">
-			<h4>자유게시판 글 작성</h4>
+			<h4>찾은후기 글 작성</h4>
 			<hr> 
-			<form class="form-group" action="insertFree.do" method="post" enctype="multipart/form-data">
+			<form class="form-group" action="/member/insertFindReview.do" method="post" enctype="multipart/form-data">
 				<label class="form-label mt-4">제목</label>
 				<input class="form-control" type="text" name="title" style="width: 100%;">
 				<label class="form-label mt-4">내용</label>

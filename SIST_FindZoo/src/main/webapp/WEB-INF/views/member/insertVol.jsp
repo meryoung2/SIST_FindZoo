@@ -5,42 +5,7 @@
 <head> 
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	var addr1 = $("#addr1").val();
-	var addr2 = $("#addr2").val();
-	var volunteer_loc = addr1.concat(addr2);
-
-	$("#volunteer_loc").val(volunteer_loc);
-	console.log(volunteer_loc);
-});
-
-	function findAddr() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-
-				console.log(data);
-
-				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-				// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-				var roadAddr = data.roadAddress; // 도로명 주소 변수
-				var jibunAddr = data.jibunAddress; // 지번 주소 변수
-				// 우편번호와 주소 정보를 해당 필드에 넣는다.
-				document.getElementById('post').value = data.zonecode;
-				if (roadAddr !== '') {
-					document.getElementById("addr1").value = roadAddr;
-				} else if (jibunAddr !== '') {
-					document.getElementById("addr2").value = jibunAddr;
-				}
-			}
-		}).open();
-	}
-</script>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
 	    font-family: 'GmarketSansMedium';
@@ -82,8 +47,45 @@ $(document).ready(function(){
 	}
 	
 </style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var addr1 = $("#addr1").val();
+	var addr2 = $("#addr2").val();
+	var volunteer_loc = addr1.concat(addr2);
+
+	$("#volunteer_loc").val(volunteer_loc);
+	console.log(volunteer_loc);
+});
+
+	function findAddr() {
+		new daum.Postcode({
+			oncomplete : function(data) {
+
+				console.log(data);
+
+				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+				// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				var roadAddr = data.roadAddress; // 도로명 주소 변수
+				var jibunAddr = data.jibunAddress; // 지번 주소 변수
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				document.getElementById('post').value = data.zonecode;
+				if (roadAddr !== '') {
+					document.getElementById("addr1").value = roadAddr;
+				} else if (jibunAddr !== '') {
+					document.getElementById("addr2").value = jibunAddr;
+				}
+			}
+		}).open();
+	}
+</script>
+
 </head>
 <body>
+<jsp:include page="../findZoo_Header.jsp"/>
 	<div id="vol-container">
 		<div id="content">
 			<h4>자원봉사 글 작성</h4>
@@ -183,5 +185,6 @@ $(document).ready(function(){
 			</form>
 		</div>
 	</div>
+<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

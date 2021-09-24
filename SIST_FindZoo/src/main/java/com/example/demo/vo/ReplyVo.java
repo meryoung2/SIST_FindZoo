@@ -11,6 +11,8 @@ public class ReplyVo {
 	private Date reply_date;
 	private int member_num;
 	private int board_num;
+	private String member_nick;
+	
 	public int getReply_num() {
 		return reply_num;
 	}
@@ -59,8 +61,15 @@ public class ReplyVo {
 	public void setBoard_num(int board_num) {
 		this.board_num = board_num;
 	}
+	public String getMember_nick() {
+		return member_nick;
+	}
+	public void setMember_nick(String member_nick) {
+		this.member_nick = member_nick;
+	}
+	
 	public ReplyVo(int reply_num, int reply_ref, int reply_level, int reply_step, String reply_content, Date reply_date,
-			int member_num, int board_num) {
+			int member_num, int board_num,String member_nick) {
 		super();
 		this.reply_num = reply_num;
 		this.reply_ref = reply_ref;
@@ -70,10 +79,12 @@ public class ReplyVo {
 		this.reply_date = reply_date;
 		this.member_num = member_num;
 		this.board_num = board_num;
+		this.member_nick = member_nick;
 	}
 	public ReplyVo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	
 }

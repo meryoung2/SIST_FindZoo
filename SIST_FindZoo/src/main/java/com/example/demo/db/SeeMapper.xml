@@ -7,7 +7,7 @@
 		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
-		FROM board, member WHERE BOARD_TYPE_NUM = 12
+		FROM board, member WHERE BOARD_TYPE_NUM = 13
 		AND board.member_num = MEMBER.member_num
 		ORDER BY board_num DESC))
 		WHERE n BETWEEN #{start} AND #{end}
@@ -18,7 +18,7 @@
 		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
-		FROM board, member <include refid="search_ref"/> and BOARD_TYPE_NUM = 12
+		FROM board, member <include refid="search_ref"/> and BOARD_TYPE_NUM = 13
 		AND board.member_num = MEMBER.member_num
 		ORDER BY board_num DESC))
 		where n BETWEEN #{start} AND #{end}
@@ -41,7 +41,7 @@
 	</sql>
 	
 	<insert id="insertBoard" parameterType="seeVo">
-		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 12, 1)
+		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 13, 1)
 	</insert>
 	
 	<insert id="insertSee" parameterType="seeVo">
@@ -65,7 +65,7 @@
 		SELECT count(*)
 		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
-		FROM board, member WHERE BOARD_TYPE_NUM = 12
+		FROM board, member WHERE BOARD_TYPE_NUM = 13
 		AND board.member_num = MEMBER.member_num
 		ORDER BY board_num DESC))
 		<include refid="search_ref2"/>
@@ -88,7 +88,7 @@
 	</sql>
 	  
 	<update id="updateHit" parameterType="int">
-	  	update board set views = views+1 where board_num = #{board_num} and board_type_num = 12
+	  	update board set views = views+1 where board_num = #{board_num} and board_type_num = 13
 	</update>
 
 	<update id="updateSee" parameterType="seeVo">

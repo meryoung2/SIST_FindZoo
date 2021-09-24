@@ -4,26 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="main">
 	<select id="mainFind" resultType="findVo">
-		<![CDATA[SELECT b.board_num
-			,title
-			,content
-			,bdate
-			,VIEWS
-			,board_type_num
-			,m.member_num
-			,member_nick
-			,find_num
-			,find_reward
-			,find_pet
-			,find_lost_loc
-			,find_lost_date
-		FROM board b
-			,member m
-			,find f
-		WHERE board_type_num = 11
-		AND b.member_num = m.member_num
-		AND b.board_num = f.board_num and rownum <=3
-		ORDER BY board_num DESC]]>
+		<![CDATA[SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick, find_num, find_reward, find_pet, find_lost_loc, find_lost_date
+		FROM (select rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick, find_num, find_reward, find_pet, find_lost_loc, find_lost_date 
+		from (SELECT b.board_num, title, content, bdate, views, board_type_num, m.member_num, member_nick, find_num, find_reward, find_pet, find_lost_loc, find_lost_date
+		FROM board b, member m, find f
+		where board_type_num = 11 and b.member_num = m.member_num and b.board_num = f.board_num order by board_num desc)) WHERE ROWNUM <=6]]>
 	</select>
 
 	
@@ -36,10 +21,21 @@
 	</select>
 	
 	
+	<select id="mainBoho" resultType="BohoVo">
+		<![CDATA[SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick, boho_num, boho_pet, boho_find_loc, boho_find_date
+		FROM (select rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick, boho_num, boho_pet, boho_find_loc, boho_find_date
+		from (SELECT b.board_num, title, content, bdate, views, board_type_num, m.member_num, member_nick, boho_num, boho_pet, boho_find_loc, boho_find_date
+		FROM board b, member m, boho boho
+		where board_type_num = 12 and b.member_num = m.member_num and b.board_num = boho.board_num order by board_num desc)) WHERE ROWNUM <=6]]>
+	</select>
 	
 	
-	<select id="mainBoho">
-		<![CDATA[select board_type_num, title, content, bdate, boho_find_loc, picture_file_num, picture_fname from (select * from boho bh, board b, picture p, member m where bh.board_num = b.board_num and p.board_num = b.board_num and m.member_num = b.member_num order by bdate desc) where rownum <=3]]>
+	<select id="mainBohoPicture" resultType="String">
+		SELECT picture_fname, board_num
+		FROM (select rownum n, picture_fname, board_num
+		from (SELECT p.picture_fname, b.board_num
+		FROM picture p, board b
+		where board_type_num = 12 and b.board_num = p.board_num ORDER BY b.board_num desc, picture_file_num ))
 	</select>
 	
 </mapper>
