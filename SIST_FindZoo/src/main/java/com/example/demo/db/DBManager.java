@@ -963,17 +963,34 @@ public class DBManager {
 		
 		
 		// 메인에서 찾아요게시판 조회
-		public static List<FindVo> mainFind() {
+		public static List<FindVo> mainFind(HashMap map) {
 			SqlSession session = factory.openSession();
-			List<FindVo> list = session.selectList("main.mainFind");
+			List<FindVo> list = session.selectList("main.mainFind",map);
 			session.close();
 			return list;
 		}
 		
 		// 메인에서 찾아요게시판 목록 사진 불러오기
-		public static List<String> mainFindPicture() {
+		public static List<String> mainFindPicture(HashMap map_pic) {
 			SqlSession session = factory.openSession();
-			List<String> p = session.selectList("main.mainFindPicture");
+			List<String> p = session.selectList("main.mainFindPicture",map_pic);
+			System.out.println(p.size());
+			session.close();
+			return p;
+		}
+		
+		// 메인에서 보호중게시판 조회
+		public static List<BohoVo> mainBoho(HashMap map) {
+			SqlSession session = factory.openSession();
+			List<BohoVo> list = session.selectList("main.mainBoho",map);
+			session.close();
+			return list;
+		}
+				
+		// 메인에서 보호중게시판 목록 사진 불러오기
+		public static List<String> mainBohoPicture(HashMap map_pic) {
+			SqlSession session = factory.openSession();
+			List<String> p = session.selectList("main.mainBohoPicture",map_pic);
 			System.out.println(p.size());
 			session.close();
 			return p;

@@ -6,6 +6,14 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+ $(function(){
+	 if($("#re").val()=="0"){
+		 alert("아이디 혹은 비밀번호를 다시 확인해주세요");
+	 }
+	 
+ })
+</script>
 <style type="text/css">
 @font-face {
 	    font-family: 'GmarketSansMedium';
@@ -26,7 +34,7 @@
 	
 	#content{
 		display: inline-block;
-		width: 70%;
+		width: 50%;
 		margin-top: 2%;
 	}
 </style>
@@ -34,6 +42,8 @@
 function goFindId(){
 	location.href="/find_id.do";
 }
+
+
 </script>
 </head>
 <body>
@@ -43,8 +53,11 @@ function goFindId(){
 	<div id="content">
 	<form action="login.do" method="post">
 		<fieldset>
+		<br>
+		<br>
 	    <legend>로그인</legend>
-	    
+	    <hr>
+		<br>
 		    <div class="form-group">
 		    	<label for="id" class="form-label mt-4">아이디</label>
 		    	<input type="text" id="member_id" name="member_id" required="required" class="form-control">
@@ -55,7 +68,7 @@ function goFindId(){
 			</div>
 	</form>
 		<div class="modal-footer">
-			<input type="submit" class="btn btn-primary" value="로그인">
+			<input type="submit" class="btn btn-primary" value="로그인"><br>
 			<a href="join.do"><input type="button" class="btn btn-primary" value="회원가입"></a>
 			<a href="find_id.do"><input type="button" class="btn btn-primary" value="아이디 찾기"></a>
 			<a href="find_pwd.do"><input type="button" class="btn btn-primary" value="비밀번호 찾기"></a>
@@ -63,6 +76,7 @@ function goFindId(){
 		</fieldset>
 	</div>
 	</div>
+	<input type="hidden" id="re" value="${re}">
 <jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

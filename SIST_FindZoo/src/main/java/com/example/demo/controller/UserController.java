@@ -3,8 +3,10 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,9 +56,38 @@ public class UserController {
 		
 	}
 	
+	/*@RequestMapping(value = "/login.do", method = RequestMethod.GET)
+	public String loginForm(HttpServletRequest request) {
+		String referer = request.getHeader("Referer");
+		request.getSession().setAttribute("redirectURI", referer);
+		return "login.do";
+	}*/
+	
+	/*@RequestMapping(value = "/login.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String loginSubmit(HttpSession session,HttpServletRequest request, String member_id, String member_pwd,HttpServletResponse response) throws Exception{
+		
+		if(dao.isMember(member_id, member_pwd)) {
+			MemberVo m = dao.loginMember(member_id);
+			session.setAttribute("loginM", m);
+			session.setAttribute("re", 1);
+			
+			String uri =(String) session.getAttribute("uri");
+			String return_uri = "redirect:"+uri;
+			System.out.println(return_uri);
+			return return_uri;
+			
+
+		}else {
+			session.setAttribute("re", 0);
+			return "redirect:/login.do";	
+		}
+	}*/
+	
+
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	//@ResponseBody
-	public ModelAndView loginSubmit(HttpSession session, String member_id, String member_pwd,HttpServletResponse response) throws Exception{
+	public ModelAndView loginSubmit(HttpSession session,HttpServletRequest request, String member_id, String member_pwd,HttpServletResponse response) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		
 		String msg = "";
@@ -64,18 +95,16 @@ public class UserController {
 		if(dao.isMember(member_id, member_pwd)) {
 			MemberVo m = dao.loginMember(member_id);
 			session.setAttribute("loginM", m);
-			mav.setViewName("redirect:/main.do");
+			session.setAttribute("re", 1);
+			mav.setViewName("redirect:/main.do");		
+
 		}else {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			//out.println("<script>alert('정보를 확인해주세요.'); </script>");
-			//out.flush();
-			
-			mav.setViewName("redirect:/login.do");
-			out.println("<script>alert('정보를 확인해주세요.'); </script>");
+			session.setAttribute("re", 0);
+			mav.setViewName("redirect:/login.do");	
 		}
 		return mav;
 	}
+	
 	
 	@RequestMapping("/logout.do")
 	public ModelAndView logout(HttpSession session) {
@@ -123,16 +152,6 @@ public class UserController {
 	}
 	
 	
-	/*
-	@RequestMapping(value = "/find_id.do", method = RequestMethod.GET)
-	public Object findId(@RequestParam("member_name") String member_name,
-							@RequestParam("member_phone") String member_phone) {
-		System.out.println("find_id.do 작동");
-
-		return "/views/find_id";
-	
-	}*/
-	
 	@RequestMapping(value = "/find_id.do", method = RequestMethod.GET)
 	public void find_id_form() {
 		System.out.println("find_id.do 작동함");
@@ -142,13 +161,7 @@ public class UserController {
 	public void find_pwd_form() {
 		System.out.println("find_pwd.do 작동함");
 	}
-	
-	@RequestMapping
-	public void selectPwd() {
-		
-	}
-	
-	
+
 	
 	@RequestMapping(value = "/user/selectPwd", method = RequestMethod.GET)
 	@ResponseBody
@@ -175,6 +188,26 @@ public class UserController {
 		}
 		return mav;
 	}
+	
+	
+		//비밀번호 변경 시 인증코드 발송
+		@RequestMapping("sendNumber.do")
+		@ResponseBody
+		public String sendCode(String to) {
+			String code = "";
+			String from = "01025598279";
+			Random r = new Random();
+			int a = r.nextInt(10);
+			int b = r.nextInt(10);
+			int c = r.nextInt(10);
+			int d = r.nextInt(10);
+			int e = r.nextInt(10);
+			int f = r.nextInt(10);
+			code = a+""+b+""+c+""+d+""+e+""+f;
+			BitSms sms = new BitSms();
+			sms.sendMsg(from, to, code);
+			return code;
+		}
 	
 	
 }

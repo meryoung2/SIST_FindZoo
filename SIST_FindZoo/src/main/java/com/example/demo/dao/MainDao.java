@@ -14,11 +14,19 @@ import com.example.demo.vo.FindVo;
 public class MainDao {
 
 	
-	public List<FindVo> mainFind(){
-		return DBManager.mainFind();
+	public List<FindVo> mainFind(HashMap map){
+		return DBManager.mainFind(map);
 	}
 	
-	public List<String> mainFindPicture(){
-		return DBManager.mainFindPicture();
+	public List<String> mainFindPicture(HashMap map_pic){
+		return DBManager.mainFindPicture(map_pic);
+	}
+	
+	public List<BohoVo> mainBoho(HashMap map){
+		return DBManager.mainBoho(map);
+	}
+	
+	public List<String> mainBohoPicture(HashMap map_pic){
+		return DBManager.mainBohoPicture(map_pic);
 	}
 }

@@ -72,10 +72,10 @@
 	
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		  <div class="container-fluid">
-			<div class="navbar-collapse collapse show" id="navbarColor03" style="">
+			<div class="navbar-collapse collapse show" id="navbarColor03" style="margin-left:20%;">
 				<ul class="navbar-nav me-auto">
 
-					<li class="nav-item"><a class="nav-link" href="#" style="font-size: 25px;">&nbsp;찾아주개?&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+					<li class="nav-item"><a class="nav-link" href="intro.do" style="font-size: 25px;">&nbsp;찾아주개?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
 					
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;">실종동물 게시판</a>
@@ -83,34 +83,33 @@
 						<div class="dropdown-menu">
 				            <a class="dropdown-item" style="font-size: 20px;" href="find.do" >찾아요</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="boho.do">보호중이에요</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">목격했어요</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="see.do">목격했어요</a>
 			        	</div>
-					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"  style="font-size: 25px;">구인공고 게시판</a>
 				
 						<div class="dropdown-menu">
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">자원봉사</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">펫도우미</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="vol.do">자원봉사</a>
 			        	</div>
-					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;">커뮤니티</a>
 				
 						<div class="dropdown-menu">
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">자유</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">거래</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="free.do">자유</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="deal.do">거래</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="#">정보공유</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="#">찾은후기</a>
 			        	</div>
 					</li>
 				</ul>
-				<form class="d-flex">
+				<!-- <form class="d-flex">
 			        <input class="form-control me-sm-2" type="text" placeholder="Search">
 			        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-			     </form>
+			     </form> -->
 			</div>
 		</div>
 	</nav>
