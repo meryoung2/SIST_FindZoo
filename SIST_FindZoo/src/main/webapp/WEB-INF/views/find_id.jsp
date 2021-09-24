@@ -82,8 +82,11 @@ function id_search() {
 	<div id="content">
 	<form>
 		<fieldset>
+		<br>
+		<br>
 		<legend>아이디 찾기</legend>
-			
+		<hr>
+		<br>
 			<div class="form-group row">
 				<label class="form-label mt-4">이름</label>
 				<input type="text" name="member_name" id="member_name" class="form-control" placeholder = "등록한 이름" required="required">

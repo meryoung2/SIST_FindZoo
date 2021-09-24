@@ -58,10 +58,10 @@
 	#myInfo-container .modal {
 		display: none; /* 처음엔 모달창이 보이지 않도록 숨긴다. */
 		position: fixed;
-		top: 260px;
-	    width: 520px;
+		top: 180px;
+	    width: 470px;
 	    height: 450px;
-	    left: 35%;
+	    left: 33%;
 		z-index: 2; /* 우선순위: 모달창 -> bgLayer -> myInfo-container순 */
 	}
 	

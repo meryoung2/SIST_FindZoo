@@ -31,7 +31,7 @@
 	
 	#content{
 		display: inline-block;
-		width: 70%;
+		width: 50%;
 		margin-top: 2%;
 	}
 </style>
@@ -144,7 +144,7 @@ $(function(){
 			clearInterval(x);
 			var to = $("#member_phone").val();
 			data = {to:to};
-			$.ajax({url:"sendCode.do", data:data, success:function(data){
+			$.ajax({url:"sendNumber.do", data:data, success:function(data){
 				code = data;
 				$("#mycode").val(code);
 				alert("인증코드를 발송하였습니다. 유효시간은 2분입니다.");
@@ -178,8 +178,7 @@ $(function(){
 						
 						checkpwd();
 						
-					}else {
-						
+					}else{
 						alert("다시 입력해 주세요.");
 					}
 				}
@@ -194,7 +193,11 @@ $(function(){
 	<div id="findPwd-container">
 	<div id="content">
 	<form action="newPwd.do" id="updateInfoForm" method="post">	
+		<br>
+		<br>
 		<legend>비밀번호 변경하기</legend>
+		<hr>
+		<br>
 		<input type="hidden" id="mycode" value=""/>
 			
 			<div class="form-group row">
@@ -209,10 +212,10 @@ $(function(){
 			
 			<div class="form-group row" id="send-code-container">
 				<label class="form-label mt-4">연락처</label>
-				<input class="form-control" type="tel" id="member_phone" name="member_phone" placeholder = "휴대폰번호를 '-'없이 입력" required="required" aria-describedby="button-addon2">
+				<input class="form-control" type="tel" id="member_phone" name="member_phone" placeholder = "휴대폰번호를 '-'없이 입력" required="required" style="width:87%;">&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="button" onclick="checkInfo();" style="width:100px;" class="btn btn-secondary"  value="인증코드 전송">&nbsp;
 				<span id="time">02:00</span>
-				<input class="form-control" type="tel" id="sms-code">
+				<input class="form-control" type="tel" id="sms-code" style="width:87%;">&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="button" id="check-code-btn" style="width:100px;" class="btn btn-secondary" value="인증코드 확인">
 			</div>
 			<div class="form-group row" id="newPwd-form">
@@ -227,5 +230,6 @@ $(function(){
 	</form>
 	</div>
 	</div>
+<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

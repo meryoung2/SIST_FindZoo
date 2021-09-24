@@ -188,9 +188,9 @@
 	
 	///////////////////// 닉네임 중복 확인 팝업창을 화면 가운데에 위치시킨다. /////////////////////
 	function checkNick() {
-		var popupX = (document.body.offsetWidth/2)-(800/2);
-		var popupY= (window.screen.height/2)-(260/2);
-		window.open("/member/checkNick.do", "닉네임 변경", "width=350, height=260, left="+popupX+", top="+popupY);
+		var popupX = (document.body.offsetWidth/2)-180;
+		var popupY= (window.screen.height/2)-100;
+		window.open("/member/checkNick.do", "닉네임 변경", "width=400, height=260, left="+popupX+", top="+popupY);
 	}
 	
 	var x;

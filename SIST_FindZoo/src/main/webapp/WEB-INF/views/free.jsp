@@ -50,7 +50,7 @@
 		width: 70%;
 		margin-top: 2%;
 	}
-
+	
 	#page{
 		text-align: center;
 		margin-top: 5%;

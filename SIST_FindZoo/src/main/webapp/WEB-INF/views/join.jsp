@@ -27,10 +27,13 @@
 	
 	#content{
 		display: inline-block;
-		width: 70%;
+		width: 50%;
 		margin-top: 2%;
 	}
 	
+	#join-container #content textarea {
+		width: 100%;
+	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -253,20 +256,23 @@ $(document).ready(function () {
 	<div id="content">
 	<form action="join.do" method="post" id="form1">
 	  <fieldset>
+	  	<br>
 	    <legend>회원가입</legend>
-		
+		<hr>
+		<br>
 		<div class="form-group">
 			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" >
 			<label for="id" class="form-label mt-4">아이디</label>
-			<input type="text" id="member_id" name="member_id" required="required" class="form-control">
+			<button type="button" onclick="dupCheck();" class="btn btn-secondary" style="float:right; margin-top:15px;">아이디 확인</button><br>
+			<input type="text" id="member_id" name="member_id" required="required" class="form-control"">
 			<input type="hidden" id="idChk">
-			<button type="button" onclick="dupCheck();" class="btn btn-secondary">중복확인</button><br>
+			
 			<small id="emailHelp" class="form-text text-muted">*아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.</small>
 		</div>
 
 		<div class="form-group">
 			<label for="pw" class="form-label mt-4">비밀번호</label>
-			<input type="password" class="form-control" id="member_pwd" name="member_pwd" required="required" placeholder="Password"><br>
+			<input type="password" class="form-control" id="member_pwd" name="member_pwd" required="required"><br>
 			<label for="check-pw" class="form-label mt-4">비밀번호 확인</label> 
 			<input type="password" class="form-control" id="member_pwd_check" name="member_pwd_check" required="required">
 			<small class="form-text text-muted">*비밀번호는 영문, 숫자, 특수문자 조합의 8~20자 이내로 입력해 주세요.</small>
@@ -279,21 +285,21 @@ $(document).ready(function () {
 		
 		<div class="form-group">
 			<label for="nick" class="form-label mt-4">닉네임</label>
+			<button type="button" onclick="nickdupCheck();" class="btn btn-secondary" style="float:right; margin-top:15px;">닉네임 확인</button><br>
 			<input type="text" class="form-control" id="member_nick" name="member_nick" required="required">
 			<input type="hidden" id="nickChk">
-			<button type="button" onclick="nickdupCheck();" class="btn btn-secondary">중복확인</button><br>
 		</div>
 		
 		<div class="form-group">
 			<label for="phone" class="form-label mt-4">연락처</label> 
 			<input type="text" class="form-control" name="member_phone" id="member_phone" maxlength="12" required="required">
-			<small class="form-text text-muted">*숫자만 입력</small>
+			<small class="form-text text-muted">*'-'없이 숫자만 입력해 주세요.</small>
 		</div>
 		
 		<div class="form-group">
 		<label for="email" class="form-label mt-4">이메일</label> 
-        <input type="text" class="form-control" name="email_1" id="email_1" maxlength="30">
-             <select class="form-select" name="email_2" id="email_2">
+        <input type="text" class="form-control" name="email_1" id="email_1" maxlength="30" style="width:50%;">&nbsp;&nbsp;&nbsp;
+             <select class="form-select" name="email_2" id="email_2" style="width:50%; float:right; margin-top:-38px;">
                      <option value="@naver.com">@naver.com</option>
                      <option value="@daum.net">@daum.net</option>
                      <option value="@gmail.com">@gmail.com</option>
@@ -304,8 +310,8 @@ $(document).ready(function () {
 
 		<div class="form-group">
 			<label for="address" class="form-label mt-4">주소</label> 
-			 <input class="form-control" id="member_addr1" name="member_addr1" type="text" placeholder="주소검색" readonly onclick="findAddr()" required="required">
-			 <input class="form-control" type="text" id="member_addr2" name="member_addr1" placeholder="상세주소" required="required"><br>
+			 <input class="form-control" id="member_addr1" name="member_addr1" type="text" placeholder="주소검색" readonly onclick="findAddr()" required="required" style="width:50%;">&nbsp;&nbsp;&nbsp;
+			 <input class="form-control" type="text" id="member_addr2" name="member_addr1" placeholder="상세주소" required="required" style="width:50%; float:right; margin-top:-38px;"><br>
 			 <input id="member_post"  type="hidden" placeholder="우편번호" readonly">
 			 <input type="hidden" id ="member_addr" name="member_addr"><br>
 		</div>
@@ -313,7 +319,7 @@ $(document).ready(function () {
 		<div class="form-group">
 			<label class="form-label mt-4" for="sms">알림 서비스</label><br>
 			<input type="radio" id="member_sms-y" name="member_sms" value="동의" checked="checked">동의
-			<input type="radio" id="member_sms-n" name="member_sms" value="비동의">비동의<br>
+			&nbsp;&nbsp;<input type="radio" id="member_sms-n" name="member_sms" value="비동의">비동의<br>
 		</div>
 		
 		<input type="hidden" name="member_admin" value="일반">

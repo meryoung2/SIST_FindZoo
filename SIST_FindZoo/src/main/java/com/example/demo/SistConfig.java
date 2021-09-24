@@ -16,4 +16,13 @@ public class SistConfig implements WebMvcConfigurer {
 		.addPathPatterns("/member/**");
 	}
 	
+	/*@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// TODO Auto-generated method stub
+		//WebMvcConfigurer.super.addInterceptors(registry);
+		
+		registry.addInterceptor(new AuthInterceptor())
+		.addPathPatterns("/**");
+	}
+	*/
 }
