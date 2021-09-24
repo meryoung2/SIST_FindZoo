@@ -150,6 +150,8 @@ public class VolunteerController {
 	@RequestMapping(value = "/member/insertVol.do", method = RequestMethod.POST)
 	public ModelAndView submit(HttpServletRequest request, HttpSession session, VolunteerVo v) {
 		ModelAndView mav = new ModelAndView("redirect:/vol.do");
+		int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
+		v.setMember_num(member_num);
 		String path = request.getRealPath("resources/img");
 		String picture_fname = null;
 		int fsize = 0;
@@ -172,7 +174,17 @@ public class VolunteerController {
 				System.out.println("파일업로드중 오류발생 : " + e.getMessage());
 			}
 		} else {
-			v.setPicture_fname("");
+			try {
+				path = request.getRealPath("resources/systems");
+				byte[] data = picture_file.getBytes();
+				picture_fname = "default2.png";
+				fsize = data.length;
+				v.setPicture_fname(picture_fname);
+				System.out.println(path);
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("예외발생:" + e.getMessage());
+			}
 		}
 
 		int re = dao.insertVol(v);
