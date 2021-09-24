@@ -355,6 +355,10 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
+	      <div class="form-group">
+	      		<label for="reply_num">참조 댓글번호</label>
+	      		<input class="form-control" id="reply_number" name="reply_num" value="${reply_num }" readonly>
+	      	</div>
 	      	<div class="form-group">
 	      		<label for="member_nick">답글 작성자</label>
 	      		<input class="form-control" id="member_nick" name="member_nick" value="${loginM.member_nick }" readonly>

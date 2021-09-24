@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 import java.io.PrintWriter;
+
 import java.util.Map;
 import java.util.Random;
 
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.MemberDao;
 import com.example.demo.vo.MemberVo;
-
 import kr.co.youiwe.webservice.BitSms;
 
 @Controller
@@ -90,25 +90,31 @@ public class UserController {
 	public ModelAndView loginSubmit(HttpSession session,HttpServletRequest request, String member_id, String member_pwd,HttpServletResponse response) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		
+		System.out.println("login.do 컨트롤러 동작함");
+		
 		String msg = "";
 		
 		if(dao.isMember(member_id, member_pwd)) {
+			System.out.println("로그인 확인이 되었습니다.");
 			MemberVo m = dao.loginMember(member_id);
 			session.setAttribute("loginM", m);
 			session.setAttribute("re", 1);	
 			
 			String uri = (String)session.getAttribute("uri");
 			if(uri == null) {
-				uri = "redirect:/main.do";
+				uri = "/main.do";
 			}
 			
 			mav.setViewName("redirect:"+uri);
-			System.out.println("저장된 uri"+uri);
+			System.out.println("저장된 uri:"+uri);
 
 		}else {
+			System.out.println("로그인 실패하였습니다.");
 			session.setAttribute("re", 0);
 			mav.setViewName("redirect:/login.do");	
 		}
+		System.out.println(mav.getViewName());
+		System.out.println("로그인 컨트롤러가 종료됩니다.");
 		return mav;
 	}
 	
