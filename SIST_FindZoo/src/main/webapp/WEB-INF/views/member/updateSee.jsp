@@ -56,7 +56,7 @@
 </style>
 </head>
 <body>
-<jsp:include page="../findZoo_Header.jsp"/>
+<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="see-container">
 		<div id="content">
 			<h4>목격했어요! 글 수정</h4>

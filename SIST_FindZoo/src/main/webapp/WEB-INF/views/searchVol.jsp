@@ -156,12 +156,17 @@
 		});
 
 	
+<<<<<<< HEAD
+		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
+		$('.login_pls_alert').click(function(e){
+			alert("회원 정보를 보려면 로그인을 해야 합니다!");
+		});
+=======
 	// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
 	$('.login_pls_alert').click(function(e){
 		alert("로그인이 필요합니다!");
+>>>>>>> branch 'master' of https://github.com/meryoung2/SIST_FindZoo.git
 	});
-	});
-
 </script>
 </head>
 <body>

@@ -48,7 +48,7 @@
 </style>
 </head>
 <body>
-<jsp:include page="../findZoo_Header.jsp"/>
+<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="deal-container">
 		<div id="content">
 			<h4>거래 게시판 글 수정</h4>

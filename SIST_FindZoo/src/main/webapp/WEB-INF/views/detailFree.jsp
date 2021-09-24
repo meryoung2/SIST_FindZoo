@@ -182,7 +182,7 @@
 			<br>
 			<button class="btn btn-primary" onclick="location.href='free.do'"
 				style="float: left;">목록</button>
-			<c:if test="${ loginM.member_num ne 0 and loginM.member_num eq f.member_num }">
+			<c:if test="${ member_num ne 0 and member_num eq d.member_num }">
 			<button class="btn btn-primary"	onclick="location.href='/member/updateFree.do?board_num=${ f.board_num }'"	style="float: right;">수정</button>
 			<button class="btn btn-primary"	onclick="confirm_del(${ f.board_num})" style="float: right;">삭제</button>
 			</c:if>

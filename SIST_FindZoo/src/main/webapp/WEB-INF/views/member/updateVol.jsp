@@ -56,7 +56,7 @@
 </style>
 </head>
 <body>
-<jsp:include page="../findZoo_Header.jsp"/>
+<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="vol-container">
 		<div id="content">
 			<h4>자원 봉사 게시판 게시글 수정</h4>

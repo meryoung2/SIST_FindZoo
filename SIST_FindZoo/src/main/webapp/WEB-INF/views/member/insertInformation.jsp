@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>정보 공유 게시판</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
 	    font-family: 'GmarketSansMedium';
@@ -48,6 +48,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="free-container">
 		<div id="content">
 			<h4>정보 공유 게시판 글 작성</h4>
@@ -66,5 +67,6 @@
 			</form>
 		</div>
 	</div>
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>
