@@ -93,7 +93,7 @@
 			</div>
 		
 			<div style="text-align:center;">
-				<img alt="" src="/resources/img/system_01.png" style="width:700px;">
+				<img alt="" src="/resources/systems/system_01.png" style="width:700px;">
 				<br>
 				<br>
 				<br>

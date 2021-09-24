@@ -345,7 +345,7 @@
 		<!-- 사이드 배너 -->
 		<div id="right-sidebar">
 			<a href="https://www.animal.go.kr/front/index.do" target='_blank'>
-				<img src="./resources/img/banner02.png"/>
+				<img src="./resources/systems/banner02.png"/>
 			</a>
 		</div>
 	</div>   

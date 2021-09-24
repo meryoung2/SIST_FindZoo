@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>자유 게시판</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -50,7 +50,7 @@
 <body>
 	<div id="free-container">
 		<div id="content">
-			<h4>자유게시판 글 수정</h4>
+			<h4>자유 게시판 글 수정</h4>
 			<hr> 
 			<form class="form-group" action="/member/updateFree.do" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="board_num" value="${ f.board_num }">

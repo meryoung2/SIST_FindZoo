@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>보호중이에요!</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -129,7 +129,7 @@
 <jsp:include page="findZoo_Header.jsp"/>
 	<div id="boho-container">
 		<div id="content">
-			<h2><a href="boho.do">보호중게시판</a></h2>
+			<h2><a href="boho.do">보호중이에요!</a></h2>
 			<h6>(전체 게시글 수 : ${ totalRecord })</h6>
 			<hr>
 			<div id="board">

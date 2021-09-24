@@ -4,7 +4,7 @@
 <html>
 <head> 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>거래 게시판</title>
 <link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -51,7 +51,7 @@
 <jsp:include page="../findZoo_Header.jsp"/>
 	<div id="deal-container">
 		<div id="content">
-			<h4>거래게시판 글 수정</h4>
+			<h4>거래 게시판 글 수정</h4>
 			<hr> 
 			<form class="form-group" action="updateDeal.do" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="board_num" value="${ d.board_num }">

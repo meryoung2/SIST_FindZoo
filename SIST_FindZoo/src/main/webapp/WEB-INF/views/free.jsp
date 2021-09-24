@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>자유 게시판</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -121,11 +121,19 @@
         }
     }
 	
+	// 쪽지 보내기 팝업창을 띄운다.
+	function sendNewNote(member_num) {
+		var popupX = (document.body.offsetWidth/2)-(800/2);
+		var popupY = (window.screen.height/2)-(370/2);
+		window.open("/member/sendNewNote.do?member_num="+member_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
+	}
+	
 	$(function() {
 		// 멤버 닉네임 클릭 시
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
 			$('#member_info').attr("href", "memberInfo.do?member_num="+member_num);
+			$('#send_new_note').attr("href", "window.open('/member/sendNewNote.do?member_num='+member_num, '_blank', 'width=420, height=370, left='+popupX+', top='+popupY)");
 			
 			var divLeft = e.clientX;
 			var divTop = e.clientY;
@@ -150,7 +158,7 @@
 	
 	// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
 	$('.login_pls_alert').click(function(e){
-		alert("회원 정보를 보려면 로그인을 해야 합니다!");
+		alert("로그인이 필요합니다!");
 	});
 });
 </script>
@@ -244,7 +252,7 @@
 				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
-				<td><a>쪽지 보내기</a></td>
+				<td><a href="#" onclick="sendNewNote(${member_num})">쪽지 보내기</a></td>
 			</tr>
 		</table>
 	</div>

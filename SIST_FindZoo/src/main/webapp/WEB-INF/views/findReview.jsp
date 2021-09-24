@@ -150,7 +150,7 @@
 	
 	// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
 	$('.login_pls_alert').click(function(e){
-		alert("회원 정보를 보려면 로그인을 해야 합니다!");
+		alert("로그인이 필요합니다!");
 	});
 });
 </script>
@@ -244,7 +244,7 @@
 				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
-				<td><a>쪽지 보내기</a></td>
+				<td><a href="#" onclick="sendNewNote(${member_num})">쪽지 보내기</a></td>
 			</tr>
 		</table>
 	</div>

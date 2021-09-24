@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>정보공유 게시판</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -82,6 +82,13 @@
 		  obj.style.height = (12+obj.scrollHeight)+"px";
 	}
 	
+	// 쪽지 보내기 팝업창을 띄운다.
+	function sendNewNote(member_num) {
+		var popupX = (document.body.offsetWidth/2)-(800/2);
+		var popupY = (window.screen.height/2)-(370/2);
+		window.open("/member/sendNewNote.do?member_num="+member_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
+	}
+	
 	$(function() {
 		
 		// 글 내용의 길이에 따라 스크롤을 사용하지 않고 내용 출력
@@ -96,6 +103,7 @@
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
 			$('#member_info').attr("href", "memberInfo.do?member_num="+member_num);
+			$('#send_new_note').attr("href", "window.open('/member/sendNewNote.do?member_num='+member_num, '_blank', 'width=420, height=370, left='+popupX+', top='+popupY)");
 			
 			var divLeft = e.pageX;
 			var divTop = e.pageY;
@@ -116,9 +124,10 @@
 				member_modal.hide();
 			}
 		});
+		
 		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
 		$('.login_pls_alert').click(function(e){
-			alert("회원 정보를 보려면 로그인을 해야 합니다!");
+			alert("로그인이 필요합니다!");
 		});
 	});
 
@@ -173,7 +182,7 @@
 			<br>
 			<button class="btn btn-primary" onclick="location.href='information.do'"
 				style="float: left;">목록</button>
-			<c:if test="${ loginM.member_num ne 0 and loginM.member_num eq f.member_num }">
+			<c:if test="${ member_num ne 0 and member_num eq d.member_num }">
 			<button class="btn btn-primary"
 				onclick="location.href='/member/updateInformation.do?board_num=${ f.board_num }'"
 				style="float: right;">수정</button>
@@ -370,7 +379,7 @@
 				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
-				<td><a>쪽지 보내기</a></td>
+				<td><a href="#" onclick="sendNewNote(${f.member_num})">쪽지 보내기</a></td>
 			</tr>
 		</table>
 	</div>

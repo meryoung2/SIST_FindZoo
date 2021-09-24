@@ -4,7 +4,7 @@
 <html>
 <head> 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>자원봉사 게시판</title>
 <link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -88,7 +88,7 @@ $(document).ready(function(){
 <jsp:include page="../findZoo_Header.jsp"/>
 	<div id="vol-container">
 		<div id="content">
-			<h4>자원봉사 글 작성</h4>
+			<h4>자원봉사 게시판 글 작성</h4>
 			<hr> 
 			<form class="form-group" action="insertVol.do" method="post" enctype="multipart/form-data">
 				<label class="form-label mt-4">제목</label> 

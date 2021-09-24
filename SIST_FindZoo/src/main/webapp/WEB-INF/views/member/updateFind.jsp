@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>찾아요!</title>
 <link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -55,10 +55,10 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
 </head>
 <body>
-<jsp:include page="../findZoo_Header.jsp"/>
+<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="find-container">
 		<div id="content">
-			<h4>찾아요게시판 글 수정</h4>
+			<h4>찾아요! 글 수정</h4>
 			<hr> 
 			<form class="form-group" action="/member/updateFind.do" method="post" enctype="multipart/form-data" onsubmit="fixLoc();">
 				<input type="hidden" name="board_num" value="${f.board_num }">

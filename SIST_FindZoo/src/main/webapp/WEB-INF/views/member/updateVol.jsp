@@ -8,7 +8,7 @@
 <html>
 <head> 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>자원 봉사 게시판</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
@@ -59,7 +59,7 @@
 <jsp:include page="../findZoo_Header.jsp"/>
 	<div id="vol-container">
 		<div id="content">
-			<h4>자원봉사판 게시글 수정</h4>
+			<h4>자원 봉사 게시판 게시글 수정</h4>
 			<hr> 
 			<form class="form-group" action="updateVol.do" method="post" enctype="multipart/form-data" onsubmit="fixLoc();">
 				<input type="hidden" name="board_num" value="${ v.board_num }">
