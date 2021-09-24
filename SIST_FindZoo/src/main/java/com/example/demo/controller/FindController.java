@@ -175,7 +175,7 @@ public class FindController {
 	
 	
 	// 찾아요게시판 상세보기 컨트롤러
-	@RequestMapping("/detailFind.do")
+	@RequestMapping("/page/detailFind.do")
 	public void detail(HttpServletRequest request, Model model, HttpSession session, int board_num) {
 		dao.updateViewsFind(board_num);
 		int member_num = 0;

@@ -95,8 +95,15 @@ public class UserController {
 		if(dao.isMember(member_id, member_pwd)) {
 			MemberVo m = dao.loginMember(member_id);
 			session.setAttribute("loginM", m);
-			session.setAttribute("re", 1);
-			mav.setViewName("redirect:/main.do");		
+			session.setAttribute("re", 1);	
+			
+			String uri = (String)session.getAttribute("uri");
+			if(uri == null) {
+				uri = "redirect:/main.do";
+			}
+			
+			mav.setViewName("redirect:"+uri);
+			System.out.println("저장된 uri"+uri);
 
 		}else {
 			session.setAttribute("re", 0);

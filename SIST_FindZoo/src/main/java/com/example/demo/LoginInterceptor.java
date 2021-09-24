@@ -22,6 +22,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			if(session.getAttribute("loginM") != null) {
 				//session.setAttribute("uri", uri);
 				return super.preHandle(request, response, handler);
+				
 			}else {
 				response.sendRedirect("/login.do");
 				return false;
