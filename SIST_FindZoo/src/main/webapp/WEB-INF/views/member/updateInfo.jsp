@@ -33,27 +33,47 @@
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#updateInfo-container {
 		display: flex;
-		position: absolute;
 		width: 70%; 
 		margin: 15%;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid black;
+		margin-top: 30px;
+		margin-bottom: 5%;
 	}
-			
+		
 	#updateInfo-container #sidebar {
-		width: 15%;
-		margin: 10px;
-		border: 1px solid black;
+		margin-right: 20px;
 	}
 	
 	#updateInfo-container #input-container {
-		margin-top: 10px;
+		width: 80%;
 		margin-bottom: 10px;
-		padding: 20px;
-		border: 1px solid black;
+		padding: 10px;
 	}
 	
+	/* 부트스트랩 세부 조정 */
+	#input-container .form-control {
+    	width: 20%;
+    	display: inline;
+	} 
+	
+	#input-container .long-input {
+    	width: 40%;
+    	display: inline;
+	}
+	
+	#input-container .col-form-label {
+		width: 85px;
+		font-weight: bold;
+	}
+	
+	#input-container .mt-4 {
+	    margin-top: 0.8rem!important;
+	}
+
+	#input-container .form-check-input {
+		vertical-align: middle;
+		margin: 5px;
+	}
+		
 	/* 인증코드 발송 */
 	#sms-code, #check-code-btn, #cancel-btn, #time {
 		visibility: hidden;
@@ -114,6 +134,7 @@
 		});
 		$("#cancel-btn").click(function(){
 			code = -1;
+			console.log("현재 코드: "+code);
 			$("#member_phone").val(db_phone);
 			$("#send-code-btn").val("인증번호 전송");
 			$("#member_phone").attr("readonly", false);
@@ -167,9 +188,9 @@
 	
 	///////////////////// 닉네임 중복 확인 팝업창을 화면 가운데에 위치시킨다. /////////////////////
 	function checkNick() {
-		var popupX = (document.body.offsetWidth/2)-(450/2);
-		var popupY= (window.screen.height/2)-(300/2);
-		window.open("/member/checkNick.do", "닉네임 변경", "width=450, height=300, left="+popupX+", top="+popupY);
+		var popupX = (document.body.offsetWidth/2)-(800/2);
+		var popupY= (window.screen.height/2)-(260/2);
+		window.open("/member/checkNick.do", "닉네임 변경", "width=350, height=260, left="+popupX+", top="+popupY);
 	}
 	
 	var x;
@@ -199,6 +220,7 @@
 </script>
 </head>
 <body>
+	<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="updateInfo-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
@@ -209,8 +231,8 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myInfo.do"> - 내 정보</a><br>
-							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br><br>
 							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
@@ -222,7 +244,7 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br><br>
 							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
@@ -234,7 +256,7 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br><br>
 							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
@@ -242,64 +264,61 @@
 			</div>
 		</aside>
 		<article id="input-container">
-			<h2>내 정보 수정</h2>
+			<h2><strong>내 정보 수정</strong></h2>
 			<hr>
 			<form action="/member/updateInfo.do" id="updateInfoForm" method="post">
-				* 확인 후 hidden 값으로 변경<br>
-				관리자 여부 <input type="text" name="member_admin" value="${mb.member_admin }" readonly><br>
-				회원 번호 <input type="text" name="member_num" value="${mb.member_num }" readonly><br>
-				포인트 <input type="text" name="member_point" value="${mb.member_point }" readonly><br>
-				로그인 방식 <input type="text" name="social_num" value="${mb.social_num }" readonly><br><br>
+				<input type="hidden" name="member_admin" value="${mb.member_admin }" readonly>
+				<input type="hidden" name="member_num" value="${mb.member_num }" readonly>
+				<input type="hidden" name="member_point" value="${mb.member_point }" readonly>
+				<input type="hidden" name="social_num" value="${mb.social_num }" readonly>
 				
-				<label>아이디</label>
-				<input type="text" name="member_id" value="${mb.member_id }" readonly><br>
+				<label class="col-form-label mt-4" for="inputDefault">아이디</label>
+				<input type="text" class="form-control" id="readOnlyInput" name="member_id" value="${mb.member_id }" readonly><br>
 			
-				<label>비밀번호</label> 
-				<input type="text" name="member_pwd" value="${mb.member_pwd }" readonly><br>
+				<label class="col-form-label mt-4" for="inputDefault">비밀번호</label> 
+				<input type="password" class="form-control" id="readOnlyInput" name="member_pwd" value="${mb.member_pwd }" readonly><br>
 			
-				<label>이름</label>
-				<input type="text" name="member_name" value="${mb.member_name }" readonly><br>
+				<label class="col-form-label mt-4" for="inputDefault">이름</label>
+				<input type="text" class="form-control" id="readOnlyInput" name="member_name" value="${mb.member_name }" readonly><br>
 			
-				<label>닉네임</label>
-				<input type="text" id="member_nick" name="member_nick" size="13" value="${mb.member_nick }" readonly required>
-				<input type="button" value="닉네임 변경" onclick="checkNick()"><br>
+				<label class="col-form-label mt-4" for="inputDefault">닉네임</label>
+				<input type="text" class="form-control" id="member_nick" name="member_nick" value="${mb.member_nick }" readonly required>&nbsp;
+				<input type="button" class="btn btn-outline-primary" onclick="checkNick()" value="닉네임 변경"><br>
 				
-				<div id="send-code-container">
-					<label>연락처</label>
-					<input type="tel" id="member_phone" name="member_phone" size="13" maxlength="12" value="${mb.member_phone }" required>
-					<input type="button" id="send-code-btn" value="인증코드 전송">&nbsp;
-					<span id="time">02:00</span>
-					<input type="tel" id="sms-code" size="6" maxlength="6">
-					<input type="button" id="check-code-btn" value="인증코드 확인">
-					<input type="button" id="cancel-btn" value="취소"><br>
-				</div>
+				<label class="col-form-label mt-4" for="inputDefault">연락처</label>
+				<input class="form-control" type="tel" id="member_phone" name="member_phone" maxlength="12" value="${mb.member_phone }" required>&nbsp;
+				<input type="button" class="btn btn-outline-primary" id="send-code-btn" value="인증코드 전송">
+				<input class="form-control" type="tel" id="sms-code" size="6" maxlength="6">
+				<span id="time">02:00</span>
+				<input type="button" class="btn btn-outline-primary" id="check-code-btn" value="인증코드 확인">
+				<input type="button" class="btn btn-outline-primary" id="cancel-btn" value="취소"><br>
 				
-				<label>이메일</label>
-				<input type="email" name="member_email" value="${mb.member_email }" size="30" maxlength="30" required><br>
+				<label class="col-form-label mt-4" for="inputDefault">이메일</label>
+				<input class="form-control long-input" type="email" name="member_email" value="${mb.member_email }" maxlength="30" required><br>
 		
-				<label>주소</label>
-				<input type="text" id="member_addr1" name="member_addr1" placeholder="주소검색" size="30" readonly="readonly" required onclick="findAddr()">
-				<input type="text" id="member_addr2" name="member_addr2" placeholder="상세주소">
-				<input type="hidden" id="member_post" placeholder="우편번호" readonly="readonly">
-				<input type="hidden" id="member_addr" name="member_addr" value="${mb.member_addr }"><br>
-				<span style="font-size: 6px;">*주소 변경을 원하시면 첫번째 칸을 눌러주세요.</span><br>
+				<label class="col-form-label mt-4" for="inputDefault">주소</label>
+				<input class="form-control long-input" type="text" id="member_addr1" name="member_addr1" placeholder="주소검색" readonly="readonly" required onclick="findAddr()">
+				<input class="form-control" type="text" id="member_addr2" name="member_addr2" placeholder="상세주소"><br>
+				<input type="hidden" class="form-control" id="member_post" placeholder="우편번호" readonly="readonly">
+				<input type="hidden" class="form-control" id="member_addr" name="member_addr" value="${mb.member_addr }">
+				<label class="col-form-label mt-4" for="inputDefault"></label>
+				<span style="font-size: 15px;">*주소 변경을 원하시면 첫번째 칸을 눌러주세요.</span><br>
 			
-				<label>알림 서비스</label>
+				<label class="col-form-label mt-4" for="inputDefault">알림 서비스</label>
 				<c:if test="${mb.member_sms == '동의'}">
-					<input type="radio" name="member_sms" value="동의" checked>동의
-					<input type="radio" name="member_sms" value="비동의">비동의<br>		
+					<input type="radio" class="form-check-input" name="member_sms" value="동의" checked>동의
+					<input type="radio" class="form-check-input" name="member_sms" value="비동의">비동의		
 				</c:if>
 				<c:if test="${mb.member_sms == '비동의'}">
-					<input type="radio" name="member_sms" value="동의">동의
-					<input type="radio" name="member_sms" value="비동의" checked>비동의<br>			
+					<input type="radio" class="form-check-input" name="member_sms" value="동의">동의
+					<input type="radio" class="form-check-input" name="member_sms" value="비동의" checked>비동의			
 				</c:if>
-				
-				<br>	
-					
-				<input type="submit" value="수정">
-				<input type="button" value="취소" onclick="history.back(-1);">
+				<br><br>
+				<input type="submit" class="btn btn-primary" value="수정">
+				<input type="button" class="btn btn-secondary" value="취소" onclick="history.back(-1);">
 			</form>
 		</article>
 	</div>
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

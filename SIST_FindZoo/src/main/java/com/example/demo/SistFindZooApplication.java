@@ -23,7 +23,7 @@ public class SistFindZooApplication {
 		protected void postProcessContext(Context context) {
 			((StandardJarScanner) context.getJarScanner()).setScanManifest(false);
 			}
-		};
+		};0
 	}
 	*/
 }

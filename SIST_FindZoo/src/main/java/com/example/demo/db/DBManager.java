@@ -141,6 +141,213 @@ public class DBManager {
 		return re;
 	}
 
+	
+	// 찾은후기 목록
+		public static List<FreeVo> FindReview(HashMap map) {
+			SqlSession session = factory.openSession();
+			List<FreeVo> list = session.selectList("findreview.findAll", map);
+			session.close();
+			return list;
+		}
+
+		// 찾은후기 검색 후 목록 조회
+		public static List<FreeVo> searchFindReview(HashMap map) {
+			SqlSession session = factory.openSession();
+			List<FreeVo> list = session.selectList("findreview.search", map);
+			session.close();
+			return list;
+		}
+
+		// 찾은후기 조회수 증가
+		public static void updateViewsFindReview(int board_num) {
+			SqlSession session = factory.openSession(true);
+			session.update("findreview.updateViewsFindReview", board_num);
+			session.close();
+		}
+
+		// 찾은후기 전체 글 갯수
+		public static int getTotalRecordFindReview() {
+			SqlSession session = factory.openSession();
+			int n = session.selectOne("findreview.totalRecord");
+			session.close();
+			return n;
+		}
+
+		// 찾은후기 검색 글 갯수
+		public static int getSearchRecordFindReview(HashMap num_map) {
+			SqlSession session = factory.openSession();
+			int n = session.selectOne("findreview.searchRecord", num_map);
+			session.close();
+			return n;
+		}
+
+		// 찾은후기 글 내용 상세
+		public static FreeVo getFindReview(int board_num) {
+			SqlSession session = factory.openSession();
+			FreeVo f = session.selectOne("findreview.getFindReview", board_num);
+			session.close();
+			return f;
+		}
+
+		// 찾은후기 글 작성
+		public static int insertFindReview(FreeVo f) {
+			SqlSession session = factory.openSession();
+			int free_re = session.insert("findreview.insert", f);
+			int picture_re = session.insert("findreview.insertPicture", f);
+			int re = 0;
+
+			if (free_re == 1 && picture_re == 1) {
+				session.commit();
+				re = 1;
+			} else {
+				session.rollback();
+			}
+
+			session.close();
+			return re;
+		}
+
+		// 찾은후기 글 수정
+		public static int updateFindReview(FreeVo f) {
+			SqlSession session = factory.openSession();
+			int free_re = session.update("findreview.update", f);
+			int picture_re = session.update("findreview.updatePicture", f);
+
+			int re = 0;
+
+			if (free_re == 1 && picture_re == 1) {
+				session.commit();
+				re = 1;
+			} else {
+				session.rollback();
+			}
+
+			session.close();
+			return re;
+		}
+
+		// 찾은후기 글 삭제
+		public static int deleteFindReview(int board_num) {
+			SqlSession session = factory.openSession();
+			int picture_re = session.delete("findreview.deletePicture", board_num);
+			int free_re = session.delete("findreview.delete", board_num);
+			int re = 0;
+
+			if (free_re == 1 && picture_re == 1) {
+				session.commit();
+				re = 1;
+			} else {
+				session.rollback();
+			}
+
+			session.close();
+			return re;
+		}
+		
+		
+	//정보공유 목록
+	public static List<FreeVo> information(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<FreeVo> list = session.selectList("information.findAll", map);	
+		session.close();
+		return list;
+	}
+
+	//정보공유 검색 후 목록 조회
+	public static List<FreeVo> searchInformation(HashMap map) {
+		SqlSession session = factory.openSession();
+		List<FreeVo> list = session.selectList("information.search", map);
+		session.close();
+		return list;
+	}
+
+	//정보공유 조회수 증가
+	public static void updateViewsInformation(int board_num) {	
+		SqlSession session = factory.openSession(true);
+		session.update("information.updateViewsInformation", board_num);
+		session.close();
+		}
+
+	//정보공유 전체 글 갯수
+	public static int getTotalRecordInformation() {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("information.totalRecord");
+		session.close();
+		return n;
+		}
+
+	//정보공유 검색 글 갯수
+	public static int getSearchRecordInformation(HashMap num_map) {
+		SqlSession session = factory.openSession();
+		int n = session.selectOne("information.searchRecord", num_map);
+		session.close();
+		return n;
+		}
+
+	//정보공유 글 내용 상세
+	public static FreeVo getInformation(int board_num) {
+		SqlSession session = factory.openSession();
+		FreeVo f = session.selectOne("information.getInformation", board_num);
+		session.close();
+		return f;
+		}
+
+	//정보공유 글 작성
+	public static int insertInformation(FreeVo f) {
+		SqlSession session = factory.openSession();
+		int free_re = session.insert("information.insert", f);
+		int picture_re = session.insert("information.insertPicture", f);
+		int re = 0;
+
+		if (free_re == 1 && picture_re == 1) {
+			session.commit();
+			re = 1;
+			} else {
+				session.rollback();
+				}
+
+		session.close();
+		return re;
+		}
+	
+	//정보공유 글 수정
+	public static int updateInformation(FreeVo f) {
+		SqlSession session = factory.openSession();
+		int free_re = session.update("information.update", f);
+		int picture_re = session.update("information.updatePicture", f);
+
+		int re = 0;
+
+		if (free_re == 1 && picture_re == 1) {
+			session.commit();
+						re = 1;
+						} else {
+							session.rollback();
+							}
+
+
+		session.close();
+		return re;
+		}
+
+	//정보공유 글 삭제
+	public static int deleteInformation(int board_num) {
+		SqlSession session = factory.openSession();
+		int picture_re = session.delete("information.deletePicture", board_num);
+		int free_re = session.delete("information.delete", board_num);
+		int re = 0;
+
+		if (free_re == 1 && picture_re == 1) {
+			session.commit();
+			re = 1;
+			} else {
+				session.rollback();
+				}
+		
+		session.close();
+		return re;
+		}
+	
 	// 거래게시판 목록 조회
 	public static List<DealVo> deal(HashMap map) {
 		SqlSession session = factory.openSession();
@@ -852,6 +1059,14 @@ public class DBManager {
 		session.close();
 		return re;
 	}
+	
+	public static List<MemberVo> listMember(int member_num) {
+		SqlSession session = factory.openSession();
+		List<MemberVo> list = session.selectList("member.findAll", member_num);
+		session.close();
+		return list;
+	}
+	
 
 	//////////////////////////////////////// 게시판 끝 ////////////////////////////////////////
 

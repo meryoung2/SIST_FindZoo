@@ -15,7 +15,6 @@
 	    font-weight: normal;
 	    font-style: normal;
 	}
-
 	*{
 		font-family: 'GmarketSansMedium';
 		font-weight: lighter;

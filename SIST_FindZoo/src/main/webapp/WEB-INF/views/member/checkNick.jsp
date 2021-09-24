@@ -21,7 +21,7 @@
 	
 	/* div */
 	#checkNick-form {
-		margin: 15px;
+		margin: 30px;
 	}
 </style>
 <script type="text/javascript">
@@ -49,12 +49,11 @@
 </head>
 <body>
 	<div id="checkNick-form">
-		<h4>닉네임 중복 확인</h4>
-		<hr>
+		<h4><strong>닉네임 중복 확인</strong></h4>
+		<hr><br>
 		<form method="post" action="/member/checkNickProcess.do" onsubmit="return check_regExp(this)">				 
-			<input type="text" id="new_nick" name="new_nick" maxlength="10" autofocus>
-			<input type="submit" value="중복 확인"><br>
-			<span style = "font-size: 6px;">*공백 및 특수문자는 사용할 수 없습니다.</span><br>
+			<input type="text" class="form-control" id="new_nick" name="new_nick" maxlength="10" placeholder="공백 및 특수문자는 사용할 수 없습니다."><br>
+			<input type="submit" class="btn btn-primary" value="중복 확인"><br>
 		</form>
 	</div>
 </body>

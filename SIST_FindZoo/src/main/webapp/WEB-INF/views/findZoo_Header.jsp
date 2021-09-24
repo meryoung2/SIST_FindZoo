@@ -101,8 +101,8 @@
 						<div class="dropdown-menu">
 				            <a class="dropdown-item" style="font-size: 20px;" href="free.do">자유</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="deal.do">거래</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">정보공유</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">찾은후기</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="information.do">정보공유</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="findReview.do">찾은후기</a>
 			        	</div>
 					</li>
 				</ul>

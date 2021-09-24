@@ -34,25 +34,30 @@
 	/* 메인 컨테이너, 사이드바, 컨텐츠 컨테이너 비율 조절 */
 	#detailPet-container {
 		display: flex;
-		position: absolute;
 		width: 70%;
 		margin: 15%;
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid black;
+		margin-top: 30px;
+		margin-bottom: 5%;
 	}
 	
 	#detailPet-container #sidebar{
-		width: 20%;
-		margin: 10px;
-		border: 1px solid black;
+		margin-right: 20px;
 	}
 	
 	#detailPet-container #input-container {
-		float: right;
-		margin: 10px;
-		padding: 20px;
-		border: 1px solid black;
+		width: 80%;
+		margin-bottom: 10px;
+		padding: 10px;
+	}
+	
+	/* 부트스트랩 세부 조정 */
+	#input-container .col-form-label {
+		width: 105px;
+		font-weight: bold;
+	}
+	
+	.mt-4 {
+	    margin-top: 0.8rem!important;
 	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -66,6 +71,7 @@
 </script>
 </head>
 <body>
+	<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="detailPet-container">
 		<aside id="sidebar">
 			<div class="accordion" id="accordionExample">
@@ -76,8 +82,8 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myInfo.do"> - 내 정보</a><br>
-							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br>
+							<a href="/member/myInfo.do"> - 내 정보</a><br><br>
+							<a href="/member/updateInfo.do"> - 내 정보 수정</a><br><br>
 							<a href="/member/deleteChangeInfo.do"> - 회원 탈퇴</a><br>
 						</div>
 					</div>
@@ -89,7 +95,7 @@
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br>
+							<a href="/member/sendNoteList.do"> - 보낸 쪽지함</a><br><br>
 							<a href="/member/receiveNoteList.do"> - 받은 쪽지함</a><br>
 						</div>
 					</div>
@@ -101,7 +107,7 @@
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
 						<div class="accordion-body">
-							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br>
+							<a href="/member/myPost.do?pageNum=1"> - 내가 쓴 게시글</a><br><br>
 							<a href="/member/myReply.do?pageNum=1"> - 내가 쓴 댓글</a><br>
 						</div>
 					</div>
@@ -109,20 +115,29 @@
 			</div>
 		</aside>
 		<article id="input-container">
-			<h2>반려동물(${pet.pet_name }) 정보</h2>
+			<h2><strong>반려동물(${pet.pet_name }) 정보</strong></h2>
 			<hr>
-			회원번호: ${pet.member_num }<br>
-			반려동물번호: ${pet.pet_num }<br>
-			반려동물이름: ${pet.pet_name }<br>
-			반려동물성별: ${pet.pet_sex }<br>
-			반려동물타입: ${pet.pet_type }<br>
-			동물등록번호: ${pet.pet_regist_num }<br> 
+			<label class="col-form-label mt-4" for="inputDefault">반려동물 이름</label>
+			|&nbsp;&nbsp;&nbsp;${pet.pet_name }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">반려동물 성별</label>
+			|&nbsp;&nbsp;&nbsp;${pet.pet_sex }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">반려동물 타입</label>
+			|&nbsp;&nbsp;&nbsp;${pet.pet_type }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">동물 등록번호</label>
+			|&nbsp;&nbsp;&nbsp;${pet.pet_regist_num }<br>
+			
+			<label class="col-form-label mt-4" for="inputDefault">반려동물 생일</label>
 			<fmt:parseDate var="strToDate" value="${pet.pet_birth }" pattern="yyyy-MM-dd HH:mm:ss"/>
 			<fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy년 MM월 dd일생"/>
-			반려동물생일: <c:out value="${dateToStr }"/><br>
+			|&nbsp;&nbsp;&nbsp;${dateToStr }<br>
 			<br>
-			<input type="button" value="반려동물 삭제" onclick="confirmDeletePet(${pet.pet_num })">
+			<input type="button" class="btn btn-primary" value="내 정보" onclick="location.href='/member/myInfo.do'">
+			<input type="button" class="btn btn-secondary" value="반려동물 삭제" onclick="confirmDeletePet(${pet.pet_num })">
 		</article>
 	</div>
+	<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>
