@@ -96,7 +96,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<jsp:include page="../findZoo_Header.jsp"/>
+<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="see-container">
 		<div id="content">
 			<h4>목격했어요! 글 작성</h4>
