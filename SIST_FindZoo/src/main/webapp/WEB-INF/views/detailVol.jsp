@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자원봉사 게시판</title>
+<title>Insert title here</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -97,13 +97,6 @@
 		  obj.style.height = (12+obj.scrollHeight)+"px";
 	}
 	
-	// 쪽지 보내기 팝업창을 띄운다.
-	function sendNewNote(member_num) {
-		var popupX = (document.body.offsetWidth/2)-(800/2);
-		var popupY = (window.screen.height/2)-(370/2);
-		window.open("/member/sendNewNote.do?member_num="+member_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
-	}
-	
 	$(function() {
 		
 		// 글 내용의 길이에 따라 스크롤을 사용하지 않고 내용 출력
@@ -114,11 +107,10 @@
 	        });
 	    }
 		
-	 // 멤버 닉네임 클릭 시
+	    // 멤버 닉네임 클릭 시
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
 			$('#member_info').attr("href", "memberInfo.do?member_num="+member_num);
-			$('#send_new_note').attr("href", "window.open('/member/sendNewNote.do?member_num='+member_num, '_blank', 'width=420, height=370, left='+popupX+', top='+popupY)");
 			
 			var divLeft = e.pageX;
 			var divTop = e.pageY;
@@ -139,14 +131,12 @@
 			if(member_modal.has(e.target).length === 0){
 				member_modal.hide();
 			}
-		});		
-		
+		});
 		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
 		$('.login_pls_alert').click(function(e){
-			alert("로그인이 필요합니다!");
+			alert("회원 정보를 보려면 로그인을 해야 합니다!");
 		});
 	});
-
 	
 	//댓글삭제 스크립트
 	function confirmDeleteReply(reply_num, board_num){
@@ -479,7 +469,7 @@
 				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
-				<td><a href="#" onclick="sendNewNote(${v.member_num})">쪽지 보내기</a></td>
+				<td><a>쪽지 보내기</a></td>
 			</tr>
 		</table>
 	</div>
