@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>목격했어요!</title>
+<title>정보공유 게시판</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -31,13 +31,6 @@
 		text-decoration: underline;
 	}
 	
-	img{
-		border: 1px dashed #D3D3D3;
-		width: 90%;
-		height: 250px;
-		margin-top: 5%;
-	}
-	
 	table{
 		border-right: none;
 		border-left: none;
@@ -47,7 +40,7 @@
 		text-align: center;
 	}
 	
-	#see-container{
+	#free-container{
 		display: flex;
 		justify-content: center;
 	}
@@ -67,7 +60,7 @@
 		text-align: center;
 	}
 	
-		#member_modal{
+	#member_modal{
 		position: absolute;
 		display: none;
 		width: 8%;
@@ -87,11 +80,11 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	function btn_start(){
-		location.href = "see.do?pageNum=1";
+		location.href = "information.do?pageNum=1";
 	}
 	
 	function btn_end(totalPage){
-		location.href = "see.do?pageNum="+totalPage;
+		location.href = "information.do?pageNum="+totalPage;
 	}
 	
 	function btn_prev(listStart, listEnd){
@@ -101,14 +94,14 @@
 			listStart = 1;
 		}
 		
-		location.href = "see.do?pageNum="+listEnd;
+		location.href = "information.do?pageNum="+listEnd;
 	}
 	
 	function btn_next(listStart, listEnd, totalPage){
 		if(listEnd != totalPage){
 			listStart += 5;
 			
-			location.href = "see.do?pageNum="+listStart;
+			location.href = "information.do?pageNum="+listStart;
 		}else{
 			location.reload();
 		}
@@ -116,10 +109,11 @@
 	
 	// 검색창에 공백 입력 시 공백 자동 제거
 	function noSpaceForm(obj) 
-    {
-		var str_space = /\s/;               // 공백 체크
+    {             
+        var str_space = /\s/;               // 공백 체크
         
-        if(str_space.exec(obj.value)){     // 공백 체크
+        if(str_space.exec(obj.value)) 
+        {     // 공백 체크
             alert("검색어에는 공백을 사용할 수 없습니다.");
             obj.focus();
             obj.value = obj.value.replace(' ',''); // 공백제거
@@ -152,7 +146,7 @@
 				"position": "absolute"
 			}).show();
 		});
-		
+	
 		// 모달 창 바깥 클릭 시
 		$(document).mouseup(function (e){
 			var member_modal = $("#member_modal");
@@ -161,20 +155,19 @@
 			}
 		});
 
-	
-		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
-		$('.login_pls_alert').click(function(e){
-			alert("로그인이 필요합니다!");
-		});
+	// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
+	$('.login_pls_alert').click(function(e){
+		alert("로그인이 필요합니다!");
 	});
-
+});
+	
 </script>
 </head>
 <body>
 <jsp:include page="findZoo_Header.jsp"/>
-	<div id="see-container">
+	<div id="free-container">
 		<div id="content">
-			<h2><a href="see.do">목격했어요!</a></h2>
+			<h2><a href="information.do">정보공유</a></h2>
 			<h6>(전체 게시글 수 : ${ totalRecord })</h6>
 			<hr>
 			<div id="board">
@@ -188,26 +181,26 @@
 					</thead>
 
 					<tbody>
-						<c:forEach var="s" items="${ list }">
+						<c:forEach var="f" items="${ list }">
 							<tr>
 								<td width="60%"><a
-									href="detailSee.do?board_num=${ s.board_num }">${ s.title }</a>
+									href="detailInformation.do?board_num=${ f.board_num }">${ f.title }</a>
 								</td>
 								<td width="30%">
 										<c:if test="${ member_num eq 0 }">
-										<a href="#a" class="login_pls_alert">${ s.member_nick }</a>
+										<a href="#a" class="login_pls_alert">${ f.member_nick }</a>
 									</c:if>
 									<c:if test="${ member_num ne 0 }">
-										<a class="member_nick" href="#a" member_num=${ s.member_num }>${ s.member_nick }</a>
+										<a class="member_nick" href="#a" member_num=${ f.member_num }>${ f.member_nick }</a>
 									</c:if>
 								</td>
-								<td width="10%">&nbsp;&nbsp;&nbsp;${ s.views }</td>
+								<td width="10%">&nbsp;&nbsp;&nbsp;${ f.views }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				
-				<button class="btn btn-primary" onclick="location.href='/member/insertSee.do'" style="float: right;">글쓰기</button>
+				<button class="btn btn-primary" onclick="location.href='/member/insertInformation.do'" style="float: right;">글쓰기</button>
 			</div>
 
 			<!-- 페이지 번호 -->
@@ -217,11 +210,11 @@
 				<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
 					<c:choose>
 						<c:when test="${ pageNum eq i }">
-							<a href="see.do?pageNum=${ i }"
+							<a href="information.do?pageNum=${ i }"
 								style="font-weight: bold; color: #325d88; text-decoration: underline;">[${ i }]</a>&nbsp;&nbsp;
 						</c:when>
 						<c:otherwise>
-							<a href="see.do?pageNum=${ i }">[${ i }]</a>&nbsp;&nbsp;
+							<a href="information.do?pageNum=${ i }">[${ i }]</a>&nbsp;&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -232,7 +225,7 @@
 
 			<!-- 검색창 -->
 			<div id="search">
-				<form name="searchSee" method="get" action="searchSee.do">
+				<form name="searchInformation" method="get" action="searchInformation.do">
 					<input type="hidden" name="pageNum" value="1"> <select
 						class="form-select" name="search_option"
 						style="width: 10%; display: inline-block;">
@@ -263,6 +256,6 @@
 			</tr>
 		</table>
 	</div>
-<jsp:include page="findZoo_Footer.jsp"/>
+	<jsp:include page="findZoo_Footer.jsp"/>
 </body>
 </html>

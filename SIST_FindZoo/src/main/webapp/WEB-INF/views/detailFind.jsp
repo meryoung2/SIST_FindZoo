@@ -134,12 +134,18 @@
 			}).show();
 			return false;
 		});
+
 		// 모달 창 바깥 클릭 시
 		$(document).mouseup(function (e){
 			var member_modal = $("#member_modal");
 			if(member_modal.has(e.target).length === 0){
 				member_modal.hide();
 			}
+		});
+		
+		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
+		$('.login_pls_alert').click(function(e){
+			alert("로그인이 필요합니다!");
 		});
 	});
 </script>
@@ -151,7 +157,7 @@
 			<h4>${ f.title }</h4>
 			<hr>
 			<c:if test="${ member_num eq 0 }">
-				<a href="#">${ f.member_nick }</a>&nbsp;|&nbsp;
+				<a href="#a" class="login_pls_alert">${ f.member_nick }</a>&nbsp;|&nbsp;
 			</c:if>
 			<c:if test="${ member_num ne 0 }">
 				<a class="member_nick" href="#a" member_num=${ f.member_num }>${ f.member_nick }</a>&nbsp;|&nbsp;
@@ -289,13 +295,15 @@
 		<div class="modal" id="member_modal">
 		<table class="table table-hover" id="member_act">
 			<tr>
-				<td><a id="member_board">회원 정보 보기</a></td>
+				<td><a id="member_info">회원 정보 보기</a></td>
 			</tr>
 			<tr>
 				<td><a href="#" onclick="sendNewNote(${f.member_num})">쪽지 보내기</a></td>
 			</tr>
 		</table>
+		</div>
 	</div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>	
 <jsp:include page="findZoo_Footer.jsp"/>
 </body>

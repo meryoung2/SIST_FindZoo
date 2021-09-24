@@ -15,7 +15,7 @@
 	<!-- 댓글작성 -->
 	<insert id="insert" parameterType="replyVo">
 	insert into reply(reply_num,reply_ref,reply_level,reply_step, reply_content,reply_date,member_num, board_num)
-	values((select nvl(max(reply_num), 0)+1 from reply), (select nvl(max(reply_num), 0)+1 from reply), 0, 0,#{reply_content},sysdate,1, #{board_num})
+	values((select nvl(max(reply_num), 0)+1 from reply), (select nvl(max(reply_num), 0)+1 from reply), 0, 0,#{reply_content},sysdate+9/24,${member_num}, #{board_num})
 	</insert>
 
 	<!-- 댓글수정 -->
@@ -27,7 +27,7 @@
 	<!-- 대댓글쓰기 -->
 	<insert id="insertReReply" parameterType="replyVo">
 	insert into reply(reply_num,reply_ref,reply_level,reply_step, reply_content,reply_date,member_num, board_num)
-	values((select nvl(max(reply_num), 0)+1 from reply), #{reply_num}, 2, 2,#{reply_content},sysdate,1, #{board_num})
+	values((select nvl(max(reply_num), 0)+1 from reply), #{reply_num}, 2, 2,#{reply_content},sysdate+9/24,#{member_num}, #{board_num})
 	</insert>
 </mapper>
 

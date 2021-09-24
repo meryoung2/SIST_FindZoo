@@ -7,48 +7,46 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.DBManager;
-import com.example.demo.vo.DealVo;
 import com.example.demo.vo.FreeVo;
-import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReplyVo;
 
 @Repository
-public class FreeDao {
+public class FindReviewDao {
 	
 	public List<FreeVo> findAll(HashMap map){
-		return DBManager.free(map);
+		return DBManager.FindReview(map);
 	}
 	
-	public List<FreeVo> searchFree(HashMap map){
-		return DBManager.searchFree(map);
+	public List<FreeVo> searchFindReview(HashMap map){
+		return DBManager.searchFindReview(map);
 	}
 	
-	public FreeVo getFree(int board_num) {
-		return DBManager.getFree(board_num);
+	public FreeVo getFindReview(int board_num) {
+		return DBManager.getFindReview(board_num);
 	}
 	
-	public void updateViewsFree(int board_num) {
-		DBManager.updateViews(board_num);
+	public void updateViewsFindReview(int board_num) {
+		DBManager.updateViewsFindReview(board_num);
 	}
 
-	public int getTotalRecordFree() {
-		return DBManager.getTotalRecordFree();
+	public int getTotalRecordFindReview() {
+		return DBManager.getTotalRecordFindReview();
 	}
 	
-	public int getSearchRecordFree(HashMap num_map) {
-		return DBManager.getSearchRecordFree(num_map);
+	public int getSearchRecordFindReview(HashMap num_map) {
+		return DBManager.getSearchRecordFindReview(num_map);
 	}
 
 	public int insert(FreeVo f) {
-		return DBManager.insertFree(f);
+		return DBManager.insertFindReview(f);
 	}
 	
 	public int update(FreeVo f) {
-		return DBManager.updateFree(f);
+		return DBManager.updateFindReview(f);
 	}
 	
 	public int delete(int board_num) {
-		return DBManager.deleteFree(board_num);
+		return DBManager.deleteFindReview(board_num);
 	}
 	
 	public List<ReplyVo> findAll(int board_num){
@@ -71,9 +69,4 @@ public class FreeDao {
 	public int insertReReply(ReplyVo r) {
 		return DBManager.insertReReply(r);
 	}
-	
-	public MemberVo getMember(int member_num) {
-		return DBManager.getMember(member_num);
-	}
-	
 }

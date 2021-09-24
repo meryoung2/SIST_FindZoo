@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>보호중이에요!</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
@@ -75,6 +75,7 @@
 	#search{
 		text-align: center;
 	}
+	
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
@@ -125,7 +126,7 @@
 <jsp:include page="findZoo_Header.jsp"/>
 	<div id="boho-container">
 		<div id="content">
-			<h2><a href="boho.do">보호중게시판</a></h2>
+			<h2><a href="boho.do">보호중이에요!</a></h2>
 			<h6>(검색 게시글 수 : ${ searchRecord })</h6>
 			<hr>
 			<div id="board">

@@ -7,48 +7,46 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.DBManager;
-import com.example.demo.vo.DealVo;
 import com.example.demo.vo.FreeVo;
-import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReplyVo;
 
 @Repository
-public class FreeDao {
+public class InformationDao {
 	
 	public List<FreeVo> findAll(HashMap map){
-		return DBManager.free(map);
+		return DBManager.information(map);
 	}
 	
-	public List<FreeVo> searchFree(HashMap map){
-		return DBManager.searchFree(map);
+	public List<FreeVo> searchInformation(HashMap map){
+		return DBManager.searchInformation(map);
 	}
 	
-	public FreeVo getFree(int board_num) {
-		return DBManager.getFree(board_num);
+	public FreeVo getInformation(int board_num) {
+		return DBManager.getInformation(board_num);
 	}
 	
-	public void updateViewsFree(int board_num) {
-		DBManager.updateViews(board_num);
+	public void updateViewsInformation(int board_num) {
+		DBManager.updateViewsInformation(board_num);
 	}
 
-	public int getTotalRecordFree() {
-		return DBManager.getTotalRecordFree();
+	public int getTotalRecordInformation() {
+		return DBManager.getTotalRecordInformation();
 	}
 	
-	public int getSearchRecordFree(HashMap num_map) {
-		return DBManager.getSearchRecordFree(num_map);
+	public int getSearchRecordInformation(HashMap num_map) {
+		return DBManager.getSearchRecordInformation(num_map);
 	}
 
 	public int insert(FreeVo f) {
-		return DBManager.insertFree(f);
+		return DBManager.insertInformation(f);
 	}
 	
 	public int update(FreeVo f) {
-		return DBManager.updateFree(f);
+		return DBManager.updateInformation(f);
 	}
 	
 	public int delete(int board_num) {
-		return DBManager.deleteFree(board_num);
+		return DBManager.deleteInformation(board_num);
 	}
 	
 	public List<ReplyVo> findAll(int board_num){
@@ -71,9 +69,4 @@ public class FreeDao {
 	public int insertReReply(ReplyVo r) {
 		return DBManager.insertReReply(r);
 	}
-	
-	public MemberVo getMember(int member_num) {
-		return DBManager.getMember(member_num);
-	}
-	
 }

@@ -20,19 +20,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.dao.FreeDao;
+import com.example.demo.dao.InformationDao;
 import com.example.demo.util.Paging;
 import com.example.demo.vo.FreeVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReplyVo;
 
 @Controller
-public class FreeController {
+public class InformationController {
 	
 	@Autowired
-	private FreeDao dao;
+	private InformationDao dao;
 
-	public void setDao(FreeDao dao) {
+	public void setDao(InformationDao dao) {
 		this.dao = dao;
 	}
 	
@@ -43,16 +43,15 @@ public class FreeController {
 		this.paging = paging;
 	}
 
-	// 자유게시판 목록
-	@RequestMapping("/free.do")
-	public void list(HttpServletRequest request ,HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+	// 정보공유
+	@RequestMapping("/information.do")
+	public void list(HttpServletRequest request , HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 		
 		int member_num = 0;
 		if(((MemberVo)session.getAttribute("loginM")) != null) {
 			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
 		}
-		
-		paging.totalRecord = dao.getTotalRecordFree();
+		paging.totalRecord = dao.getTotalRecordInformation();
 		paging.totalPage = paging.getTotalPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
@@ -77,9 +76,9 @@ public class FreeController {
 		model.addAttribute("member_num", member_num);
 	}
 	
-	// 자유게시판 검색 후 목록
-	@RequestMapping(value = "/searchFree.do")
-	public void searchFree(HttpServletRequest request,HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	// 정보공유 검색 후 목록
+	@RequestMapping(value = "/searchInformation.do")
+	public void searchInformation(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "search_option", defaultValue = "title") String search_option, @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 		
 		int member_num = 0;
@@ -89,7 +88,7 @@ public class FreeController {
 		HashMap num_map = new HashMap();
 		num_map.put("keyword", keyword);
 		num_map.put("search_option", search_option);
-		paging.searchRecord = dao.getSearchRecordFree(num_map);
+		paging.searchRecord = dao.getSearchRecordInformation(num_map);
 		paging.searchPage = paging.getSearchPage();
 		paging.start = paging.getStart(pageNum);
 		paging.end = paging.getEnd(paging.start, pageNum);
@@ -107,40 +106,39 @@ public class FreeController {
 		map.put("keyword", keyword);
 		map.put("search_option", search_option);
 				
-		model.addAttribute("list", dao.searchFree(map));
+		model.addAttribute("list", dao.searchInformation(map));
 		model.addAttribute("searchPage", paging.searchPage);
 		model.addAttribute("searchRecord", paging.searchRecord);
 		model.addAttribute("pageNum", paging.pageNum);
 		model.addAttribute("s_listStart", paging.s_listStart);
 		model.addAttribute("s_listEnd", paging.s_listEnd);
 		model.addAttribute("search_option", search_option);		
-		model.addAttribute("keyword", keyword);		
+		model.addAttribute("keyword", keyword);
 		model.addAttribute("member_num", member_num);
 	}
 	
-	// 자유게시판 글 상세내용
-	@RequestMapping("/detailFree.do")
+	// 정보공유 글 상세내용
+	@RequestMapping("/detailInformation.do")
 	public void detail(HttpServletRequest request, Model model, HttpSession session, int board_num) {
-		dao.updateViewsFree(board_num);
+		dao.updateViewsInformation(board_num);
 		int member_num = 0;
 		if(((MemberVo)session.getAttribute("loginM")) != null) {
 			member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
 		}
-		model.addAttribute("f", dao.getFree(board_num));
+		model.addAttribute("f", dao.getInformation(board_num));
 		model.addAttribute("list", dao.findAll(board_num));
 		model.addAttribute("member_num", member_num);
-		System.out.println("로그인한 회원번호: "+member_num);
 	}
 	
-	// 자유게시판 글 작성
-	@RequestMapping(value = "/member/insertFree.do", method = RequestMethod.GET)
+	// 정보공유 글 작성
+	@RequestMapping(value = "/member/insertInformation.do", method = RequestMethod.GET)
 	public void insertForm(HttpServletRequest request, HttpSession session) {
 		
 	}
 	
-	@RequestMapping(value = "/member/insertFree.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/insertInformation.do", method = RequestMethod.POST)
 	public ModelAndView insertSubmit(HttpServletRequest request, HttpSession session, FreeVo f) {
-		ModelAndView mav = new ModelAndView("redirect:/free.do");
+		ModelAndView mav = new ModelAndView("redirect:/information.do");
 		int member_num = ((MemberVo)session.getAttribute("loginM")).getMember_num();
 		f.setMember_num(member_num);
 		
@@ -175,15 +173,15 @@ public class FreeController {
 		return mav;
 	}
 	
-	// 자유게시판 글 수정
-	@RequestMapping(value = "/member/updateFree.do", method = RequestMethod.GET)
+	// 정보공유 글 수정
+	@RequestMapping(value = "/member/updateInformation.do", method = RequestMethod.GET)
 	public void form(HttpServletRequest request, Model model, int board_num) {
-		model.addAttribute("f", dao.getFree(board_num));
+		model.addAttribute("f", dao.getInformation(board_num));
 	}
 	
-	@RequestMapping(value = "/member/updateFree.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/updateInformation.do", method = RequestMethod.POST)
 	public ModelAndView submit(HttpServletRequest request, FreeVo f) {
-		ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+f.getBoard_num());
+		ModelAndView mav = new ModelAndView("redirect:/detailInformation.do?board_num="+f.getBoard_num());
 		String path = request.getRealPath("resources/img");
 		String old_picture_fname = f.getPicture_fname();
 		int fsize = 0;
@@ -220,13 +218,13 @@ public class FreeController {
 		return mav;
 	}
 	
-	// 자유게시판 글 삭제
-	@RequestMapping("/deleteFree.do")
+	// 정보공유 글 삭제
+	@RequestMapping("/deleteInformation.do")
 	@ResponseBody
 	public ModelAndView delete(HttpServletRequest request, int board_num) {
 		String path = request.getRealPath("resources/img");
-		ModelAndView mav = new ModelAndView("redirect:/free.do");
-		String old_picture_fname = dao.getFree(board_num).getPicture_fname();
+		ModelAndView mav = new ModelAndView("redirect:/information.do");
+		String old_picture_fname = dao.getInformation(board_num).getPicture_fname();
 		int re = dao.delete(board_num);
 		
 		if(re == 1) {
@@ -242,15 +240,15 @@ public class FreeController {
 	
 	
 	//댓글쓰기 컨트롤러
-	@RequestMapping(value = "/member/freeInsertReply.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/informationInsertReply.do", method = RequestMethod.GET)
 	public void formReply(HttpServletRequest request, HttpSession session) {	
 		
 	}
 			
-	@RequestMapping(value="/member/freeInsertReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/member/informationInsertReply.do", method=RequestMethod.POST)
 	public ModelAndView insertReplySubmit(ReplyVo r, int board_num) {
 			
-			ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+			ModelAndView mav = new ModelAndView("redirect:/detailInformation.do?board_num="+board_num);
 		
 			int re = dao.insertReply(r);
 			if(re != 1) {
@@ -262,9 +260,9 @@ public class FreeController {
 		}
 		
 	//댓글삭제 컨트롤러	
-	@RequestMapping(value="/freeDeleteReply.do")
+	@RequestMapping(value="/informationDeleteReply.do")
 	public ModelAndView deleteReplySubmit(int reply_num, int board_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+		ModelAndView mav = new ModelAndView("redirect:/detailInformation.do?board_num="+board_num);
 		int re = dao.deleteReply(reply_num);
 		if(re != 1) {
 			mav.addObject("msg", "댓글 삭제에 실패하였습니다..");
@@ -275,14 +273,14 @@ public class FreeController {
 		
 			
 	//댓글 수정
-	@RequestMapping(value = "/member/freeUpdateReply.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/informationUpdateReply.do", method = RequestMethod.GET)
 	public void formReplyUpdate(HttpServletRequest request, HttpSession session) {	
 		
 	}
 	
-	@RequestMapping(value="/member/freeUpdateReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/member/informationUpdateReply.do", method=RequestMethod.POST)
 	public ModelAndView updateReplySubmit(ReplyVo r, int board_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+		ModelAndView mav = new ModelAndView("redirect:/detailInformation.do?board_num="+board_num);
 		int re = dao.updateReply(r);
 		if(re != 1) {
 			mav.addObject("msg", "내 댓글 수정에 실패하였습니다.");
@@ -292,13 +290,13 @@ public class FreeController {
 	}
 		
 	//대댓글쓰기		
-	@RequestMapping(value = "/member/freeReReply.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/informationReReply.do", method = RequestMethod.GET)
 	public void formReReply(HttpServletRequest request, HttpSession session) {	
 		
 	}
-	@RequestMapping(value="/member/freeReReply.do", method=RequestMethod.POST)
+	@RequestMapping(value="/member/informationReReply.do", method=RequestMethod.POST)
 	public ModelAndView insertReReplySubmit(ReplyVo r, int board_num, int reply_num) {
-		ModelAndView mav = new ModelAndView("redirect:/detailFree.do?board_num="+board_num);
+		ModelAndView mav = new ModelAndView("redirect:/detailInformation.do?board_num="+board_num);
 		
 		int re = dao.insertReReply(r);
 		

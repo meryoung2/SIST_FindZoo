@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
 <meta charset="UTF-8">
 <title>목격했어요!</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
 	    font-family: 'GmarketSansMedium';
@@ -20,6 +20,15 @@
 		font-weight: lighter;
 	}
 	
+	table{
+		border-right: none;
+		border-left: none;
+	}
+	
+	th{
+		text-align: center;
+	}
+	
 	a{
 		color: black;
 		text-decoration: none;
@@ -29,22 +38,6 @@
 		font-weight: bold;
 		color: #325d88;
 		text-decoration: underline;
-	}
-	
-	img{
-		border: 1px dashed #D3D3D3;
-		width: 90%;
-		height: 250px;
-		margin-top: 5%;
-	}
-	
-	table{
-		border-right: none;
-		border-left: none;
-	}
-	
-	th{
-		text-align: center;
 	}
 	
 	#see-container{
@@ -86,29 +79,29 @@
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-	function btn_start(){
-		location.href = "see.do?pageNum=1";
+	function btn_start(search_option, keyword){
+		location.href = "searchSee.do?pageNum=1&search_option="+search_option+"&keyword="+keyword;
 	}
 	
-	function btn_end(totalPage){
-		location.href = "see.do?pageNum="+totalPage;
+	function btn_end(searchPage, search_option, keyword){
+		location.href = "searchSee.do?pageNum="+searchPage+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
-	function btn_prev(listStart, listEnd){
-		if(listStart != 1){
-			listEnd = listStart-1;
+	function btn_prev(s_listStart, s_listEnd, search_option, keyword){
+		if(s_listStart != 1){
+			s_listEnd = s_listStart-1;
 		}else{
-			listStart = 1;
+			s_listStart = 1;
 		}
 		
-		location.href = "see.do?pageNum="+listEnd;
+		location.href = "searchSee.do?pageNum="+s_listEnd+"&search_option="+search_option+"&keyword="+keyword;
 	}
 	
-	function btn_next(listStart, listEnd, totalPage){
-		if(listEnd != totalPage){
-			listStart += 5;
+	function btn_next(s_listStart, s_listEnd, searchPage, search_option, keyword){
+		if(s_listEnd != searchPage){
+			s_listStart += 5;
 			
-			location.href = "see.do?pageNum="+listStart;
+			location.href = "searchSee.do?pageNum="+s_listStart+"&search_option="+search_option+"&keyword="+keyword;
 		}else{
 			location.reload();
 		}
@@ -116,10 +109,11 @@
 	
 	// 검색창에 공백 입력 시 공백 자동 제거
 	function noSpaceForm(obj) 
-    {
-		var str_space = /\s/;               // 공백 체크
+    {             
+        var str_space = /\s/;               // 공백 체크
         
-        if(str_space.exec(obj.value)){     // 공백 체크
+        if(str_space.exec(obj.value)) 
+        {     // 공백 체크
             alert("검색어에는 공백을 사용할 수 없습니다.");
             obj.focus();
             obj.value = obj.value.replace(' ',''); // 공백제거
@@ -152,7 +146,6 @@
 				"position": "absolute"
 			}).show();
 		});
-		
 		// 모달 창 바깥 클릭 시
 		$(document).mouseup(function (e){
 			var member_modal = $("#member_modal");
@@ -175,7 +168,7 @@
 	<div id="see-container">
 		<div id="content">
 			<h2><a href="see.do">목격했어요!</a></h2>
-			<h6>(전체 게시글 수 : ${ totalRecord })</h6>
+			<h6>(검색 게시글 수 : ${ searchRecord })</h6>
 			<hr>
 			<div id="board">
 				<table border="1" class="table table-hover">
@@ -188,48 +181,46 @@
 					</thead>
 
 					<tbody>
-						<c:forEach var="s" items="${ list }">
+						<c:forEach var="s_s" items="${ list }">
 							<tr>
 								<td width="60%"><a
-									href="detailSee.do?board_num=${ s.board_num }">${ s.title }</a>
+									href="detailSee.do?board_num=${ s_s.board_num }">${ s_s.title }</a>
 								</td>
 								<td width="30%">
 										<c:if test="${ member_num eq 0 }">
-										<a href="#a" class="login_pls_alert">${ s.member_nick }</a>
+										<a href="#a" class="login_pls_alert">${ s_s.member_nick }</a>
 									</c:if>
 									<c:if test="${ member_num ne 0 }">
-										<a class="member_nick" href="#a" member_num=${ s.member_num }>${ s.member_nick }</a>
+										<a class="member_nick" href="#a" member_num=${ s_s.member_num }>${ s_s.member_nick }</a>
 									</c:if>
 								</td>
-								<td width="10%">&nbsp;&nbsp;&nbsp;${ s.views }</td>
+								<td width="10%">&nbsp;&nbsp;&nbsp;${ s_s.views }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				
-				<button class="btn btn-primary" onclick="location.href='/member/insertSee.do'" style="float: right;">글쓰기</button>
+				<button class="btn btn-primary" onclick="location.href='insertSee.do'" style="float: right;">글쓰기</button>
 			</div>
-
+			
 			<!-- 페이지 번호 -->
 			<div id="page">
-				<a href="#" onclick="btn_start()">≪</a>&nbsp; <a href="#"
-					onclick="btn_prev(${ listStart }, ${ listEnd })">[이전]</a>&nbsp;
-				<c:forEach var="i" begin="${ listStart }" end="${ listEnd }">
+				<a href="#" onclick="btn_start(${ search_option }, '${ keyword }')">≪</a>&nbsp; <a href="#"
+					onclick="btn_prev(${ s_listStart }, ${ s_listEnd }, ${ search_option }, '${ keyword }')">[이전]</a>&nbsp;
+				<c:forEach var="i" begin="${ s_listStart }" end="${ s_listEnd }">
 					<c:choose>
 						<c:when test="${ pageNum eq i }">
-							<a href="see.do?pageNum=${ i }"
-								style="font-weight: bold; color: #325d88; text-decoration: underline;">[${ i }]</a>&nbsp;&nbsp;
+							<a href="searchSee.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }" style="font-weight: bold; color: #325d88; text-decoration: underline;">[${ i }]</a>&nbsp;&nbsp;
 						</c:when>
 						<c:otherwise>
-							<a href="see.do?pageNum=${ i }">[${ i }]</a>&nbsp;&nbsp;
+							<a href="searchSee.do?pageNum=${ i }&search_option=${ search_option }&keyword=${ keyword }">[${ i }]</a>&nbsp;&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				<a href="#"
-					onclick="btn_next(${ listStart }, ${ listEnd }, ${ totalPage })">[다음]</a>&nbsp;
-				<a href="#" onclick="btn_end(${ totalPage })">≫</a>
+				<a href="#" onclick="btn_next(${ s_listStart }, ${ s_listEnd }, ${ searchPage }, ${ search_option }, '${ keyword }')">[다음]</a>&nbsp;
+				<a href="#" onclick="btn_end(${ searchPage }, ${ search_option }, '${ keyword }')">≫</a>
 			</div>
-
+			
 			<!-- 검색창 -->
 			<div id="search">
 				<form name="searchSee" method="get" action="searchSee.do">

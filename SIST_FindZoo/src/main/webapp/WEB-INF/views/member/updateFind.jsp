@@ -58,7 +58,7 @@
 <jsp:include page="./findZoo_Header.jsp"/>
 	<div id="find-container">
 		<div id="content">
-			<h4>찾아요게시판 글 수정</h4>
+			<h4>찾아요! 글 수정</h4>
 			<hr> 
 			<form class="form-group" action="/member/updateFind.do" method="post" enctype="multipart/form-data" onsubmit="fixLoc();">
 				<input type="hidden" name="board_num" value="${f.board_num }">

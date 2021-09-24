@@ -4,43 +4,8 @@
 <html>
 <head> 
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	var addr1 = $("#addr1").val();
-	var addr2 = $("#addr2").val();
-	var see_find_loc = addr1.concat(addr2);
-
-	$("#see_find_loc").val(see_find_loc);
-	console.log(see_find_loc);
-});
-
-	function findAddr() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-
-				console.log(data);
-
-				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-				// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-				var roadAddr = data.roadAddress; // 도로명 주소 변수
-				var jibunAddr = data.jibunAddress; // 지번 주소 변수
-				// 우편번호와 주소 정보를 해당 필드에 넣는다.
-				document.getElementById('post').value = data.zonecode;
-				if (roadAddr !== '') {
-					document.getElementById("addr1").value = roadAddr;
-				} else if (jibunAddr !== '') {
-					document.getElementById("addr2").value = jibunAddr;
-				}
-			}
-		}).open();
-	}
-</script>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<title>자원봉사 게시판</title>
+<link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
 	    font-family: 'GmarketSansMedium';
@@ -65,7 +30,7 @@ $(document).ready(function(){
 		text-decoration: underline;
 	}
 	
-	#see-container{
+	#vol-container{
 		display: flex;
 		justify-content: center;
 	}
@@ -81,34 +46,65 @@ $(document).ready(function(){
 		margin-bottom: 5%;
 	}
 	
-	#see_pet_dog{
-		margin-top: 2.6%;
-	}
-	
-	#see_pet_cat{
-		margin-top: 2.6%;
-	}
-	
-	#see_pet_etc{
-		margin-top: 2.6%;
-	}
-	
 </style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var addr1 = $("#addr1").val();
+	var addr2 = $("#addr2").val();
+	var volunteer_loc = addr1.concat(addr2);
+
+	$("#volunteer_loc").val(volunteer_loc);
+	console.log(volunteer_loc);
+});
+
+	function findAddr() {
+		new daum.Postcode({
+			oncomplete : function(data) {
+
+				console.log(data);
+
+				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+				// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				var roadAddr = data.roadAddress; // 도로명 주소 변수
+				var jibunAddr = data.jibunAddress; // 지번 주소 변수
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				document.getElementById('post').value = data.zonecode;
+				if (roadAddr !== '') {
+					document.getElementById("addr1").value = roadAddr;
+				} else if (jibunAddr !== '') {
+					document.getElementById("addr2").value = jibunAddr;
+				}
+			}
+		}).open();
+	}
+</script>
+
 </head>
 <body>
-	<div id="see-container">
+<jsp:include page="../findZoo_Header.jsp"/>
+	<div id="vol-container">
 		<div id="content">
-			<h4>목격했어요! 글 작성</h4>
+			<h4>자원봉사 게시판 글 작성</h4>
 			<hr> 
-			<form class="form-group" action="insertSee.do" method="post" enctype="multipart/form-data">
+			<form class="form-group" action="insertVol.do" method="post" enctype="multipart/form-data">
 				<label class="form-label mt-4">제목</label> 
 				<input class="form-control" type="text" name="title" style="width: 100%;">
 				
-				<label for="see_find_loc" class="form-label mt-4">목격장소</label> 
+				<label class="form-label mt-4">기관명</label> 
+				<input class="form-control" type="text" name="volunteer_cname" style="width: 100%;">
+				
+				<label class="form-label mt-4">기관 연락처</label> 
+				<input class="form-control" type="text" name="volunteer_tel" style="width: 100%;" placeholder="-를 제외하고 입력해주세요">
+				
+				<label for="volunteer_loc" class="form-label mt-4">기관위치</label> 
 				<input id="addr1" name="addr1" type="text" placeholder="주소를 눌러 검색해주세요!" width="60%" readonly="readonly" onclick="findAddr()"> 
 				<input type="hidden" id="addr2" name="addr2" placeholder="상세주소"> 
 				<input id="post" type="hidden" placeholder="우편번호" readonly="readonly"> 
-				<input type="hidden" name="see_find_loc" id="see_find_loc">
+				<input type="hidden" name="volunteer_loc" id="volunteer_loc">
 				<button type="button" onclick="getAddr()">위치저장</button><br>
 
 				<p style="margin-top: -12px">
@@ -134,10 +130,10 @@ $(document).ready(function(){
 					var input_addr = "";
 					// 사용자 입력 주소 값 hidden으로 가져오는 함수
 					function getAddr() {
-						var see_find_loc = document.getElementById('addr1').value;
-						console.log('가져온 텍스트', see_find_loc);
-						input_addr = see_find_loc;
-						document.getElementById("see_find_loc").value = input_addr;
+						var volunteer_loc = document.getElementById('addr1').value;
+						console.log('가져온 텍스트', volunteer_loc);
+						input_addr = volunteer_loc;
+						document.getElementById("volunteer_loc").value = input_addr;
 						// 주소로 좌표를 검색합니다
 						// getAddr 함수 호출시마다 해당 addressSearch함수를 호출해줘야하므로 getAddr 함수안에서 사용함.
 						geocoder.addressSearch( input_addr, function(result, status) {
@@ -172,16 +168,11 @@ $(document).ready(function(){
 					}
 				</script>
 				
-				<label class="form-label mt-4">목격날짜</label>
-				<input type="date" name="see_find_date" id="see_find_date" required="required"><br>
+				<label class="form-label mt-4">봉사 시작일자</label>
+				<input type="date" name="volunteer_s_date" id="volunteer_s_date" required="required"><br>
+				<label class="form-label mt-4">봉사 종료일자</label>
+				<input type="date" name="volunteer_e_date" id="volunteer_e_date" required="required"><br>
 				
-				<label class="form-label mt-4">목격동물종</label>
-				<input type="radio" class="form-check-input" name="see_pet" id="see_pet_dog" value="강아지" checked="checked">
-				<label for="see_pet_dog">강아지</label>
-				<input type="radio" class="form-check-input" name="see_pet" id="see_pet_cat" value="고양이">
-				<label for="see_pet_cat">고양이</label>
-				<input type="radio" class="form-check-input" name="see_pet" id="see_pet_etc" value="기타">
-				<label for="see_pet_etc">기타</label><br>
 				
 				<label class="form-label mt-4">내용</label>
 				<textarea class="form-control" rows="15" name="content" style="width: 100%;"></textarea>
@@ -194,5 +185,6 @@ $(document).ready(function(){
 			</form>
 		</div>
 	</div>
+<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

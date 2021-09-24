@@ -8,11 +8,11 @@
 <html>
 <head> 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>목격했어요!</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=589c052a30900321432ed77b38231404&libraries=services"></script>
-<link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
 	@font-face {
 	    font-family: 'GmarketSansMedium';
@@ -37,7 +37,7 @@
 		text-decoration: underline;
 	}
 	
-	#vol-container{
+	#see-container{
 		display: flex;
 		justify-content: center;
 	}
@@ -56,38 +56,24 @@
 </style>
 </head>
 <body>
-	<div id="vol-container">
+<jsp:include page="../findZoo_Header.jsp"/>
+	<div id="see-container">
 		<div id="content">
-			<h4>자원봉사판 게시글 수정</h4>
+			<h4>목격했어요! 글 수정</h4>
 			<hr> 
-			<form class="form-group" action="updateVol.do" method="post" enctype="multipart/form-data" onsubmit="fixLoc();">
-				<input type="hidden" name="board_num" value="${ v.board_num }">
-				<input type="hidden" name="picture_fname" value="${ v.picture_fname }">
+			<form class="form-group" action="updateSee.do" method="post" enctype="multipart/form-data" onsubmit="fixLoc();">
+				<input type="hidden" name="board_num" value="${ s.board_num }">
+				<input type="hidden" name="picture_fname" value="${ s.picture_fname }">
 				<label class="form-label mt-4">제목</label>
-				<input class="form-control" type="text" name="title" value="${ v.title }" style="width: 100%;">
+				<input class="form-control" type="text" name="title" value="${ s.title }" style="width: 100%;">
+				<br>
 				
-				<label class="form-label mt-4">기관명</label> 
-				<input class="form-control" type="text" name="volunteer_cname" value="${v.volunteer_cname }" style="width: 100%;">
-				
-				<label class="form-label mt-4">기관 연락처</label> 
-				<input class="form-control" type="text" name="volunteer_tel" value="${v.volunteer_tel }" style="width: 100%;" placeholder="-를 제외하고 입력해주세요">
-				
-				<fmt:parseDate var="strToDate1" value="${v.volunteer_s_date }" pattern="yyyy-MM-dd"/>
-				<fmt:formatDate var="dateToStr1" value="${strToDate1 }" pattern="yyyy년 MM월 dd일"/>
-				<fmt:parseDate var="strToDate2" value="${v.volunteer_e_date }" pattern="yyyy-MM-dd"/>
-				<fmt:formatDate var="dateToStr2" value="${strToDate2 }" pattern="yyyy년 MM월 dd일"/>
-				<label class="form-label mt-4">봉사 시작일자</label>
-				(<c:out value="${dateToStr1 }"/>)&nbsp;<input type="date" name="volunteer_s_date" required="required">
-				<label class="form-label mt-4">봉사 종료일자</label>
-				(<c:out value="${dateToStr2 }"/>)&nbsp;<input type="date" name="volunteer_e_date" required="required"><br>
-				
-				
-				기관위치 : <span>${v.volunteer_loc}</span><br>
-				<input id="addr1" name="addr1" type="text" placeholder="기관위치 변경시 눌러주세요" readonly="readonly" onclick="findAddr()">
+				목격장소 : <span>${s.see_find_loc}</span><br>
+				<input id="addr1" name="addr1" type="text" placeholder="목격장소 변경시 눌러주세요" readonly="readonly" onclick="findAddr()">
 				<input type="hidden" id="addr2" name="addr2" placeholder="상세주소">
 				<input id="post"  type="hidden" placeholder="우편번호" readonly="readonly"><button type="button" onclick="getAddr()">위치변경</button>
 				<br><br>
-				<input type="hidden" id="old_volunteer_loc" name="old_volunteer_loc" value="${v.volunteer_loc }">
+				<input type="hidden" id="old_see_find_loc" name="old_see_find_loc" value="${s.see_find_loc }">
 				
 				<p style="margin-top: -12px">
 					<em class="link"> <a href="javascript:void(0);"
@@ -102,10 +88,10 @@
 				$(document).ready(function(){
 					var addr1 = $("#addr1").val();
 					var addr2 = $("#addr2").val();
-					var volunteer_loc = addr1.concat(addr2);
+					var see_find_loc = addr1.concat(addr2);
 				
-					$("#volunteer_loc").val(volunteer_loc);
-					console.log(volunteer_loc);
+					$("#see_find_loc").val(see_find_loc);
+					console.log(see_find_loc);
 				});
 		
 				
@@ -135,11 +121,11 @@
 				// 위치변경 버튼 클릭시 함수 실행
 				function getAddr() {
 					var new_input_addr = "";
-					var new_volunteer_loc = document.getElementById('addr1').value;
-					console.log('가져온 텍스트', new_volunteer_loc);
-					document.getElementById("volunteer_loc").value = new_volunteer_loc;
+					var new_see_find_loc = document.getElementById('addr1').value;
+					console.log('가져온 텍스트', new_see_find_loc);
+					document.getElementById("see_find_loc").value = new_see_find_loc;
 					
-					geocoder.addressSearch(new_volunteer_loc,function(result, status) { // 정상적으로 검색이 완료됐으면 
+					geocoder.addressSearch(new_see_find_loc,function(result, status) { // 정상적으로 검색이 완료됐으면 
 						if (status === kakao.maps.services.Status.OK) { 
 							var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 		
@@ -152,7 +138,7 @@
 							// 인포윈도우로 장소에 대한 설명을 표시합니다
 							var infowindow = new kakao.maps.InfoWindow(
 									{
-										content : '<div style="width:150px;text-align:center;padding:6px 0;">'+ new_volunteer_loc + '</div>'
+										content : '<div style="width:150px;text-align:center;padding:6px 0;">'+ new_see_find_loc + '</div>'
 									});
 							infowindow.open(map, marker);
 		
@@ -176,9 +162,9 @@
 					var geocoder = new kakao.maps.services.Geocoder();
 					
 					var input_addr = "";
-					var old_volunteer_loc = document.getElementById("old_volunteer_loc").value;
-					console.log(old_volunteer_loc);
-					input_addr = old_volunteer_loc;
+					var old_see_find_loc = document.getElementById("old_see_find_loc").value;
+					console.log(old_see_find_loc);
+					input_addr = old_see_find_loc;
 					
 					// 주소로 좌표를 검색합니다
 					// 아래는 위치변경을 안했을 시 기존 주소를 그대로 map에 찍어줌
@@ -205,21 +191,52 @@
 					});
 					
 					function fixLoc(){
-						var old_volunteer_loc = document.getElementById('old_volunteer_loc').value;
-						var volunteer_loc = document.getElementById('volunteer_loc').value;
+						var old_see_find_loc = document.getElementById('old_see_find_loc').value;
+						var see_find_loc = document.getElementById('see_find_loc').value;
 						
-						if(volunteer_loc === ''){
-							document.getElementById('volunteer_loc').value = old_volunteer_loc;
+						if(see_find_loc === ''){
+							document.getElementById('see_find_loc').value = old_see_find_loc;
 						}
 					}
 					
 				</script>
-				<input type="hidden" name="volunteer_loc" id="volunteer_loc" value="${v.volunteer_loc }"><br>
+				<input type="hidden" name="see_find_loc" id="see_find_loc" value="${s.see_find_loc }"><br>
 						
+				<fmt:parseDate var="strToDate" value="${s.see_find_date }" pattern="yyyy-MM-dd"/>
+				<fmt:formatDate var="dateToStr" value="${strToDate }" pattern="yyyy년 MM월 dd일"/>
+				목격날짜 : <c:out value="${dateToStr }"/>&nbsp;<input type="date" name="see_find_date" required="required"><br>
+				목격동물 :
+				<c:choose>
+					<c:when test="${s.see_pet eq '강아지' }">
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_dog" value="강아지" checked="checked">
+						<label for="see_pet_dog">강아지</label>
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_cat" value="고양이">
+						<label for="see_pet_cat">고양이</label>
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_etc" value="기타">
+						<label for="see_pet_etc">기타</label><br>
+					</c:when>
+					<c:when test="${s.see_pet eq '고양이' }">
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_dog" value="강아지">
+						<label for="see_pet_dog">강아지</label>
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_cat" value="고양이" checked="checked">
+						<label for="see_pet_cat">고양이</label>
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_etc" value="기타">
+						<label for="see_pet_etc">기타</label><br>
+					</c:when>
+					<c:otherwise>
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_dog" value="강아지">
+						<label for="see_pet_dog">강아지</label>
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_cat" value="고양이">
+						<label for="see_pet_cat">고양이</label>
+						<input type="radio" class="form-check-input" name="see_pet" id="see_pet_etc" value="기타" checked="checked">
+						<label for="see_pet_etc">기타</label><br>
+					</c:otherwise>
+				</c:choose>
+				
 				<label class="form-label mt-4">내용</label>
-				<textarea class="form-control" rows="15" name="content" style="width: 100%;">${ v.content }</textarea>
+				<textarea class="form-control" rows="15" name="content" style="width: 100%;">${ s.content }</textarea>
 				<label class="form-label mt-4">사진</label>
-				<input class="form-control" type="file" name="picture_file" value="${ v.picture_fname }"><br>
+				<input class="form-control" type="file" name="picture_file" value="${ s.picture_fname }"><br>
 				<div id="btn">
 					<input class="btn btn-primary" type="submit" value="수정">
 					<input class="btn btn-primary" type="reset" value="초기화">
@@ -227,5 +244,6 @@
 			</form>
 		</div>
 	</div>
+<jsp:include page="../findZoo_Footer.jsp"/>
 </body>
 </html>

@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="free">
+<mapper namespace="information">
 	<select id="findAll" resultType="freeVo"> 
 		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
-		FROM board, member WHERE BOARD_TYPE_NUM = 34
+		FROM board, member WHERE BOARD_TYPE_NUM = 32
 		AND board.member_num = MEMBER.member_num
 		ORDER BY board_num DESC))
 		WHERE n BETWEEN #{start} AND #{end}
@@ -17,7 +17,7 @@
 		SELECT board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
-		FROM board, member <include refid="search_ref"/> and BOARD_TYPE_NUM = 34
+		FROM board, member <include refid="search_ref"/> and BOARD_TYPE_NUM = 32
 		AND board.member_num = MEMBER.member_num
 		ORDER BY board_num DESC))
 		where n BETWEEN #{start} AND #{end}
@@ -39,23 +39,23 @@
 		</choose>
 	</sql>
 	
-	<select id="getFree" resultType="freeVo"> 
+	<select id="getInformation" resultType="freeVo"> 
 		select * from board b, member m, picture p where b.member_num = m.member_num and b.board_num = p.board_num and b.board_num=#{board_num} 
 	</select>
 	
-	<update id="updateViews" parameterType="int"> 
+	<update id="updateViewsInformation" parameterType="int"> 
 		update board set views=views+1 where board_num=#{board_num} 
 	</update>
 	
 	<select id="totalRecord" resultType="int"> 
-		select count(*) from board where board_type_num = 34
+		select count(*) from board where board_type_num = 32
 	</select>
 	
 	<select id="searchRecord" resultType="int"> 
 		SELECT count(*)
 		FROM (SELECT rownum n, board_num, title, content, bdate, views, board_type_num, member_num, member_nick
 		FROM (SELECT board_num, title, content, bdate, views, board_type_num, MEMBER.member_num, member_nick 
-		FROM board, member WHERE BOARD_TYPE_NUM = 34
+		FROM board, member WHERE BOARD_TYPE_NUM = 32
 		AND board.member_num = MEMBER.member_num
 		ORDER BY board_num DESC))
 		<include refid="search_ref2"/>
@@ -78,7 +78,7 @@
 	</sql>
 	
 	<insert id="insert" parameterType="freeVo"> 
-		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate+9/24, 0, 34, #{member_num}) 
+		insert into board values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate+9/24, 0, 32, #{member_num}) 
 	</insert>
 	
 	<insert id="insertPicture" parameterType="freeVo"> 

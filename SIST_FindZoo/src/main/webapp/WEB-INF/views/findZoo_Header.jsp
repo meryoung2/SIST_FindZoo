@@ -83,7 +83,7 @@
 						<div class="dropdown-menu">
 				            <a class="dropdown-item" style="font-size: 20px;" href="find.do" >찾아요</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="boho.do">보호중이에요</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">목격했어요</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="see.do">목격했어요</a>
 			        	</div>
 					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					
@@ -91,7 +91,7 @@
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"  style="font-size: 25px;">구인공고 게시판</a>
 				
 						<div class="dropdown-menu">
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">자원봉사</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="vol.do">자원봉사</a>
 				            <a class="dropdown-item" style="font-size: 20px;" href="#">펫도우미</a>
 			        	</div>
 					</li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -100,10 +100,10 @@
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-size: 25px;">커뮤니티</a>
 				
 						<div class="dropdown-menu">
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">자유</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">거래</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">정보공유</a>
-				            <a class="dropdown-item" style="font-size: 20px;" href="#">찾은후기</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="free.do">자유</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="deal.do">거래</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="information.do">정보공유</a>
+				            <a class="dropdown-item" style="font-size: 20px;" href="findReview.do">찾은후기</a>
 			        	</div>
 					</li>
 				</ul>

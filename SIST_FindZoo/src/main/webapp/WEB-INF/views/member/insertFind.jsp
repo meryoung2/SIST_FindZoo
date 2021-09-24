@@ -86,7 +86,7 @@ $(document).ready(function(){
 <jsp:include page="./findZoo_Header.jsp"/>
 	<div id="find-container">
 		<div id="content">
-			<h4>찾아요게시판 글 작성</h4>
+			<h4>찾아요! 글 작성</h4>
 			<hr> 
 			<form class="form-group" action="/member/insertFind.do" method="post" enctype="multipart/form-data">
 				<label class="form-label mt-4">제목</label>
