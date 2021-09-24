@@ -9,7 +9,7 @@
 <title>찾아주개</title>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" type="text/css">
 <style type="text/css">
-@font-face {
+	@font-face {
 	    font-family: 'GmarketSansMedium';
 	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
 	    font-weight: normal;
@@ -48,6 +48,18 @@
 		display: inline-block;
 		width: 70%;
 		margin-top: 2%;
+	}
+	
+	#right-sidebar {
+		display: inline-block;
+		width: 15%;
+		margin-left: 2%;
+	}
+
+	#right-sidebar img{
+		width: 100%;
+		height: 55%; /* ''banner01.jpg'면 40%; */
+		margin-top: 80%;
 	}
 	
 	#find-board, #boho-board{
@@ -328,6 +340,13 @@
 				</div>
 			
 			
+		</div>
+		
+		<!-- 사이드 배너 -->
+		<div id="right-sidebar">
+			<a href="https://www.animal.go.kr/front/index.do" target='_blank'>
+				<img src="./resources/img/banner02.png"/>
+			</a>
 		</div>
 	</div>   
 <jsp:include page="findZoo_Footer.jsp"/>
