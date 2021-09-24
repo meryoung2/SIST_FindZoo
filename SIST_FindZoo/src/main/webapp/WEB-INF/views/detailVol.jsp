@@ -107,7 +107,7 @@
 	        });
 	    }
 		
-	 // 멤버 닉네임 클릭 시
+	    // 멤버 닉네임 클릭 시
 		$('.member_nick').click(function(e) {
 			let member_num = $(this).attr("member_num");
 			$('#member_info').attr("href", "memberInfo.do?member_num="+member_num);
@@ -132,21 +132,11 @@
 				member_modal.hide();
 			}
 		});
-<<<<<<< HEAD
 		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
 		$('.login_pls_alert').click(function(e){
 			alert("회원 정보를 보려면 로그인을 해야 합니다!");
 		});
-=======
-		
-		// 비로그인 시 회원 닉네임 클릭 시 알람 팝업 출력
-		$('.login_pls_alert').click(function(e){
-			alert("회원 정보를 보려면 로그인을 해야 합니다!");
-		});
-		
->>>>>>> branch 'master' of https://github.com/meryoung2/SIST_FindZoo.git
 	});
-
 	
 	//댓글삭제 스크립트
 	function confirmDeleteReply(reply_num, board_num){
@@ -176,11 +166,7 @@
 			<h4>${ v.title }</h4>
 			<hr>
 			<c:if test="${ member_num eq 0 }">
-<<<<<<< HEAD
 				<a href="#a" class="login_pls_alert">${ v.member_nick }</a>&nbsp;|&nbsp;
-=======
-				<a href="#" class="login_pls_alert">${ v.member_nick }</a>&nbsp;|&nbsp;
->>>>>>> branch 'master' of https://github.com/meryoung2/SIST_FindZoo.git
 			</c:if>
 			<c:if test="${ member_num ne 0 }">
 				<a class="member_nick" href="#a" member_num=${ v.member_num }>${ v.member_nick }</a>&nbsp;|&nbsp;
