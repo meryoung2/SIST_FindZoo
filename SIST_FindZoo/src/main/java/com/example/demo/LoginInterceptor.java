@@ -20,6 +20,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		System.out.println("로그인 인터셉터 동작함!");
 		HttpSession session = request.getSession();
 			if(session.getAttribute("loginM") != null) {
+				//session.setAttribute("uri", uri);
 				return super.preHandle(request, response, handler);
 			}else {
 				response.sendRedirect("/login.do");
