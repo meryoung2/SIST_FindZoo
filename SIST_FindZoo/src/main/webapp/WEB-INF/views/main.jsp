@@ -222,7 +222,7 @@
 				<h2><a href="boho.do">보호중게시판</a></h2>
 				<hr>
 				<div id="boho-board">
-					<c:if test="${ list[0].title ne null }">
+					<c:if test="${ boholist[0].title ne null }">
 						<div class="card mb-3" id="boho" onclick="location.href='detailBoho.do?board_num=${ boholist[0].board_num }'">
 							<div id="animal_img">
 								<c:if test="${ bohop[0] ne 'default.jpg'}">
@@ -241,7 +241,7 @@
 						</div>
 					</c:if>
 					
-					<c:if test="${ list[1].title ne null }">
+					<c:if test="${ boholist[1].title ne null }">
 						<div class="card mb-3" id="boho" onclick="location.href='detailBoho.do?board_num=${ boholist[1].board_num }'">
 							<div id="animal_img">
 								<c:if test="${ bohop[3] ne 'default.jpg'}">
@@ -260,7 +260,7 @@
 						</div>
 					</c:if>
 					
-					<c:if test="${ list[2].title ne null }">
+					<c:if test="${ boholist[2].title ne null }">
 						<div class="card mb-3" id="boho" onclick="location.href='detailBoho.do?board_num=${ boholist[2].board_num }'">
 							<div id="animal_img">
 								<c:if test="${ bohop[6] ne 'default.jpg'}">
@@ -279,7 +279,7 @@
 						</div>
 					</c:if>
 					
-					<c:if test="${ list[3].title ne null }">
+					<c:if test="${ boholist[3].title ne null }">
 						<div class="card mb-3" id="boho" onclick="location.href='detailBoho.do?board_num=${ boholist[3].board_num }'">
 							<div id="animal_img">
 								<c:if test="${ bohop[9] ne 'default.jpg'}">
@@ -298,7 +298,7 @@
 						</div>
 					</c:if>
 					
-					<c:if test="${ list[4].title ne null }">
+					<c:if test="${ boholist[4].title ne null }">
 						<div class="card mb-3" id="boho" onclick="location.href='detailBoho.do?board_num=${ boholist[4].board_num }'">
 							<div id="animal_img">
 								<c:if test="${ bohop[12] ne 'default.jpg'}">
@@ -317,7 +317,7 @@
 						</div>
 					</c:if>
 					
-					<c:if test="${ list[5].title ne null }">
+					<c:if test="${ boholist[5].title ne null }">
 						<div class="card mb-3" id="boho" onclick="location.href='detailBoho.do?board_num=${ boholist[5].board_num }'">
 							<div id="animal_img">
 								<c:if test="${ bohop[15] ne 'default.jpg'}">

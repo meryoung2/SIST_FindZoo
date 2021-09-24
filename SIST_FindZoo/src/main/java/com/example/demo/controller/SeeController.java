@@ -168,7 +168,17 @@ public class SeeController {
 				System.out.println("파일업로드중 오류발생 : " + e.getMessage());
 			}
 		} else {
-			s.setPicture_fname("");
+			try {
+				path = request.getRealPath("resources/systems");
+				byte[] data = picture_file.getBytes();
+				picture_fname = "default2.png";
+				fsize = data.length;
+				s.setPicture_fname(picture_fname);
+				System.out.println(path);
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("예외발생:" + e.getMessage());
+			}
 		}
 
 		int re = dao.insertSee(s);
