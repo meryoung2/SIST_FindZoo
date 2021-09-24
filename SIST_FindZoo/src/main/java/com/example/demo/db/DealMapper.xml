@@ -41,7 +41,7 @@
 	</sql>
 	
 	<insert id="insertBoard" parameterType="dealVo">
-		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 33, 1)
+		insert into board(board_num,title,content,bdate,views,board_type_num,member_num) values((select nvl(max(board_num), 0)+1 from board), #{title}, #{content}, sysdate, 0, 33, #{member_num})
 	</insert>
 	
 	<insert id="insertDeal" parameterType="dealVo">

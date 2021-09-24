@@ -85,7 +85,7 @@ $(document).ready(function(){
 
 </head>
 <body>
-<jsp:include page="../findZoo_Header.jsp"/>
+<jsp:include page="./findZoo_Header.jsp"/>
 	<div id="vol-container">
 		<div id="content">
 			<h4>자원봉사 게시판 글 작성</h4>

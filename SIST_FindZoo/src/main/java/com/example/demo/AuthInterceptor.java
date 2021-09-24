@@ -14,32 +14,16 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		
-		System.out.println("Auth 인터셉터 동작함!");
+		// TODO Auto-generated method stub
+		//System.out.println("Auth 인터셉터 동작함!");
 		HttpSession session = request.getSession();
 		
-		String login= (String)session.getAttribute("loginM");
-		//로그인이 되어있는지 확인
-		
-		if(login == null) {
-	        //메소드 정의 - session객체에 현재 uri 정보 저장
-			saveBeforeUri(request);
-	        //로그인 url로 보냄
-			response.sendRedirect("/login.do");
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public void saveBeforeUri(HttpServletRequest request) {
-		
 		String uri=request.getRequestURI();       
-		String query=request.getQueryString();    
-
-	   //query에 아무것도 들어있지 않다면
+		String query=request.getQueryString(); 
+		
+		//query에 아무것도 들어있지 않다면
 		if(query == null || query.trim().equals("null")) {
 			query = "";
 		}else {
@@ -47,8 +31,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		}	
 		
 	    //session객체에 저장
-		if(request.getMethod().equals("POST")) {
-			request.getSession().setAttribute("uri", uri+query);
-		}
+		request.getSession().setAttribute("uri", uri+query);
+		System.out.println("저장하는 uri:"+(uri+query));
+		
+		super.afterCompletion(request, response, handler, ex);
+					
 	}
 }

@@ -16,7 +16,9 @@ public class SistConfig implements WebMvcConfigurer {
 		.addPathPatterns("/member/**");
 		
 		registry.addInterceptor(new AuthInterceptor())
-		.addPathPatterns("/page/**");
+		.addPathPatterns("/**")
+		.excludePathPatterns("/member/**")
+		.excludePathPatterns("/login.do","/css/**","/error","/resources/**");
 
 
 	}

@@ -97,6 +97,13 @@
 		  obj.style.height = (12+obj.scrollHeight)+"px";
 	}
 	
+	// 쪽지 보내기 팝업창을 띄운다.
+	function sendNewNote(member_num) {
+		var popupX = (document.body.offsetWidth/2)-200;
+		var popupY = (window.screen.height/2)-180;
+		window.open("/member/sendNewNote.do?member_num="+member_num, "_blank", "width=500, height=470, left="+popupX+", top="+popupY);
+	}
+	
 	$(function() {
 		
 		// 글 내용의 길이에 따라 스크롤을 사용하지 않고 내용 출력

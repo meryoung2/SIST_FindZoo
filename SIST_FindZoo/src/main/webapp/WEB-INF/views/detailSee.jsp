@@ -100,9 +100,9 @@
 	
 	// 쪽지 보내기 팝업창을 띄운다.
 	function sendNewNote(member_num) {
-		var popupX = (document.body.offsetWidth/2)-(800/2);
-		var popupY = (window.screen.height/2)-(370/2);
-		window.open("/member/sendNewNote.do?member_num="+member_num, "_blank", "width=420, height=370, left="+popupX+", top="+popupY);
+		var popupX = (document.body.offsetWidth/2)-200;
+		var popupY = (window.screen.height/2)-180;
+		window.open("/member/sendNewNote.do?member_num="+member_num, "_blank", "width=500, height=470, left="+popupX+", top="+popupY);
 	}
 	
 	$(function() {
